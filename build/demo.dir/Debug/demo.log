@@ -1,0 +1,5 @@
+﻿  Building Custom Rule D:/Workspace/Centauri_Framework/CMakeLists.txt
+  CMake does not need to re-run because D:/Workspace/Centauri_Framework/build/CMakeFiles/generate.stamp is up-to-date.
+  main.cpp
+     Creating library D:/Workspace/Centauri_Framework/build/Debug/demo.lib and object D:/Workspace/Centauri_Framework/build/Debug/demo.exp
+  demo.vcxproj -> D:\Workspace\Centauri_Framework\build\Debug\demo.exe

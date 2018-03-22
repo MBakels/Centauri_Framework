@@ -1,0 +1,9 @@
+﻿  Building Custom Rule D:/Workspace/Centauri_Framework/CMakeLists.txt
+  CMake does not need to re-run because D:/Workspace/Centauri_Framework/build/CMakeFiles/generate.stamp is up-to-date.
+  camera.cpp
+  renderer.cpp
+  resourcemanager.cpp
+  shader.cpp
+  sprite.cpp
+  Generating Code...
+  centauri.vcxproj -> D:\Workspace\Centauri_Framework\build\Debug\centauri.lib

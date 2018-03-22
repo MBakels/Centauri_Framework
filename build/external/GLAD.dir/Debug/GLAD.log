@@ -1,0 +1,4 @@
+﻿  Building Custom Rule D:/Workspace/Centauri_Framework/external/CMakeLists.txt
+  CMake does not need to re-run because D:/Workspace/Centauri_Framework/build/external/CMakeFiles/generate.stamp is up-to-date.
+  glad.c
+  GLAD.vcxproj -> D:\Workspace\Centauri_Framework\build\external\Debug\GLAD.lib
