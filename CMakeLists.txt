@@ -63,6 +63,14 @@ add_library(centauri
 	centauri/shader.h
 	centauri/sprite.cpp
 	centauri/sprite.h
+	centauri/core.cpp
+	centauri/core.h
+	centauri/gameobject.cpp
+	centauri/gameobject.h
+	centauri/scene.cpp
+	centauri/scene.h
+	centauri/pointx.h
+	centauri/vectorx.h
 )
 
 file(
