@@ -1,6 +1,10 @@
 #include "config.h"
 #include "sprite.h"
 
+Sprite::Sprite() {
+	
+}
+
 Sprite::Sprite(std::string image_path) {
 	// these will be set correctly in loadTGA()
 	_width = 0;

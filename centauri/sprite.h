@@ -7,6 +7,7 @@
 
 class Sprite {
 public:
+	Sprite();
 	Sprite(std::string image_path);
 	virtual ~Sprite();
 

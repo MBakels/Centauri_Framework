@@ -12,13 +12,17 @@
 #include "sprite.h"
 #include "shader.h"
 #include "camera.h"
+#include "gameobject.h"
 
 class Renderer {
 public:
 	Renderer();
 	virtual ~Renderer();
 
-	void renderSprite(Camera* camera, Sprite* sprite, float px, float py, float sx, float sy, float rot);
+	void RenderEntity(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
+
+	//void RenderSprite(Camera* camera, Sprite* sprite, float px, float py, float sx, float sy, float rot);
+	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
 
 	GLFWwindow* window() { return _window; };
 

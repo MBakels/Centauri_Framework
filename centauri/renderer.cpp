@@ -65,16 +65,37 @@ int Renderer::init() {
 	return 0;
 }
 
-void Renderer::renderSprite(Camera* camera, Sprite* sprite, float px, float py, float sx, float sy, float rot) {
+void Renderer::RenderEntity(glm::mat4 modelMatrix, GameObject* entity, Camera* camera) {
+	// Translate Point3 to glm::vec3
+	glm::vec3 position = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
+	glm::vec3 rotation = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);
+	glm::vec3 scale = glm::vec3(entity->scale.x, entity->scale.y, entity->scale.z);
+
+	// Building model matrix
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), position);
+	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), scale);
+
+	glm::mat4 mm = translationMatrix * rotationMatrix * scalingMatrix;
+	modelMatrix *= mm;
+
+	// Check for Sprite
+	Sprite* sprite = entity->GetSprite();
+	if (sprite != NULL) {
+		this->RenderSprite(camera, modelMatrix, sprite);
+	}
+}
+
+void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite){// float px, float py, float sx, float sy, float rot) {
 	// glm::mat4 viewMatrix = getViewMatrix(); // get from Camera (Camera position and direction)
-	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	//glm::mat4 modelMatrix = glm::mat4(1.0f);
 
 	// Build the Model matrix
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(px, py, 0.0f));
-	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, rot);
-	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(sx, sy, 1.0f));
+	//glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(px, py, 0.0f));
+	//glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, rot);
+	//glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(sx, sy, 1.0f));
 
-	modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	//modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
 	glm::mat4 MVP = camera->GetProjectionMatrix() * camera->GetViewMatrix() * modelMatrix;
 

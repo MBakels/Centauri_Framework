@@ -4,6 +4,7 @@
 #include "renderer.h"
 #include "camera.h"
 #include "sprite.h"
+#include "gameobject.h"
 
 void processInput(GLFWwindow *window);
 
@@ -16,6 +17,20 @@ int main() {
 	Sprite* pencils = new Sprite("assets/pencils.tga");
 	Sprite* kingkong = new Sprite("assets/kingkong.tga");
 
+	GameObject* woodObj = new GameObject();
+	woodObj->AddSprite(wood);
+	woodObj->position = Vector2(220, 220);
+	woodObj->scale = Vector2(0.7f, 0.7f);
+
+	GameObject* pencilsObj = new GameObject();
+	pencilsObj->AddSprite(pencils);
+	pencilsObj->position = Vector2(500, 100);
+
+	GameObject* kingkongObj = new GameObject();
+	kingkongObj->AddSprite(kingkong);
+	kingkongObj->position = Vector2(750, 500);
+	kingkongObj->scale = Vector2(2.0f, 2.0f);
+
 	while (!glfwWindowShouldClose(renderer.window())) {
 		processInput(renderer.window()); // Input
 
@@ -23,9 +38,9 @@ int main() {
 
 		camera->UpdateCamera(); // Update camera
 
-		renderer.renderSprite(camera, wood, 220, 220, 0.7f, 0.7f, 0);
-		renderer.renderSprite(camera, pencils, 500, 100, 1.0f, 1.0f, 0);
-		renderer.renderSprite(camera, kingkong, 750, 500, 2.0f, 2.0f, 0);
+		renderer.RenderEntity(glm::mat4(1.0f), woodObj, camera);
+		renderer.RenderEntity(glm::mat4(1.0f), pencilsObj, camera);
+		renderer.RenderEntity(glm::mat4(1.0f), kingkongObj, camera);
 
 		// glfw: swap buffers and poll IO events
 		glfwSwapBuffers(renderer.window());
@@ -36,6 +51,7 @@ int main() {
 	delete wood;
 	delete pencils;
 	delete kingkong;
+	delete woodObj;
 
 	return 0;
 }
