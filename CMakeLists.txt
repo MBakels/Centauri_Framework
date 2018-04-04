@@ -82,6 +82,8 @@ file(
 if(MAKE_DEMO)
 	add_executable(demo
 		projects/demo/main.cpp
+		projects/demo/scene00.cpp
+		projects/demo/scene00.h
 	)
 	
 	target_link_libraries(demo

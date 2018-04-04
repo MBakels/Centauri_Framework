@@ -13,18 +13,16 @@
 #include "shader.h"
 #include "camera.h"
 #include "gameobject.h"
+#include "scene.h"
 
 class Renderer {
 public:
 	Renderer();
 	virtual ~Renderer();
 
-	void RenderEntity(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
+	void RenderScene(Scene* scene);
 
-	//void RenderSprite(Camera* camera, Sprite* sprite, float px, float py, float sx, float sy, float rot);
-	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
-
-	GLFWwindow* window() { return _window; };
+	GLFWwindow* Window() { return _window; };
 
 private:
 	unsigned int VAO;
@@ -35,7 +33,14 @@ private:
 
 	Shader* _defaultShader;
 
-	int init();
+	glm::mat4 _projectionMatrix;
+	glm::mat4 _viewMatrix;
+
+	void RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
+
+	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
+
+	int Init();
 
 	//void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 };

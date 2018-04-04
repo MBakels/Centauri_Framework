@@ -7,7 +7,7 @@ Renderer::Renderer() {
 	_window = NULL;
 	_defaultShader = NULL;
 
-	init();
+	Init();
 }
 
 Renderer::~Renderer() {
@@ -15,7 +15,7 @@ Renderer::~Renderer() {
 	glfwTerminate(); // glfw: terminate, clearing all previously allocated GLFW resources.
 }
 
-int Renderer::init() {
+int Renderer::Init() {
 	// glfw: initialize and configure
 	if (!glfwInit()) {
 		std::cout << "ERROR::RENDERER::GLFW::GLFW_INIT_FAILED\n" << std::endl;
@@ -65,7 +65,19 @@ int Renderer::init() {
 	return 0;
 }
 
-void Renderer::RenderEntity(glm::mat4 modelMatrix, GameObject* entity, Camera* camera) {
+void Renderer::RenderScene(Scene* scene) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear screen
+	_viewMatrix = scene->GetCamera()->GetViewMatrix(); // Get viewMatrix from camera
+	_projectionMatrix = scene->GetCamera()->GetProjectionMatrix(); // Get projectionMatrix from camera
+
+	glm::mat4 modelMatrix = glm::mat4(1.0f); // The root scene has a identity matrix
+
+	this->RenderGameObject(modelMatrix, scene, scene->GetCamera());
+	
+	glfwSwapBuffers(_window); // Swap buffers
+}
+
+void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera) {
 	// Translate Point3 to glm::vec3
 	glm::vec3 position = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
 	glm::vec3 rotation = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);
@@ -83,6 +95,13 @@ void Renderer::RenderEntity(glm::mat4 modelMatrix, GameObject* entity, Camera* c
 	Sprite* sprite = entity->GetSprite();
 	if (sprite != NULL) {
 		this->RenderSprite(camera, modelMatrix, sprite);
+	}
+
+	// Render all Children
+	std::vector<GameObject*> children = entity->Children();
+	std::vector<GameObject*>::iterator child;
+	for (child = children.begin(); child != children.end(); child++) {
+		this->RenderGameObject(modelMatrix, *child, camera);
 	}
 }
 
