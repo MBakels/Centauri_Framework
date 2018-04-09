@@ -6,7 +6,6 @@ GameObject::GameObject() {
 	scale = Point3(1.0f, 1.0f, 1.0f);
 
 	_parent = NULL;
-
 	_sprite = NULL;
 }
 

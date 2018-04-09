@@ -14,7 +14,7 @@ Sprite::Sprite(std::string image_path) {
 	_fragmentshader = DEFAULTFRAGMENTSHADER;
 
 	// Load TGA file as texture
-	_texture = loadTGA(image_path.c_str());
+	_texture = LoadTGA(image_path.c_str());
 
 	// Vertex data
 	GLfloat g_vertex_buffer_data[18] = {
@@ -54,7 +54,7 @@ Sprite::~Sprite() {
 	glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
 }
 
-GLuint Sprite::loadTGA(const std::string& imagepath) {
+GLuint Sprite::LoadTGA(const std::string& imagepath) {
 	std::cout << "Loading TGA: " << imagepath << std::endl;
 
 	FILE *file;

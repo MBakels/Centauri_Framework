@@ -7,12 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 
-#include <glm/glm.hpp>
-#include <glm/gtx/matrix_decompose.hpp>
-
-#include "config.h"
 #include "sprite.h"
 #include "vectorx.h"
 
@@ -26,7 +21,7 @@ public:
 	void AddChild(GameObject* child);
 	void RemoveChild(GameObject* child);
 	GameObject* GetChild(unsigned int i);
-	const std::vector<GameObject*>& Children() { return _children; };
+	const std::vector<GameObject*>& GetChildren() { return _children; };
 
 	// Sprite
 	Sprite* GetSprite() { return _sprite; };

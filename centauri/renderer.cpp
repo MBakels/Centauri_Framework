@@ -1,7 +1,5 @@
-#include "config.h"
 #include "renderer.h"
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+#include "config.h"
 
 Renderer::Renderer() {
 	_window = NULL;
@@ -11,7 +9,7 @@ Renderer::Renderer() {
 }
 
 Renderer::~Renderer() {
-	glDeleteVertexArrays(1, &VAO);
+	glDeleteVertexArrays(1, &_VAO);
 	glfwTerminate(); // glfw: terminate, clearing all previously allocated GLFW resources.
 }
 
@@ -42,7 +40,7 @@ int Renderer::Init() {
 		return -1;
 	}
 	glfwMakeContextCurrent(_window);
-	glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+	glfwSetFramebufferSizeCallback(_window, FramebufferSizeCallback);
 
 	// Initialize glad (load all OpenGL function pointers)
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -57,10 +55,10 @@ int Renderer::Init() {
 	glEnable(GL_CULL_FACE);
 
 	// Create and use shader
-	_defaultShader = _resourcemanager.getShader(DEFAULTVERTEXSHADER, DEFAULTFRAGMENTSHADER);
+	_defaultShader = _resourcemanager.GetShader(DEFAULTVERTEXSHADER, DEFAULTFRAGMENTSHADER);
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	glGenVertexArrays(1, &_VAO);
+	glBindVertexArray(_VAO);
 
 	return 0;
 }
@@ -98,28 +96,18 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	}
 
 	// Render all Children
-	std::vector<GameObject*> children = entity->Children();
+	std::vector<GameObject*> children = entity->GetChildren();
 	std::vector<GameObject*>::iterator child;
 	for (child = children.begin(); child != children.end(); child++) {
 		this->RenderGameObject(modelMatrix, *child, camera);
 	}
 }
 
-void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite){// float px, float py, float sx, float sy, float rot) {
-	// glm::mat4 viewMatrix = getViewMatrix(); // get from Camera (Camera position and direction)
-	//glm::mat4 modelMatrix = glm::mat4(1.0f);
-
-	// Build the Model matrix
-	//glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(px, py, 0.0f));
-	//glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, rot);
-	//glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(sx, sy, 1.0f));
-
-	//modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
-
+void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite){
 	glm::mat4 MVP = camera->GetProjectionMatrix() * camera->GetViewMatrix() * modelMatrix;
 
 	// Get the shader from the ResourceManager
-	Shader* shader = _resourcemanager.getShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
+	Shader* shader = _resourcemanager.GetShader(sprite->GetVertexshader().c_str(), sprite->GetFragmentshader().c_str());
 	if (shader == NULL) {
 		shader = _defaultShader; // fallback to defaultshader
 	}
@@ -130,17 +118,17 @@ void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprit
 
 	// Binding texture to Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, sprite->texture());
+	glBindTexture(GL_TEXTURE_2D, sprite->GetTexture());
 	_defaultShader->SetInt("texture", 0);
 
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, sprite->vertexbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, sprite->GetVertexbuffer());
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// 2nd attribute buffer : UVs
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, sprite->uvbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, sprite->GetUvbuffer());
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // 2*3 indices starting at 0 -> 2 triangles
@@ -150,6 +138,6 @@ void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprit
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }

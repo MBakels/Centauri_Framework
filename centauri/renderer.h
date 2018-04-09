@@ -1,4 +1,3 @@
-
 #ifndef RENDERER_H
 #define RENDERER_H
 
@@ -15,6 +14,8 @@
 #include "gameobject.h"
 #include "scene.h"
 
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+
 class Renderer {
 public:
 	Renderer();
@@ -25,7 +26,7 @@ public:
 	GLFWwindow* Window() { return _window; };
 
 private:
-	unsigned int VAO;
+	unsigned int _VAO;
 
 	ResourceManager _resourcemanager;
 
@@ -41,8 +42,6 @@ private:
 	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
 
 	int Init();
-
-	//void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 };
 
 #endif

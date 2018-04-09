@@ -11,18 +11,18 @@ public:
 	Sprite(std::string image_path);
 	virtual ~Sprite();
 
-	GLuint texture() { return _texture; };
-	GLuint vertexbuffer() { return _vertexbuffer; };
-	GLuint uvbuffer() { return _uvbuffer; };
+	GLuint GetTexture() { return _texture; };
+	GLuint GetVertexbuffer() { return _vertexbuffer; };
+	GLuint GetUvbuffer() { return _uvbuffer; };
 
-	unsigned int width() { return _width; };
-	unsigned int height() { return _height; };
+	unsigned int GetWidth() { return _width; };
+	unsigned int GetHeight() { return _height; };
 
-	std::string vertexshader() { return _vertexshader; };
-	std::string fragmentshader() { return _fragmentshader; };
+	std::string GetVertexshader() { return _vertexshader; };
+	std::string GetFragmentshader() { return _fragmentshader; };
 
-	void vertexshader(std::string vertexshader) { _vertexshader = vertexshader; };
-	void fragmentshader(std::string fragmentshader) { _fragmentshader = fragmentshader; };
+	void SetVertexshader(std::string vertexshader) { _vertexshader = vertexshader; };
+	void SetFragmentshader(std::string fragmentshader) { _fragmentshader = fragmentshader; };
 
 private:
 	GLuint _texture;
@@ -35,7 +35,7 @@ private:
 	unsigned int _width;
 	unsigned int _height;
 
-	GLuint loadTGA(const std::string& imagepath);
+	GLuint LoadTGA(const std::string& imagepath);
 };
 
 #endif
