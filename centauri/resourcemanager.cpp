@@ -11,7 +11,7 @@ ResourceManager::~ResourceManager() {
 	std::map<std::string, Shader*>::iterator shader_it;
 	for (shader_it = _shaders.begin(); shader_it != _shaders.end(); ++shader_it) {
 		if (shader_it->second != NULL) {
-			DeleteShader(shader_it->first);
+			deleteShader(shader_it->first);
 		}
 	}
 	_shaders.clear();
@@ -19,7 +19,7 @@ ResourceManager::~ResourceManager() {
 	std::cout << "##### ResourceManager cleanup is done #####" << std::endl;
 }
 
-Shader* ResourceManager::GetShader(const std::string& vs, const std::string& fs) {
+Shader* ResourceManager::getShader(const std::string& vs, const std::string& fs) {
 	std::string filename;
 	filename = vs;
 	std::string tmp("_");
@@ -34,7 +34,7 @@ Shader* ResourceManager::GetShader(const std::string& vs, const std::string& fs)
 	}
 }
 
-void ResourceManager::DeleteShader(const std::string& shadername) {
+void ResourceManager::deleteShader(const std::string& shadername) {
 	delete _shaders[shadername];
 	_shaders[shadername] = NULL;
 }

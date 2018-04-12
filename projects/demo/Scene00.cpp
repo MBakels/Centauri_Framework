@@ -9,28 +9,28 @@ Scene00::Scene00() : Scene() {
 	kingkong = new Sprite("assets/kingkong.tga");
 
 	woodObj = new GameObject();
-	woodObj->AddSprite(wood);
+	woodObj->addSprite(wood);
 	woodObj->position = Vector2(220, 220);
 	woodObj->scale = Vector2(0.7f, 0.7f);
 
 	pencilsObj = new GameObject();
-	pencilsObj->AddSprite(pencils);
+	pencilsObj->addSprite(pencils);
 	pencilsObj->position = Vector2(500, 100);
 
 	kingkongObj = new GameObject();
-	kingkongObj->AddSprite(kingkong);
+	kingkongObj->addSprite(kingkong);
 	kingkongObj->position = Vector2(750, 500);
 	kingkongObj->scale = Vector2(2.0f, 2.0f);
 
-	AddChild(woodObj);
-	AddChild(pencilsObj);
-	AddChild(kingkongObj);
+	addChild(woodObj);
+	addChild(pencilsObj);
+	addChild(kingkongObj);
 }
 
 Scene00::~Scene00() {
-	RemoveChild(woodObj);
-	RemoveChild(pencilsObj);
-	RemoveChild(kingkongObj);
+	removeChild(woodObj);
+	removeChild(pencilsObj);
+	removeChild(kingkongObj);
 	delete wood;
 	delete pencils;
 	delete kingkong;

@@ -9,12 +9,12 @@ public:
 	Scene();
 	virtual ~Scene();
 
-	Camera* GetCamera() { return _camera; };
+	Camera* camera() { return _camera; };
 
-	void UpdateScene(float deltaTime);
+	void updateScene(float deltaTime);
 
 private:
-	void UpdateGameObject(GameObject* gameObject, float deltaTime);
+	void updateGameObject(GameObject* gameObject, float deltaTime);
 
 	Camera* _camera;
 };

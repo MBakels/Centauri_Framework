@@ -8,9 +8,9 @@ int main() {
 
 	Scene00* scene00 = new Scene00();
 
-	while (core.IsRunning()) {
-		core.Run(scene00);
-		//core.ShowFrameRate(5);
+	while (core.isRunning()) {
+		core.run(scene00);
+		//core.showFrameRate(5);
 	}
 	return 0;
 }

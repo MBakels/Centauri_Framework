@@ -9,27 +9,27 @@ Core::~Core() {
 
 }
 
-void Core::Run(Scene* scene) {
+void Core::run(Scene* scene) {
 	// update our _deltaTime
-	CalculateDeltaTime();
+	calculateDeltaTime();
 
 	// Input
 	glfwPollEvents();
-	processInput(_renderer.Window());
+	processInput(_renderer.window());
 
 	// Update camera instance in Scene
-	scene->GetCamera()->UpdateCamera();
+	scene->camera()->updateCamera();
 
 	// Update Scene (and recursively all children)
-	scene->UpdateScene((float)_deltaTime);
+	scene->updateScene((float)_deltaTime);
 
 	// Render Scene
-	_renderer.RenderScene(scene);
+	_renderer.renderScene(scene);
 
-	if (glfwWindowShouldClose(_renderer.Window()) == 1) { _running = false; }
+	if (glfwWindowShouldClose(_renderer.window()) == 1) { _running = false; }
 }
 
-void Core::ShowFrameRate(float numsecs) {
+void Core::showFrameRate(float numsecs) {
 	static int frames = 0;
 	static double time = 0;
 
@@ -42,7 +42,7 @@ void Core::ShowFrameRate(float numsecs) {
 	}
 }
 
-double Core::CalculateDeltaTime() {
+double Core::calculateDeltaTime() {
 	static double lastTime = glfwGetTime();
 	double startTime = glfwGetTime();
 	_deltaTime = startTime - lastTime;

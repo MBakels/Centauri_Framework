@@ -17,20 +17,20 @@ public:
 	Core();
 	virtual ~Core();
 
-	void Run(Scene* scene);
+	void run(Scene* scene);
 
-	float DeltaTime() { return (float)_deltaTime; };
+	float deltaTime() { return (float)_deltaTime; };
 
-	void ShowFrameRate(float numsecs);
+	void showFrameRate(float numsecs);
 
-	bool IsRunning() { return _running; };
+	bool isRunning() { return _running; };
 
 private:
 	Renderer _renderer;
 	double _deltaTime;
 	bool _running;
 
-	double CalculateDeltaTime();
+	double calculateDeltaTime();
 
 	void processInput(GLFWwindow *window);
 

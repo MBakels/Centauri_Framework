@@ -12,12 +12,12 @@ public:
 	Camera();
 	virtual ~Camera();
 
-	void UpdateCamera();
+	void updateCamera();
 
-	glm::mat4 GetViewMatrix() { return _viewMatrix; };
-	glm::mat4 GetProjectionMatrix() { return _projectionMatrix; };
+	glm::mat4 viewMatrix() { return _viewMatrix; };
+	glm::mat4 projectionMatrix() { return _projectionMatrix; };
 
-	void Camera::Orthogonal();
+	void Camera::orthogonal();
 
 	Point3 position;
 	Point3 rotation;

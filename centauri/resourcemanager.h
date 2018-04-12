@@ -13,12 +13,12 @@ public:
 	ResourceManager();
 	virtual ~ResourceManager();
 
-	Shader* GetShader(const std::string& vs, const std::string& fs);
+	Shader* getShader(const std::string& vs, const std::string& fs);
 
 private:
 	std::map<std::string, Shader*> _shaders;
 
-	void DeleteShader(const std::string& shadername);
+	void deleteShader(const std::string& shadername);
 };
 
 #endif

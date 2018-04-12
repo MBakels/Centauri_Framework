@@ -15,18 +15,19 @@ class GameObject {
 public:
 	GameObject();
 	virtual ~GameObject();
-	virtual void Update(float deltaTime) {};
+
+	virtual void update(float deltaTime) {};
 
 	// Children
-	void AddChild(GameObject* child);
-	void RemoveChild(GameObject* child);
-	GameObject* GetChild(unsigned int i);
-	const std::vector<GameObject*>& GetChildren() { return _children; };
+	void addChild(GameObject* child);
+	void removeChild(GameObject* child);
+	GameObject* getChild(unsigned int i);
+	const std::vector<GameObject*>& children() { return _children; };
 
 	// Sprite
-	Sprite* GetSprite() { return _sprite; };
-	void AddSprite(Sprite* spr);
-	void DeleteSprite();
+	Sprite* sprite() { return _sprite; };
+	void addSprite(Sprite* spr);
+	void deleteSprite();
 
 	// Transform
 	Point3 position;

@@ -13,15 +13,15 @@ GameObject::~GameObject() {
 
 }
 
-void GameObject::AddChild(GameObject* child) {
+void GameObject::addChild(GameObject* child) {
 	if (child->_parent != NULL) {
-		child->_parent->RemoveChild(child);
+		child->_parent->removeChild(child);
 	}
 	child->_parent = this;
 	this->_children.push_back(child);
 }
 
-void GameObject::RemoveChild(GameObject* child) {
+void GameObject::removeChild(GameObject* child) {
 	std::vector< GameObject* >::iterator it = _children.begin();
 	while (it != _children.end()) {
 		if ((*it) == child) {
@@ -33,20 +33,20 @@ void GameObject::RemoveChild(GameObject* child) {
 	}
 }
 
-GameObject* GameObject::GetChild(unsigned int i) {
+GameObject* GameObject::getChild(unsigned int i) {
 	if (i < _children.size()) {
 		return _children[i];
 	}
 	return NULL;
 }
 
-void GameObject::AddSprite(Sprite* spr) {
-	DeleteSprite();
+void GameObject::addSprite(Sprite* spr) {
+	deleteSprite();
 	_sprite = new Sprite();
 	*_sprite = *spr;
 }
 
-void GameObject::DeleteSprite() {
+void GameObject::deleteSprite() {
 	if (_sprite != NULL) {
 		delete _sprite;
 		_sprite = NULL;
