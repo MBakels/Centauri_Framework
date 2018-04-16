@@ -9,7 +9,7 @@ public:
 	Scene00();
 	virtual ~Scene00();
 
-	virtual void Update(float deltaTime);
+	virtual void update(float deltaTime);
 
 private:
 	Sprite* wood;

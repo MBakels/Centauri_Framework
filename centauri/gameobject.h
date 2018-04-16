@@ -10,6 +10,8 @@
 
 #include "sprite.h"
 #include "vectorx.h"
+#include "input.h"
+#include "singleton.h"
 
 class GameObject {
 public:
@@ -23,6 +25,9 @@ public:
 	void removeChild(GameObject* child);
 	GameObject* getChild(unsigned int i);
 	const std::vector<GameObject*>& children() { return _children; };
+
+	// Return input
+	Input* input() { return _input; };
 
 	// Sprite
 	Sprite* sprite() { return _sprite; };
@@ -38,6 +43,9 @@ private:
 	// Parent and child
 	GameObject* _parent;
 	std::vector<GameObject*> _children;
+
+	// Input
+	Input* _input;
 
 	// Sprite
 	Sprite* _sprite;

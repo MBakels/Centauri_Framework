@@ -14,8 +14,9 @@ void Core::run(Scene* scene) {
 	calculateDeltaTime();
 
 	// Input
-	glfwPollEvents();
-	processInput(_renderer.window());
+	//glfwPollEvents();
+	//processInput(_renderer.window());
+	Singleton<Input>::instance()->updateInput(_renderer.window());
 
 	// Update camera instance in Scene
 	scene->camera()->updateCamera();

@@ -7,6 +7,8 @@ GameObject::GameObject() {
 
 	_parent = NULL;
 	_sprite = NULL;
+
+	_input = Singleton<Input>::instance();
 }
 
 GameObject::~GameObject() {

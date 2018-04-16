@@ -39,6 +39,8 @@ Scene00::~Scene00() {
 	delete kingkongObj;
 }
 
-void Scene00::Update(float deltaTime) {
-
+void Scene00::update(float deltaTime) {
+	if (input()->getKey(KeyCode::EscapeKey)) {
+		input()->exitApplication();
+	}
 }

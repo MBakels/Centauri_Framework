@@ -71,6 +71,9 @@ add_library(centauri
 	centauri/scene.h
 	centauri/pointx.h
 	centauri/vectorx.h
+	centauri/input.cpp
+	centauri/input.h
+	centauri/singleton.h
 )
 
 file(
