@@ -4,6 +4,7 @@ project (Centauri_Framework)
 find_package(OpenGL REQUIRED)
 
 OPTION(MAKE_DEMO "Make Framework demo (tests) application" ON)
+OPTION(MAKE_SPACE_GAME_DEMO "Make Framework demo game" ON)
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
 	message( FATAL_ERROR "Please select another Build Directory ! (and give it a clever name, like 'build')" )
@@ -100,7 +101,30 @@ if(MAKE_DEMO)
 
 endif()
 
+# Space demo game
+if(MAKE_SPACE_GAME_DEMO)
+	add_executable(space_game
+		projects/demo_space_game/main.cpp
+		projects/demo_space_game/gamescene.cpp
+		projects/demo_space_game/gamescene.h
+		projects/demo_space_game/laser.cpp
+		projects/demo_space_game/laser.h
+		projects/demo_space_game/playership.cpp
+		projects/demo_space_game/playership.h
+		projects/demo_space_game/enemyship.cpp
+		projects/demo_space_game/enemyship.h
+	)
+	
+	target_link_libraries(space_game
+		${ALL_GRAPHICS_LIBS}
+	)
+	
+	file(
+		COPY projects/demo_space_game/assets
+		DESTINATION ${CMAKE_BINARY_DIR}
+	)
 
+endif()
 
 
 
