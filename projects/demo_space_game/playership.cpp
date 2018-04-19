@@ -1,15 +1,14 @@
 #include "playership.h"
 
 PlayerShip::PlayerShip() : GameObject() {
-	ship = new Sprite("assets/ship.tga");
-	addSprite(ship);
+	addSprite("assets/ship.tga");
 	position = Vector2(100, (SHEIGHT / 2));
 
 	speed = 200.0f;
 }
 
 PlayerShip::~PlayerShip() {
-	delete ship;
+	
 }
 
 void PlayerShip::update(float deltaTime) {

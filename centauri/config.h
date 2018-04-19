@@ -16,7 +16,7 @@
 #define DEFAULTFRAGMENTSHADER "shaders/default_frag_shader.c" // fragmentshader (path to the file)
 #define DEFAULTGRAYSCALEFRAGMENTSHADER "shaders/default_frag_shader_grayscale.c" // grayscale fragmentshader (path to the file)
 
-#define DEFAULTFILTER 3 // texture filter
+#define DEFAULTFILTER 1 // texture filter
 #define DEFAULTWRAP 1 // texture clamping (0=repeat, 1=mirror, 2=clamp)
 
 #endif

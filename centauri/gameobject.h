@@ -32,6 +32,8 @@ public:
 	// Sprite
 	Sprite* sprite() { return _sprite; };
 	void addSprite(Sprite* spr);
+	void addSprite(const std::string& filename);
+	void addSprite(const std::string& filename, float pivotx, float pivoty);
 	void deleteSprite();
 
 	// Transform

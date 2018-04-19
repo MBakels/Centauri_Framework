@@ -12,7 +12,7 @@ GameObject::GameObject() {
 }
 
 GameObject::~GameObject() {
-
+	deleteSprite();
 }
 
 void GameObject::addChild(GameObject* child) {
@@ -46,6 +46,11 @@ void GameObject::addSprite(Sprite* spr) {
 	deleteSprite();
 	_sprite = new Sprite();
 	*_sprite = *spr;
+}
+
+void GameObject::addSprite(const std::string& filename) {
+	deleteSprite();
+	_sprite = new Sprite(filename);
 }
 
 void GameObject::deleteSprite() {

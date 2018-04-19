@@ -6,25 +6,29 @@ Sprite::Sprite() {
 }
 
 Sprite::Sprite(std::string image_path) {
-	// these will be set correctly in loadTGA()
-	_width = 0;
-	_height = 0;
+	pivot = Point2(0.5f, 0.5f);
+	uvdim = Point2(1.0f, 1.0f);
+	uvoffset = Point2(0.0f, 0.0f);
+	size = Point2(0, 0);
 
 	_vertexshader = DEFAULTVERTEXSHADER;
 	_fragmentshader = DEFAULTFRAGMENTSHADER;
+
+	_filter = DEFAULTFILTER;
+	_wrap = DEFAULTWRAP;
 
 	// Load TGA file as texture
 	_texture = loadTGA(image_path.c_str());
 
 	// Vertex data
 	GLfloat g_vertex_buffer_data[18] = {
-		0.5f * _width, -0.5f * _height, 0.0f,
-		-0.5f * _width, -0.5f * _height, 0.0f,
-		-0.5f * _width,  0.5f * _height, 0.0f,
+		0.5f * size.x, -0.5f * size.y, 0.0f,
+		-0.5f * size.x, -0.5f * size.y, 0.0f,
+		-0.5f * size.x,  0.5f * size.y, 0.0f,
 
-		-0.5f * _width,  0.5f * _height, 0.0f,
-		0.5f * _width,  0.5f * _height, 0.0f,
-		0.5f * _width, -0.5f * _height, 0.0f
+		-0.5f * size.x,  0.5f * size.y, 0.0f,
+		0.5f * size.x,  0.5f * size.y, 0.0f,
+		0.5f * size.x, -0.5f * size.y, 0.0f
 	};
 
 	// Two UV coordinates for each vertex.
@@ -89,8 +93,8 @@ GLuint Sprite::loadTGA(const std::string& imagepath) {
 	unsigned char* data;
 	unsigned char bitdepth;
 
-	_width = info[0] + info[1] * 256;
-	_height = info[2] + info[3] * 256;
+	size.x = info[0] + info[1] * 256;
+	size.y = info[2] + info[3] * 256;
 	bitdepth = info[4] / 8;
 
 	if (bitdepth != 1 && bitdepth != 3 && bitdepth != 4) {
@@ -112,7 +116,7 @@ GLuint Sprite::loadTGA(const std::string& imagepath) {
 	}
 	*/
 
-	unsigned int imagesize = _width * _height * bitdepth;
+	unsigned int imagesize = size.x * size.y * bitdepth;
 
 	// Creating a buffer
 	data = new unsigned char[imagesize];
@@ -129,54 +133,60 @@ GLuint Sprite::loadTGA(const std::string& imagepath) {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// filter the Texture
-	unsigned char filter = 1;
-	switch (filter) {
+	switch (_filter) {
 	case 0:
-		// No filtering.
+		// No filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		break;
 	case 1:
-		// Linear filtering.
+		// Linear filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		break;
 	case 2:
-		// Bilinear filtering.
+		// Bilinear filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		break;
 	case 3:
-		// Trilinear filtering.
+		// Trilinear filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		break;
 	default:
-		// No filtering.
+		// No filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		break;
 	}
 
-	// wrapping
-	// GL_REPEAT, GL_MIRRORED_REPEAT or GL_CLAMP_TO_EDGE
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	// wrap the Texture
+	if (_wrap == 0) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	} else if (_wrap == 1) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	} else if (_wrap == 2) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 
 	// handle transparency and grayscale and give the image to OpenGL
 	switch (bitdepth) {
 	case 4:
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
 		break;
 	case 3:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 		break;
 	case 1:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, _width, _height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, size.x, size.y, 0, GL_RED, GL_UNSIGNED_BYTE, data);
 		_fragmentshader = DEFAULTGRAYSCALEFRAGMENTSHADER;
 		break;
 	default:
