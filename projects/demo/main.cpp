@@ -12,5 +12,8 @@ int main() {
 		core.run(scene00);
 		//core.showFrameRate(5);
 	}
+
+	delete scene00;
+
 	return 0;
 }
