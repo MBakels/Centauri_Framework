@@ -77,6 +77,8 @@ add_library(centauri
 	centauri/singleton.h
 	centauri/texture.h
 	centauri/texture.cpp
+	centauri/mesh.h
+	centauri/mesh.cpp
 )
 
 file(
