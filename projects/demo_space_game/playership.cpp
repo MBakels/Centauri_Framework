@@ -4,7 +4,7 @@ PlayerShip::PlayerShip() : GameObject() {
 	addSprite("assets/ship.tga");
 	position = Vector2(100, (SHEIGHT / 2));
 
-	speed = 200.0f;
+	speed = 300.0f;
 }
 
 PlayerShip::~PlayerShip() {
