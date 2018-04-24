@@ -12,9 +12,9 @@
 #define WINDOWNAME "Centauri Framework" // The window name
 
 // defaultshader for Renderer as fallback if Sprite has no shader defined
-#define DEFAULTVERTEXSHADER "shaders/default_vert_shader.c" // vertexshader (path to the file)
-#define DEFAULTFRAGMENTSHADER "shaders/default_frag_shader.c" // fragmentshader (path to the file)
-#define DEFAULTGRAYSCALEFRAGMENTSHADER "shaders/default_frag_shader_grayscale.c" // grayscale fragmentshader (path to the file)
+#define DEFAULTVERTEXSHADER "shaders/default_vert_shader.vert" // vertexshader (path to the file)
+#define DEFAULTFRAGMENTSHADER "shaders/default_frag_shader.frag" // fragmentshader (path to the file)
+#define DEFAULTGRAYSCALEFRAGMENTSHADER "shaders/default_frag_shader_grayscale.frag" // grayscale fragmentshader (path to the file)
 
 #define DEFAULTFILTER 1 // texture filter
 #define DEFAULTWRAP 1 // texture clamping (0=repeat, 1=mirror, 2=clamp)

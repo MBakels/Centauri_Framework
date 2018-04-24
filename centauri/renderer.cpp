@@ -55,7 +55,7 @@ int Renderer::init() {
 	glEnable(GL_CULL_FACE);
 
 	// Create and use shader
-	_defaultShader = _resourcemanager.getShader(DEFAULTVERTEXSHADER, DEFAULTFRAGMENTSHADER);
+	_defaultShader = _resourcemanager.GetShader(DEFAULTVERTEXSHADER, DEFAULTFRAGMENTSHADER);
 
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
@@ -103,35 +103,48 @@ void Renderer::renderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	}
 }
 
-void Renderer::renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite){
-	glm::mat4 MVP = _projectionMatrix * _viewMatrix * modelMatrix;
-
-	// Get the shader from the ResourceManager
-	Shader* shader = _resourcemanager.getShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
+void Renderer::renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite) {
+	Shader* shader = _resourcemanager.GetShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
 	if (shader == NULL) {
 		shader = _defaultShader; // fallback to defaultshader
 	}
-	shader->use();
 
-	// Send transformation to the currently bound shader
-	_defaultShader->setMat4("MVP", MVP);
+	Texture* texture = _resourcemanager.GetTexture(sprite->texture(), sprite->filter(), sprite->wrap());
+	if (sprite->size.x == 0) { sprite->size.x = texture->width() * sprite->uvdim.x; }
+	if (sprite->size.y == 0) { sprite->size.y = texture->height() * sprite->uvdim.y; }
 
-	// Binding texture to Texture Unit 0
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, sprite->texture());
-	_defaultShader->setInt("texture", 0);
+	Mesh* mesh = _resourcemanager.GetSpriteMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y);
+
+	shader->setVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
+
+	if (texture != NULL) {
+		glActiveTexture(GL_TEXTURE0 + 0);
+		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+	}
+
+	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES);
+}
+
+void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode) {
+	shader->use(); // Use the shader
+
+	glm::mat4 MVP = _projectionMatrix * _viewMatrix * modelMatrix; // Create MVP matrix
+
+	shader->setMat4("MVP", MVP); // Send transformation to the currently bound shader
+
+	shader->setInt("texture", 0); // Set the "texture" sampler to user Texture Unit 0
 
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, sprite->vertexbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// 2nd attribute buffer : UVs
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, sprite->uvbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // 2*3 indices starting at 0 -> 2 triangles
+	glDrawArrays(mode, 0, mesh->numverts());
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

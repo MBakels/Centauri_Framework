@@ -9,13 +9,12 @@
 
 class Sprite {
 public:
-	Sprite();
 	Sprite(std::string image_path);
 	virtual ~Sprite();
 
-	GLuint texture() { return _texture; };
-	GLuint vertexbuffer() { return _vertexbuffer; };
-	GLuint uvbuffer() { return _uvbuffer; };
+	void setupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
+
+	std::string texture() { return _texture; };
 
 	std::string vertexshader() { return _vertexshader; };
 	std::string fragmentshader() { return _fragmentshader; };
@@ -35,17 +34,13 @@ public:
 	Point2 size;
 
 private:
-	GLuint _texture;
-	GLuint _vertexbuffer;
-	GLuint _uvbuffer;
-
-	int _filter;
-	int _wrap;
+	std::string _texture;
 
 	std::string _vertexshader; // vertexshader (path to the file)
 	std::string _fragmentshader; // fragmentshader (path to the file)
 
-	GLuint loadTGA(const std::string& imagepath);
+	int _filter;
+	int _wrap;
 };
 
 #endif

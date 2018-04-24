@@ -1,8 +1,7 @@
 #include "laser.h"
 
 Laser::Laser(Point3 pos) : GameObject() {
-	laser = new Sprite("assets/laser.tga");
-	addSprite(laser);
+	addSprite("assets/laser.tga");
 	position = pos;
 
 	scale = Vector2(6, 0.7);
@@ -11,7 +10,7 @@ Laser::Laser(Point3 pos) : GameObject() {
 }
 
 Laser::~Laser() {
-	delete laser;
+	
 }
 
 void Laser::update(float deltaTime) {

@@ -63,9 +63,9 @@ void GameScene::spawnEnemy(float deltaTime) {
 
 void GameScene::checkCollisions() {
 	// End game if enemy gets behind player
-	for each (EnemyShip* enemy in enemys) {
+	for (EnemyShip* enemy : enemys) {
 		if (enemy->position.x < 0) {
-			input()->exitApplication();
+			//input()->exitApplication();
 		}
 	}
 
@@ -82,7 +82,7 @@ void GameScene::checkCollisions() {
 	}
 
 	// Check collision between laser and enemy
-	for each (Laser* laser in lasers) {
+	for (Laser* laser : lasers) {
 		std::vector<EnemyShip*>::iterator enemysIt = enemys.begin();
 		while (enemysIt != enemys.end()) {
 			if (distance((*enemysIt)->position, laser->position) <= 30) {

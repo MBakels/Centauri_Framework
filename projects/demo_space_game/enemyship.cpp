@@ -1,8 +1,7 @@
 #include "enemyship.h"
 
 EnemyShip::EnemyShip(Point2 pos) : GameObject() {
-	ship = new Sprite("assets/ship.tga");
-	addSprite(ship);
+	addSprite("assets/ship.tga");
 	position = pos;
 	rotation.z = PI;
 
@@ -10,7 +9,7 @@ EnemyShip::EnemyShip(Point2 pos) : GameObject() {
 }
 
 EnemyShip::~EnemyShip() {
-	delete ship;
+
 }
 
 void EnemyShip::update(float deltaTime) {

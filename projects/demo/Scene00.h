@@ -12,9 +12,6 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	Sprite* wood;
-	Sprite* pencils;
-	Sprite* kingkong;
 	GameObject* woodObj;
 	GameObject* pencilsObj;
 	GameObject* kingkongObj;

@@ -10,7 +10,9 @@ Scene00::Scene00() : Scene() {
 
 	pencilsObj = new GameObject();
 	pencilsObj->addSprite("assets/pencils.tga");
-	pencilsObj->position = Vector2(500, 100);
+	pencilsObj->position = Vector2(600, 100);
+	pencilsObj->sprite()->size = Point2(300, 150);
+	pencilsObj->sprite()->uvoffset = Point2(0.2f, 0);
 
 	kingkongObj = new GameObject();
 	kingkongObj->addSprite("assets/kingkong.tga");

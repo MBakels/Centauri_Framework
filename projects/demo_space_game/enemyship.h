@@ -11,8 +11,6 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	Sprite* ship;
-
 	float speed;
 };
 
