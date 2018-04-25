@@ -16,6 +16,7 @@ Scene00::Scene00() : Scene() {
 
 	kingkongObj = new GameObject();
 	kingkongObj->addSprite("assets/kingkong.tga");
+	kingkongObj->sprite()->setFragmentshader(DEFAULTGRAYSCALEFRAGMENTSHADER);
 	kingkongObj->position = Vector2(750, 500);
 	kingkongObj->scale = Vector2(2.0f, 2.0f);
 

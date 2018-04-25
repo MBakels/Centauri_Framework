@@ -135,7 +135,7 @@ GLuint Texture::LoadTGA(const std::string& imagepath , int filter, int wrap) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 		break;
 	case 1:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, _width, _height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, _width, _height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
 		break;
 	default:
 		std::cout << "ERROR::TEXTURE::BITDEPTH::BITDEPTH_NOT_1_3_OR_4" << std::endl;
