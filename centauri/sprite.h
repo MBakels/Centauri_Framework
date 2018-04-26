@@ -5,14 +5,13 @@
 #include <iostream>
 #include <glad/glad.h>
 
+#include "config.h"
 #include "pointx.h"
 
 class Sprite {
 public:
-	Sprite(std::string image_path);
+	Sprite(std::string image_path, float pivotx = 0.5f, float pivoty = 0.5f, float uvwidth = 1.0f, float uvheight = 1.0f, int filter = DEFAULTFILTER, int wrap = DEFAULTWRAP);
 	virtual ~Sprite();
-
-	void SetupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
 
 	std::string GetTexture() { return _texture; };
 
@@ -41,6 +40,8 @@ private:
 
 	int _filter;
 	int _wrap;
+
+	void SetupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
 };
 
 #endif

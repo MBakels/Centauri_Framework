@@ -33,6 +33,8 @@ public:
 	Sprite* GetSprite() { return _sprite; };
 	void AddSprite(const std::string& filename);
 	void AddSprite(const std::string& filename, float pivotx, float pivoty);
+	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight);
+	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
 	void DeleteSprite();
 
 	// Transform

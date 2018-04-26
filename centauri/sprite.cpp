@@ -1,8 +1,7 @@
-#include "config.h"
 #include "sprite.h"
 
-Sprite::Sprite(std::string image_path) {
-	this->SetupSprite(image_path, 0.5f, 0.5f, 1.0f, 1.0f, DEFAULTFILTER, DEFAULTWRAP);
+Sprite::Sprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap) {
+	this->SetupSprite(image_path, pivotx, pivoty, uvwidth, uvheight, filter, wrap);
 }
 
 void Sprite::SetupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap) {

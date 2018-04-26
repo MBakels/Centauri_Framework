@@ -47,6 +47,21 @@ void GameObject::AddSprite(const std::string& filename) {
 	_sprite = new Sprite(filename);
 }
 
+void GameObject::AddSprite(const std::string& filename, float pivotx, float pivoty) {
+	DeleteSprite();
+	_sprite = new Sprite(filename, pivotx, pivoty);
+}
+
+void GameObject::AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight) {
+	DeleteSprite();
+	_sprite = new Sprite(filename, pivotx, pivoty, uvwidth, uvheight);
+}
+
+void GameObject::AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap) {
+	DeleteSprite();
+	_sprite = new Sprite(filename, pivotx, pivoty, uvwidth, uvheight, filter, wrap);
+}
+
 void GameObject::DeleteSprite() {
 	if (_sprite != NULL) {
 		delete _sprite;
