@@ -9,28 +9,28 @@ Core::~Core() {
 
 }
 
-void Core::run(Scene* scene) {
+void Core::Run(Scene* scene) {
 	// update our _deltaTime
-	calculateDeltaTime();
+	CalculateDeltaTime();
 
 	// Input
 	//glfwPollEvents();
 	//processInput(_renderer.window());
-	Singleton<Input>::instance()->updateInput(_renderer.window());
+	Singleton<Input>::Instance()->UpdateInput(_renderer.GetWindow());
 
 	// Update camera instance in Scene
-	scene->camera()->updateCamera();
+	scene->GetCamera()->UpdateCamera();
 
 	// Update Scene (and recursively all children)
-	scene->updateScene((float)_deltaTime);
+	scene->UpdateScene((float)_deltaTime);
 
 	// Render Scene
-	_renderer.renderScene(scene);
+	_renderer.RenderScene(scene);
 
-	if (glfwWindowShouldClose(_renderer.window()) == 1) { _running = false; }
+	if (glfwWindowShouldClose(_renderer.GetWindow()) == 1) { _running = false; }
 }
 
-void Core::showFrameRate(float numsecs) {
+void Core::ShowFrameRate(float numsecs) {
 	static int frames = 0;
 	static double time = 0;
 
@@ -43,7 +43,7 @@ void Core::showFrameRate(float numsecs) {
 	}
 }
 
-double Core::calculateDeltaTime() {
+double Core::CalculateDeltaTime() {
 	static double lastTime = glfwGetTime();
 	double startTime = glfwGetTime();
 	_deltaTime = startTime - lastTime;
@@ -53,7 +53,7 @@ double Core::calculateDeltaTime() {
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void Core::processInput(GLFWwindow *window) {
+void Core::ProcessInput(GLFWwindow *window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}

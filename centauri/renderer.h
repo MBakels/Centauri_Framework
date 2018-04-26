@@ -21,9 +21,9 @@ public:
 	Renderer();
 	virtual ~Renderer();
 
-	void renderScene(Scene* scene);
+	void RenderScene(Scene* scene);
 
-	GLFWwindow* window() { return _window; };
+	GLFWwindow* GetWindow() { return _window; };
 
 private:
 	unsigned int _VAO;
@@ -37,13 +37,13 @@ private:
 	glm::mat4 _projectionMatrix;
 	glm::mat4 _viewMatrix;
 
-	void renderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
+	void RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
 
-	void renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
+	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
 
 	inline void RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode);
 
-	int init();
+	int Init();
 };
 
 #endif

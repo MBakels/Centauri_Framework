@@ -6,7 +6,7 @@ GameScene::GameScene() : Scene() {
 	std::srand(std::time(nullptr));
 
 	player = new PlayerShip();
-	addChild(player);
+	AddChild(player);
 
 	time = 0;
 }
@@ -16,7 +16,7 @@ GameScene::~GameScene() {
 
 	std::vector<Laser*>::iterator lasersIt = lasers.begin();
 	while (lasersIt != lasers.end()) {
-		removeChild((*lasersIt));
+		RemoveChild((*lasersIt));
 		delete (*lasersIt);
 		lasersIt++;
 	}
@@ -24,44 +24,44 @@ GameScene::~GameScene() {
 
 	std::vector<EnemyShip*>::iterator enemysIt = enemys.begin();
 	while (enemysIt != enemys.end()) {
-		removeChild((*enemysIt));
+		RemoveChild((*enemysIt));
 		delete (*enemysIt);
 		enemysIt++;
 	}
 	enemys.clear();
 }
 
-void GameScene::update(float deltaTime) {
+void GameScene::Update(float deltaTime) {
 	// Quit game
-	if (input()->getKey(KeyCode::EscapeKey)) {
-		input()->exitApplication();
+	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
+		GetInput()->ExitApplication();
 	}
 
 	// Shoot laser on space bar or mouse klik
-	if (input()->getKeyDown(KeyCode::Space) || input()->getMouseDown(0)) {
+	if (GetInput()->GetKeyDown(KeyCode::Space) || GetInput()->GetMouseDown(0)) {
 		lasers.push_back(new Laser(player->position));
-		addChild(lasers.back());
+		AddChild(lasers.back());
 	}
 
 	// Spawn enemys
-	spawnEnemy(deltaTime);
+	SpawnEnemy(deltaTime);
 
 	// Check Collisions
-	checkCollisions();
+	CheckCollisions();
 }
 
 // Enemy spawner
-void GameScene::spawnEnemy(float deltaTime) {
+void GameScene::SpawnEnemy(float deltaTime) {
 	time += deltaTime;
 	if (time >+1) {
 		Point2 randomSpawn = Point2(SWIDTH, (((float)std::rand()) / ((float)(RAND_MAX / SHEIGHT))));
 		enemys.push_back(new EnemyShip(randomSpawn));
-		addChild(enemys.back());
+		AddChild(enemys.back());
 		time = 0;
 	}
 }
 
-void GameScene::checkCollisions() {
+void GameScene::CheckCollisions() {
 	// End game if enemy gets behind player
 	for (EnemyShip* enemy : enemys) {
 		if (enemy->position.x < 0) {
@@ -73,7 +73,7 @@ void GameScene::checkCollisions() {
 	std::vector<Laser*>::iterator lasersIt = lasers.begin();
 	while (lasersIt != lasers.end()) {
 		if ((*lasersIt)->position.x > SWIDTH) {
-			removeChild((*lasersIt));
+			RemoveChild((*lasersIt));
 			delete (*lasersIt);
 			lasersIt = lasers.erase(lasersIt);
 		} else {
@@ -85,8 +85,9 @@ void GameScene::checkCollisions() {
 	for (Laser* laser : lasers) {
 		std::vector<EnemyShip*>::iterator enemysIt = enemys.begin();
 		while (enemysIt != enemys.end()) {
-			if (distance((*enemysIt)->position, laser->position) <= 30) {
-				removeChild((*enemysIt));
+			//if (distance((*enemysIt)->position, laser->position) <= 30) {
+			if (Point::Distance((*enemysIt)->position, laser->position) <= 30) {
+				RemoveChild((*enemysIt));
 				delete (*enemysIt);
 				enemysIt = enemys.erase(enemysIt);
 			} else {
@@ -94,10 +95,4 @@ void GameScene::checkCollisions() {
 			}
 		}
 	}
-}
-
-float GameScene::distance(Point pointOne, Point pointTwo) {
-	float distanceX = (pointTwo.x - pointOne.x) * (pointTwo.x - pointOne.x);
-	float distanceY = (pointTwo.y - pointOne.y) * (pointTwo.y - pointOne.y);
-	return sqrt(distanceX + distanceY);
 }

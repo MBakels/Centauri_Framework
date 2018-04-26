@@ -8,7 +8,7 @@ public:
 	PlayerShip();
 	virtual ~PlayerShip();
 
-	virtual void update(float deltaTime);
+	virtual void Update(float deltaTime);
 
 private:
 	Sprite* ship;

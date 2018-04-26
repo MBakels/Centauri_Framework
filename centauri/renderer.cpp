@@ -5,7 +5,7 @@ Renderer::Renderer() {
 	_window = NULL;
 	_defaultShader = NULL;
 
-	init();
+	Init();
 }
 
 Renderer::~Renderer() {
@@ -13,7 +13,7 @@ Renderer::~Renderer() {
 	glfwTerminate(); // glfw: terminate, clearing all previously allocated GLFW resources.
 }
 
-int Renderer::init() {
+int Renderer::Init() {
 	// glfw: initialize and configure
 	if (!glfwInit()) {
 		std::cout << "ERROR::RENDERER::GLFW::GLFW_INIT_FAILED\n" << std::endl;
@@ -60,19 +60,19 @@ int Renderer::init() {
 	return 0;
 }
 
-void Renderer::renderScene(Scene* scene) {
+void Renderer::RenderScene(Scene* scene) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear screen
-	_viewMatrix = scene->camera()->viewMatrix(); // Get viewMatrix from camera
-	_projectionMatrix = scene->camera()->projectionMatrix(); // Get projectionMatrix from camera
+	_viewMatrix = scene->GetCamera()->ViewMatrix(); // Get viewMatrix from camera
+	_projectionMatrix = scene->GetCamera()->ProjectionMatrix(); // Get projectionMatrix from camera
 
 	glm::mat4 modelMatrix = glm::mat4(1.0f); // The root scene has a identity matrix
 
-	this->renderGameObject(modelMatrix, scene, scene->camera());
+	this->RenderGameObject(modelMatrix, scene, scene->GetCamera());
 	
 	glfwSwapBuffers(_window); // Swap buffers
 }
 
-void Renderer::renderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera) {
+void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera) {
 	// Translate Point3 to glm::vec3
 	glm::vec3 position = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
 	glm::vec3 rotation = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);
@@ -87,29 +87,29 @@ void Renderer::renderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	modelMatrix *= mm;
 
 	// Check for Sprite
-	Sprite* sprite = entity->sprite();
+	Sprite* sprite = entity->GetSprite();
 	if (sprite != NULL) {
-		this->renderSprite(camera, modelMatrix, sprite);
+		this->RenderSprite(camera, modelMatrix, sprite);
 	}
 
 	// Render all Children
-	std::vector<GameObject*> children = entity->children();
+	std::vector<GameObject*> children = entity->Children();
 	std::vector<GameObject*>::iterator child;
 	for (child = children.begin(); child != children.end(); child++) {
-		this->renderGameObject(modelMatrix, *child, camera);
+		this->RenderGameObject(modelMatrix, *child, camera);
 	}
 }
 
-void Renderer::renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite) {
-	Shader* shader = _resourcemanager.GetShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
+void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite) {
+	Shader* shader = _resourcemanager.GetShader(sprite->Vertexshader().c_str(), sprite->Fragmentshader().c_str());
 
-	Texture* texture = _resourcemanager.GetTexture(sprite->texture(), sprite->filter(), sprite->wrap());
-	if (sprite->size.x == 0) { sprite->size.x = texture->width() * sprite->uvdim.x; }
-	if (sprite->size.y == 0) { sprite->size.y = texture->height() * sprite->uvdim.y; }
+	Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
+	if (sprite->size.x == 0) { sprite->size.x = texture->Width() * sprite->uvdim.x; }
+	if (sprite->size.y == 0) { sprite->size.y = texture->Height() * sprite->uvdim.y; }
 
 	Mesh* mesh = _resourcemanager.GetSpriteMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y);
 
-	shader->setVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
+	shader->SetVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
@@ -118,25 +118,25 @@ void Renderer::renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprit
 }
 
 void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode) {
-	shader->use(); // Use the shader
+	shader->Use(); // Use the shader
 
 	glm::mat4 MVP = _projectionMatrix * _viewMatrix * modelMatrix; // Create MVP matrix
 
-	shader->setMat4("MVP", MVP); // Send transformation to the currently bound shader
+	shader->SetMat4("MVP", MVP); // Send transformation to the currently bound shader
 
-	shader->setInt("texture", 0); // Set the "texture" sampler to user Texture Unit 0
+	shader->SetInt("texture", 0); // Set the "texture" sampler to user Texture Unit 0
 
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->GetVertexbuffer());
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// 2nd attribute buffer : UVs
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->GetUvbuffer());
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	glDrawArrays(mode, 0, mesh->numverts());
+	glDrawArrays(mode, 0, mesh->GetNumverts());
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

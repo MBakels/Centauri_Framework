@@ -18,22 +18,22 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	virtual void update(float deltaTime) {};
+	virtual void Update(float deltaTime) {};
 
 	// Children
-	void addChild(GameObject* child);
-	void removeChild(GameObject* child);
-	GameObject* getChild(unsigned int i);
-	const std::vector<GameObject*>& children() { return _children; };
+	void AddChild(GameObject* child);
+	void RemoveChild(GameObject* child);
+	GameObject* GetChild(unsigned int i);
+	const std::vector<GameObject*>& Children() { return _children; };
 
 	// Return input
-	Input* input() { return _input; };
+	Input* GetInput() { return _input; };
 
 	// Sprite
-	Sprite* sprite() { return _sprite; };
-	void addSprite(const std::string& filename);
-	void addSprite(const std::string& filename, float pivotx, float pivoty);
-	void deleteSprite();
+	Sprite* GetSprite() { return _sprite; };
+	void AddSprite(const std::string& filename);
+	void AddSprite(const std::string& filename, float pivotx, float pivoty);
+	void DeleteSprite();
 
 	// Transform
 	Point3 position;

@@ -9,20 +9,20 @@ Camera::Camera() {
 	_up = glm::vec3(0, 1, 0);
 	_right = glm::vec3(1, 0, 0);
 
-	orthogonal();
+	Orthogonal();
 }
 
 Camera::~Camera() {
 
 }
 
-void Camera::orthogonal() {
+void Camera::Orthogonal() {
 	_projectionMatrix = glm::ortho(0.0f, (float)SWIDTH, (float)SHEIGHT, 0.0f, 0.1f, 100.0f);
 	glDisable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 }
 
-void Camera::updateCamera() {
+void Camera::UpdateCamera() {
 	// Direction vector: Spherical coordinates to Cartesian coordinates conversion
 	_direction = glm::vec3(cos(rotation.x) * sin(rotation.y), sin(rotation.x), cos(rotation.x) * cos(rotation.y));
 

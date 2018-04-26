@@ -14,7 +14,7 @@ Mesh::~Mesh() {
 	}
 }
 
-void Mesh::generateSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight) {
+void Mesh::GenerateSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight) {
 	_numverts = 6;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
@@ -38,10 +38,10 @@ void Mesh::generateSpriteMesh(int width, int height, float pivotx, float pivoty,
 	uvs.push_back(glm::vec2(uvwidth, uvheight));
 	uvs.push_back(glm::vec2(0.0f, uvheight));
 
-	this->generateBuffers(vertices, uvs);
+	this->GenerateBuffers(vertices, uvs);
 }
 
-void Mesh::generateBuffers(std::vector<glm::vec3>& vertex, std::vector<glm::vec2>& uv) {
+void Mesh::GenerateBuffers(std::vector<glm::vec3>& vertex, std::vector<glm::vec2>& uv) {
 	//create GLuint _vertexbuffer;
 	glGenBuffers(1, &_vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexbuffer);

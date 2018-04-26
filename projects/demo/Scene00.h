@@ -9,7 +9,7 @@ public:
 	Scene00();
 	virtual ~Scene00();
 
-	virtual void update(float deltaTime);
+	virtual void Update(float deltaTime);
 
 private:
 	GameObject* woodObj;

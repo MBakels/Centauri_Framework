@@ -86,7 +86,7 @@ Mesh* ResourceManager::GetSpriteMesh(int width, int height, float pivotx, float 
 		return _meshes[meshname];
 	} else {
 		Mesh* m = new Mesh();
-		m->generateSpriteMesh(width, height, pivotx, pivoty, uvwidth, uvheight);
+		m->GenerateSpriteMesh(width, height, pivotx, pivoty, uvwidth, uvheight);
 		_meshes[meshname] = m;
 		return m;
 	}

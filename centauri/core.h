@@ -17,22 +17,22 @@ public:
 	Core();
 	virtual ~Core();
 
-	void run(Scene* scene);
+	void Run(Scene* scene);
 
-	float deltaTime() { return (float)_deltaTime; };
+	float DeltaTime() { return (float)_deltaTime; };
 
-	void showFrameRate(float numsecs);
+	void ShowFrameRate(float numsecs);
 
-	bool isRunning() { return _running; };
+	bool IsRunning() { return _running; };
 
 private:
 	Renderer _renderer;
 	double _deltaTime;
 	bool _running;
 
-	double calculateDeltaTime();
+	double CalculateDeltaTime();
 
-	void processInput(GLFWwindow *window);
+	void ProcessInput(GLFWwindow *window);
 
 };
 

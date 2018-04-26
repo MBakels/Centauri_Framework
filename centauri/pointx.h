@@ -17,6 +17,8 @@ public:
 
 	virtual ~Point_t<T>(); // Deconstructor
 
+	static float Distance(const Point_t<T>& pointOne, const Point_t<T>& pointTwo);
+
 	// Operator overloaders for another Point
 	Point_t<T>& operator+=(const Point_t<T>& rhs);
 	Point_t<T> operator+(const Point_t<T>& rhs) const;
@@ -79,6 +81,13 @@ Point_t<T>::Point_t(T xx, T yy, T zz) {
 template <class T>
 Point_t<T>::~Point_t() {
 
+}
+
+template <class T>
+float Point_t<T>::Distance(const Point_t<T>& pointOne, const Point_t<T>& pointTwo) {
+	float distanceX = (pointTwo.x - pointOne.x) * (pointTwo.x - pointOne.x);
+	float distanceY = (pointTwo.y - pointOne.y) * (pointTwo.y - pointOne.y);
+	return sqrt(distanceX + distanceY);
 }
 
 // Add another Point (and assign)

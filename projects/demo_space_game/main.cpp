@@ -8,9 +8,9 @@ int main() {
 
 	GameScene* gameScene = new GameScene();
 
-	while (core.isRunning()) {
-		core.run(gameScene);
-		//core.showFrameRate(5);
+	while (core.IsRunning()) {
+		core.Run(gameScene);
+		//core.ShowFrameRate(5);
 	}
 	delete gameScene;
 

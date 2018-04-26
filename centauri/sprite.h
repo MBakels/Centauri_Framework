@@ -12,21 +12,21 @@ public:
 	Sprite(std::string image_path);
 	virtual ~Sprite();
 
-	void setupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
+	void SetupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
 
-	std::string texture() { return _texture; };
+	std::string GetTexture() { return _texture; };
 
-	std::string vertexshader() { return _vertexshader; };
-	std::string fragmentshader() { return _fragmentshader; };
+	std::string Vertexshader() { return _vertexshader; };
+	std::string Fragmentshader() { return _fragmentshader; };
 
-	void setVertexshader(std::string vertexshader) { _vertexshader = vertexshader; };
-	void setFragmentshader(std::string fragmentshader) { _fragmentshader = fragmentshader; };
+	void Vertexshader(std::string vertexshader) { _vertexshader = vertexshader; };
+	void Fragmentshader(std::string fragmentshader) { _fragmentshader = fragmentshader; };
 
-	void filter(int f) { _filter = f; };
-	int filter() { return _filter; };
+	void Filter(int f) { _filter = f; };
+	int Filter() { return _filter; };
 
-	void wrap(int w) { _wrap = w; };
-	int wrap() { return _wrap; };
+	void Wrap(int w) { _wrap = w; };
+	int Wrap() { return _wrap; };
 
 	Point2 pivot;
 	Point2 uvdim;

@@ -4,8 +4,8 @@
 template<class T>
 class Singleton {
 public:
-	static T* instance();
-	static void destroy();
+	static T* Instance();
+	static void Destroy();
 
 private:
 	Singleton() {
@@ -13,7 +13,7 @@ private:
 	}
 	
 	~Singleton() {
-		Singleton::destroy();
+		Singleton::Destroy();
 	}
 
 	/// @brief overloaded copy constructor (no implementation)
@@ -26,16 +26,16 @@ private:
 
 // ========================== implementation ==========================
 template<class T>
-T* Singleton<T>::instance() {
+T* Singleton<T>::Instance() {
 	if (Singleton::_instance == 0) {
 		Singleton::_instance = new T();
-		std::atexit(Singleton::destroy);
+		std::atexit(Singleton::Destroy);
 	}
 	return Singleton::_instance;
 }
 
 template<class T>
-void Singleton<T>::destroy() {
+void Singleton<T>::Destroy() {
 	if (Singleton::_instance != 0) {
 		delete Singleton::_instance;
 		Singleton::_instance = 0;

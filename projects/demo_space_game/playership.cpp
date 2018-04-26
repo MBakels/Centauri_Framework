@@ -1,7 +1,7 @@
 #include "playership.h"
 
 PlayerShip::PlayerShip() : GameObject() {
-	addSprite("assets/ship.tga");
+	AddSprite("assets/ship.tga");
 	position = Vector2(100, (SHEIGHT / 2));
 
 	speed = 300.0f;
@@ -11,18 +11,18 @@ PlayerShip::~PlayerShip() {
 	
 }
 
-void PlayerShip::update(float deltaTime) {
+void PlayerShip::Update(float deltaTime) {
 	// Player movement
-	if (position.y > 0 && input()->getKey(KeyCode::W)) {
+	if (position.y > 0 && GetInput()->GetKey(KeyCode::W)) {
 		position.y -= speed * deltaTime;
 	}
-	if (position.x > 0 && input()->getKey(KeyCode::A)) {
+	if (position.x > 0 && GetInput()->GetKey(KeyCode::A)) {
 		position.x -= speed * deltaTime;
 	}
-	if (position.y < SHEIGHT && input()->getKey(KeyCode::S)) {
+	if (position.y < SHEIGHT && GetInput()->GetKey(KeyCode::S)) {
 		position.y += speed * deltaTime;
 	}
-	if (position.x < SWIDTH && input()->getKey(KeyCode::D)) {
+	if (position.x < SWIDTH && GetInput()->GetKey(KeyCode::D)) {
 		position.x += speed * deltaTime;
 	}
 }

@@ -133,37 +133,37 @@ public:
 	Input();
 	virtual ~Input();
 
-	void updateInput(GLFWwindow* window);
+	void UpdateInput(GLFWwindow* window);
 
 	// Keys down
-	bool getKey(KeyCode keyCode) { return _keys[(unsigned int)keyCode]; }
-	bool getKey(int key) { return getKey((KeyCode)key); }
-	bool getKey(char key) { return getKey((KeyCode)key); }
-	bool getMouse(unsigned int button) { return _mouse[button]; }
+	bool GetKey(KeyCode keyCode) { return _keys[(unsigned int)keyCode]; }
+	bool GetKey(int key) { return GetKey((KeyCode)key); }
+	bool GetKey(char key) { return GetKey((KeyCode)key); }
+	bool GetMouse(unsigned int button) { return _mouse[button]; }
 
 	// Key down press
-	bool getKeyDown(KeyCode keyCode) { return _keysDown[(unsigned int)keyCode]; }
-	bool getKeyDown(int key) { return getKeyDown((KeyCode)key); }
-	bool getKeyDown(char key) { return getKeyDown((KeyCode)key); }
-	bool getMouseDown(unsigned int button) { return _mouseDown[button]; }
+	bool GetKeyDown(KeyCode keyCode) { return _keysDown[(unsigned int)keyCode]; }
+	bool GetKeyDown(int key) { return GetKeyDown((KeyCode)key); }
+	bool GetKeyDown(char key) { return GetKeyDown((KeyCode)key); }
+	bool GetMouseDown(unsigned int button) { return _mouseDown[button]; }
 
 	// Key up press
-	bool getKeyUp(KeyCode keyCode) { return _keysUp[(unsigned int)keyCode]; }
-	bool getKeyUp(int key) { return getKeyUp((KeyCode)key); }
-	bool getKeyUp(char key) { return getKeyUp((KeyCode)key); }
-	bool getMouseUp(unsigned int button) { return _mouseUp[button]; }
+	bool GetKeyUp(KeyCode keyCode) { return _keysUp[(unsigned int)keyCode]; }
+	bool GetKeyUp(int key) { return GetKeyUp((KeyCode)key); }
+	bool GetKeyUp(char key) { return GetKeyUp((KeyCode)key); }
+	bool GetMouseUp(unsigned int button) { return _mouseUp[button]; }
 
 	// mouse
-	double getMouseX() { return _mouseX; }
-	double getMouseY() { return _mouseY; }
-	void setMouse(double x, double y) { glfwSetCursorPos(_window, x, y); };
+	double GetMouseX() { return _mouseX; }
+	double GetMouseY() { return _mouseY; }
+	void SetMouse(double x, double y) { glfwSetCursorPos(_window, x, y); };
 
 	// Window size
-	int getWindowWidth() { return _windowWidth; }
-	int getWindowHeight() { return _windowHeight; }
+	int GetWindowWidth() { return _windowWidth; }
+	int GetWindowHeight() { return _windowHeight; }
 
 	// (Temp) Exit application
-	void exitApplication() {
+	void ExitApplication() {
 		glfwSetWindowShouldClose(_window, true);
 	}
 
@@ -186,8 +186,8 @@ private:
 	int _windowWidth;
 	int _windowHeight;
 
-	void handleKey(unsigned int key);
-	void handleMouse(unsigned int key);
+	void HandleKey(unsigned int key);
+	void HandleMouse(unsigned int key);
 };
 
 #endif

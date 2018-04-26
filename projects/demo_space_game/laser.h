@@ -8,7 +8,7 @@ public:
 	Laser(Point3 pos);
 	virtual ~Laser();
 
-	virtual void update(float deltaTime);
+	virtual void Update(float deltaTime);
 
 private:
 	float speed;

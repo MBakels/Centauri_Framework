@@ -12,9 +12,9 @@ public:
 
 	GLuint GetTexture() { return _gltexture; };
 
-	int width() { return _width; };
-	int height() { return _height; };
-	int depth() { return _bitdepth; };
+	int Width() { return _width; };
+	int Height() { return _height; };
+	int Depth() { return _bitdepth; };
 
 	GLuint LoadTGA(const std::string& filename, int filter, int wrap);
 

@@ -10,12 +10,12 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-	GLuint vertexbuffer() { return _vertexbuffer; };
-	GLuint uvbuffer() { return _uvbuffer; };
+	GLuint GetVertexbuffer() { return _vertexbuffer; };
+	GLuint GetUvbuffer() { return _uvbuffer; };
 
-	unsigned int numverts() { return _numverts; };
+	unsigned int GetNumverts() { return _numverts; };
 
-	void generateSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight);
+	void GenerateSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight);
 
 private:
 	GLuint _vertexbuffer; // list of vertices
@@ -23,7 +23,7 @@ private:
 
 	unsigned int _numverts; // number of vertices in the Mesh
 
-	void generateBuffers(std::vector<glm::vec3>& vertex, std::vector<glm::vec2>& uv);
+	void GenerateBuffers(std::vector<glm::vec3>& vertex, std::vector<glm::vec2>& uv);
 };
 
 #endif

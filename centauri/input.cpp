@@ -19,18 +19,18 @@ Input::~Input() {
 	std::cout << "Input destructor" << std::endl;
 }
 
-void Input::updateInput(GLFWwindow* w) {
+void Input::UpdateInput(GLFWwindow* w) {
 	_window = w;
 
 	glfwPollEvents();
 
 	// 32-97 = ' ' to '`'
 	for (unsigned int i = 32; i<97; i++) {
-		handleKey(i);
+		HandleKey(i);
 	}
 	// Func + arrows + esc, etc
 	for (unsigned int i = 255; i<GLFW_KEY_LAST; i++) {
-		handleKey(i);
+		HandleKey(i);
 	}
 	//  window size
 	glfwGetWindowSize(_window, &_windowWidth, &_windowHeight);
@@ -43,11 +43,11 @@ void Input::updateInput(GLFWwindow* w) {
 
 	// mouse buttons
 	for (unsigned int i = 0; i<GLFW_MOUSE_BUTTON_LAST; i++) {
-		handleMouse(i);
+		HandleMouse(i);
 	}
 }
 
-void Input::handleMouse(unsigned int button) {
+void Input::HandleMouse(unsigned int button) {
 	if (glfwGetMouseButton(_window, button) == GLFW_PRESS) {
 		if (_mouse[button] == false) { // if first time pressed down
 			_mouse[button] = true;
@@ -70,7 +70,7 @@ void Input::handleMouse(unsigned int button) {
 	}
 }
 
-void Input::handleKey(unsigned int key) {
+void Input::HandleKey(unsigned int key) {
 	if (glfwGetKey(_window, key) == GLFW_PRESS) {
 		if (_keys[key] == false) { // if first time pressed down
 			_keys[key] = true;

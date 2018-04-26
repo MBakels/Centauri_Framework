@@ -12,7 +12,7 @@ public:
 	GameScene();
 	virtual ~GameScene();
 
-	virtual void update(float deltaTime);
+	virtual void Update(float deltaTime);
 
 private:
 	PlayerShip* player;
@@ -22,9 +22,8 @@ private:
 
 	float time;
 
-	void spawnEnemy(float deltaTime);
-	void checkCollisions();
-	float distance(Point pointOne, Point PointTwo);
+	void SpawnEnemy(float deltaTime);
+	void CheckCollisions();
 };
 
 #endif
