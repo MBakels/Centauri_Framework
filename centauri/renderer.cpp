@@ -54,9 +54,6 @@ int Renderer::init() {
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
-	// Create and use shader
-	_defaultShader = _resourcemanager.GetShader(DEFAULTVERTEXSHADER, DEFAULTFRAGMENTSHADER);
-
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
 
@@ -105,9 +102,6 @@ void Renderer::renderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 
 void Renderer::renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite) {
 	Shader* shader = _resourcemanager.GetShader(sprite->vertexshader().c_str(), sprite->fragmentshader().c_str());
-	if (shader == NULL) {
-		shader = _defaultShader; // fallback to defaultshader
-	}
 
 	Texture* texture = _resourcemanager.GetTexture(sprite->texture(), sprite->filter(), sprite->wrap());
 	if (sprite->size.x == 0) { sprite->size.x = texture->width() * sprite->uvdim.x; }
@@ -117,10 +111,8 @@ void Renderer::renderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprit
 
 	shader->setVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
 
-	if (texture != NULL) {
-		glActiveTexture(GL_TEXTURE0 + 0);
-		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
-	}
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 
 	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES);
 }
