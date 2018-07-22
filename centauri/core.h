@@ -32,8 +32,6 @@ private:
 
 	double CalculateDeltaTime();
 
-	void ProcessInput(GLFWwindow *window);
-
 };
 
 #endif

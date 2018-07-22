@@ -9,6 +9,10 @@ Scene::~Scene() {
 }
 
 void Scene::UpdateScene(float deltaTime) {
+	// Update camera in the scene
+	_camera->UpdateCamera();
+
+	// Update all game objects in scene
 	this->UpdateGameObject(this, deltaTime);
 }
 
