@@ -20,13 +20,13 @@ void Mesh::GenerateSpriteMesh(int width, int height, float pivotx, float pivoty,
 	std::vector<glm::vec2> uvs;
 
 	// first triangle
-	vertices.push_back(glm::vec3(-width * pivotx, -height * pivoty, 0.0f));
-	vertices.push_back(glm::vec3(-width * pivotx, height - (height * pivoty), 0.0f));
-	vertices.push_back(glm::vec3(width - (width * pivotx), height - (height * pivoty), 0.0f));
+	vertices.push_back(glm::vec3(-width * pivotx, -height * pivoty, 1.0f));
+	vertices.push_back(glm::vec3(-width * pivotx, height - (height * pivoty), 1.0f));
+	vertices.push_back(glm::vec3(width - (width * pivotx), height - (height * pivoty), 1.0f));
 	// second triangle
-	vertices.push_back(glm::vec3(width - (width * pivotx), height - (height * pivoty), 0.0f));
-	vertices.push_back(glm::vec3(width - (width * pivotx), -height * pivoty, 0.0f));
-	vertices.push_back(glm::vec3(-width * pivotx, -height * pivoty, 0.0f));
+	vertices.push_back(glm::vec3(width - (width * pivotx), height - (height * pivoty), 1.0f));
+	vertices.push_back(glm::vec3(width - (width * pivotx), -height * pivoty, 1.0f));
+	vertices.push_back(glm::vec3(-width * pivotx, -height * pivoty, 1.0f));
 
 	// UV coordinates for each vertex.
 	// uvs for first triangle

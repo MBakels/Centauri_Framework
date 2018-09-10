@@ -26,7 +26,7 @@ set(OPENGL_LIBRARY
 )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-### GLEW ###
+### GLAD ###
 
 set(GLAD_SOURCE
     glad/src/glad.c
@@ -45,6 +45,8 @@ target_link_libraries(GLAD
     ${EXTRA_LIBS}
 )
 
+### FREETYPE ###
 
+add_subdirectory (freetype-2.9.1)
 
 

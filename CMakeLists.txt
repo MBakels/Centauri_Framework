@@ -1,8 +1,9 @@
 # CMake entry point
 cmake_minimum_required (VERSION 2.6)
 project (Centauri_Framework)
-find_package(OpenGL REQUIRED)
 
+# delete CMakeCache.txt from the build directory when you edit these options
+############################################################################
 OPTION(MAKE_DEMO "Make Framework demo (tests) application" ON)
 OPTION(MAKE_SPACE_GAME_DEMO "Make Framework demo game" ON)
 
@@ -16,14 +17,13 @@ if( CMAKE_BINARY_DIR MATCHES " " )
 	message( "Your Build Directory contains spaces. If you experience problems when compiling, this can be the cause." )
 endif()
 
+# Compile external dependencies
+find_package(OpenGL REQUIRED)
+
+add_subdirectory (external)
+
 if(UNIX)
 	set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O2")
-
-	# For leak-checking and profiling, add '-pg' to CXX flags
-	# set(CMAKE_CXX_FLAGS "-Wall -pg -std=c++11 -O2")
-	# valgrind --leak-check=full ./demo
-	# ./demo # creates cmon.out
-	# gprof demo gmon.out > analysis.txt
 endif(UNIX)
 
 if(WIN32)
@@ -33,13 +33,11 @@ if(WIN32)
 	add_definitions( "/W1 /D_CRT_SECURE_NO_WARNINGS /wd4514 /nologo" )
 endif(WIN32)
 
-# Compile external dependencies
-add_subdirectory (external)
-
 include_directories(
 	external/glfw-3.2.1/include
 	external/glm-0.9.8.5
 	external/glad/include
+	external/freetype-2.9.1/include
 	centauri
 	.
 )
@@ -96,6 +94,7 @@ if(MAKE_DEMO)
 	
 	target_link_libraries(demo
 		${ALL_GRAPHICS_LIBS}
+		freetype
 	)
 	
 	file(
@@ -121,6 +120,7 @@ if(MAKE_SPACE_GAME_DEMO)
 	
 	target_link_libraries(space_game
 		${ALL_GRAPHICS_LIBS}
+		freetype
 	)
 	
 	file(

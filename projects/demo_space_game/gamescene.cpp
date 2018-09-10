@@ -9,6 +9,19 @@ GameScene::GameScene() : Scene() {
 	AddChild(player);
 
 	time = 0;
+
+	GameObject* text = new GameObject();
+	text->position = Vector2(100, 100);
+	AddChild(text);
+
+	FT_Library ft;
+	if (FT_Init_FreeType(&ft))
+		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+
+	FT_Face face;
+	if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
+		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+
 }
 
 GameScene::~GameScene() {

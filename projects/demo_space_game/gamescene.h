@@ -2,7 +2,6 @@
 #define GAMESCENE_H
 
 #include "scene.h"
-#include "gameobject.h"
 #include "playership.h"
 #include "laser.h"
 #include "enemyship.h"

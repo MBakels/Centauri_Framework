@@ -54,6 +54,10 @@ int Renderer::Init() {
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
+	// Enable depth testing
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
 

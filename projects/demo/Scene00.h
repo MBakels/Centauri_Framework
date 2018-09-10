@@ -2,7 +2,6 @@
 #define SCENE00_H
 
 #include "scene.h"
-#include "gameobject.h"
 
 class Scene00 : public Scene {
 public:
