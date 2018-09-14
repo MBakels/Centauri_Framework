@@ -14,6 +14,7 @@ Texture::~Texture() {
 }
 
 GLuint Texture::LoadTGA(const std::string& imagepath , int filter, int wrap) {
+	// Debug text
 	std::cout << "Loading TGA: " << imagepath << std::endl;
 
 	FILE *file;

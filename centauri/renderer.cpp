@@ -3,7 +3,7 @@
 
 Renderer::Renderer() {
 	_window = NULL;
-	_defaultShader = NULL;
+	//_defaultShader = NULL;
 
 	Init();
 }

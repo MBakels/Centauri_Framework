@@ -1,6 +1,9 @@
 #include "shader.h"
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+	// Debug text
+	std::cout << "Loading Shader: " << vertexPath << " -- " << fragmentPath << std::endl;
+
 	// Read the Vertex Shader code from the file
 	std::string vertexShaderCode;
 	std::ifstream vertexShaderStream(vertexPath, std::ios::in);
