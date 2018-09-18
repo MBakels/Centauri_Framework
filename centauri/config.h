@@ -11,6 +11,8 @@
 
 #define WINDOWNAME "Centauri Framework" // The window name
 
+#define VSYNC 1 // VSYNC on (1) or off (0)
+
 // defaultshader for Renderer as fallback if Sprite has no shader defined
 #define DEFAULTVERTEXSHADER "shaders/default_vert_shader.vert" // vertexshader (path to the file)
 #define DEFAULTFRAGMENTSHADER "shaders/default_frag_shader.frag" // fragmentshader (path to the file)

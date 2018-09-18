@@ -48,6 +48,9 @@ int Renderer::Init() {
 		return -1;
 	}
 
+	// Vertical synchronisation
+	glfwSwapInterval(VSYNC);
+
 	// Set clear color
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
