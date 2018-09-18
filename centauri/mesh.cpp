@@ -41,6 +41,44 @@ void Mesh::GenerateSpriteMesh(int width, int height, float pivotx, float pivoty,
 	this->GenerateBuffers(vertices, uvs);
 }
 
+void Mesh::GenerateCircleMesh(int radius, int segments, float pivotx, float pivoty, float uvwidth, float uvheight) {
+	_numverts = segments * 3;
+
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+
+	pivotx -= 0.5f;
+	pivoty -= 0.5f;
+
+	float x = 0.0f;
+	float y = 0.0f;
+	float u = 0.5f;
+	float v = 0.5f;
+	float deg = 360;
+
+	for (unsigned int i = 0; i < segments; i++) {
+		vertices.push_back(glm::vec3(pivotx * 2 * radius, pivoty * 2 * radius, 0.0f));
+		uvs.push_back(glm::vec2(0.5f, 0.5f));
+
+		x = cos(deg * DEG_TO_RAD) * radius;
+		y = sin(deg * DEG_TO_RAD) * radius;
+		u = (x / radius) * uvwidth;
+		v = (-y / radius) * uvheight;
+		vertices.push_back(glm::vec3(x + (pivotx * 2 * radius), y + (pivoty * 2 * radius), 0.0f));
+		uvs.push_back(glm::vec2(u / 2 + 0.5f, v / 2 + 0.5f));
+
+		deg -= 360.0f / segments;
+		x = cos(deg * DEG_TO_RAD) * radius;
+		y = sin(deg * DEG_TO_RAD) * radius;
+		u = (x / radius) * uvwidth;
+		v = (-y / radius) * uvheight;
+		vertices.push_back(glm::vec3(x + (pivotx * 2 * radius), y + (pivoty * 2 * radius), 0.0f));
+		uvs.push_back(glm::vec2(u / 2 + 0.5f, v / 2 + 0.5f));
+	}
+
+	this->GenerateBuffers(vertices, uvs);
+}
+
 void Mesh::GenerateBuffers(std::vector<glm::vec3>& vertex, std::vector<glm::vec2>& uv) {
 	//create GLuint _vertexbuffer;
 	glGenBuffers(1, &_vertexbuffer);

@@ -1,19 +1,33 @@
 #include "core.h"
 
-#include "Scene00.h"
+#include "scene01.h"
+#include "scene02.h"
 
 int main() {
 
 	Core core;
 
-	Scene00* scene00 = new Scene00();
+	std::vector<MasterScene*> scenes;
+	scenes.push_back(new Scene01());
+	scenes.push_back(new Scene02());
+	int s = scenes.size();
 
+	MasterScene* scene = scenes[0];
+	int scenecounter = 0;
 	while (core.IsRunning()) {
-		core.Run(scene00);
+		scenecounter = scene->activescene;
+		if (scenecounter > s - 1) { scenecounter = 0; scene->activescene = 0; }
+		if (scenecounter < 0) { scenecounter = s - 1; scene->activescene = s - 1; }
+		scene = scenes[scenecounter];
+		core.Run(scene);
 		//core.ShowFrameRate(5);
 	}
 
-	delete scene00;
+	for (int i = 0; i < s; i++) {
+		delete scenes[i];
+		scenes[i] = NULL;
+	}
+	scenes.clear();
 
 	return 0;
 }

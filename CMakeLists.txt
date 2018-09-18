@@ -77,6 +77,8 @@ add_library(centauri
 	centauri/texture.cpp
 	centauri/mesh.h
 	centauri/mesh.cpp
+	centauri/basicshapes.h
+	centauri/basicshapes.cpp
 )
 
 file(
@@ -88,8 +90,12 @@ file(
 if(MAKE_DEMO)
 	add_executable(demo
 		projects/demo/main.cpp
-		projects/demo/scene00.cpp
-		projects/demo/scene00.h
+		projects/demo/masterscene.cpp
+		projects/demo/masterscene.h
+		projects/demo/scene01.cpp
+		projects/demo/scene01.h
+		projects/demo/scene02.cpp
+		projects/demo/scene02.h
 	)
 	
 	target_link_libraries(demo

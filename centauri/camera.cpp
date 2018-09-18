@@ -2,7 +2,7 @@
 #include "config.h"
 
 Camera::Camera() {
-	position = Point3(0, 0, 10);
+	position = Point3(0, 0, 100);
 	rotation = Point3(0, PI, 0);
 
 	_direction = glm::vec3(0, 0, -5);
@@ -17,7 +17,7 @@ Camera::~Camera() {
 }
 
 void Camera::Orthogonal() {
-	_projectionMatrix = glm::ortho(0.0f, (float)SWIDTH, (float)SHEIGHT, 0.0f, 0.1f, 100.0f);
+	_projectionMatrix = glm::ortho(0.0f, (float)SWIDTH, (float)SHEIGHT, 0.0f, 0.1f, 200.0f);
 }
 
 void Camera::UpdateCamera() {

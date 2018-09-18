@@ -76,17 +76,20 @@ void ResourceManager::DeleteTexture(const std::string& filename) {
 }
 
 // Meshes
-Mesh* ResourceManager::GetSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight) {
+Mesh* ResourceManager::GetMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight, int circleSegments) {
 	char buf[64];
-	//sprintf(buf, "%dx%d_%.5fx%.5f_%.5fx%.5f_%d_%d", width, height, pivotx, pivoty, uvwidth, uvheight);
-	sprintf(buf, "%dx%d_%.5fx%.5f_%.5fx%.5f", width, height, pivotx, pivoty, uvwidth, uvheight);
+	sprintf(buf, "%dx%d_%.5fx%.5f_%.5fx%.5f_%d", width, height, pivotx, pivoty, uvwidth, uvheight, circleSegments);
 	std::string meshname(buf);
 
 	if (_meshes[meshname] != NULL) {
 		return _meshes[meshname];
 	} else {
 		Mesh* m = new Mesh();
-		m->GenerateSpriteMesh(width, height, pivotx, pivoty, uvwidth, uvheight);
+		if (circleSegments != 0) {
+			m->GenerateCircleMesh(width / 2, circleSegments, pivotx, pivoty, uvwidth, uvheight);
+		} else {
+			m->GenerateSpriteMesh(width, height, pivotx, pivoty, uvwidth, uvheight);
+		}
 		_meshes[meshname] = m;
 		return m;
 	}

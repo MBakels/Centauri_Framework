@@ -17,7 +17,7 @@ public:
 
 	Shader* GetShader(const std::string& vs, const std::string& fs);
 	Texture* GetTexture(const std::string& filename, int filter, int wrap);
-	Mesh* GetSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight);
+	Mesh* GetMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight, int circleSegments);
 
 private:
 	std::map<std::string, Shader*> _shaders;

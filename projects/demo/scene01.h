@@ -1,12 +1,12 @@
-#ifndef SCENE00_H
-#define SCENE00_H
+#ifndef SCENE01_H
+#define SCENE01_H
 
-#include "scene.h"
+#include "masterscene.h"
 
-class Scene00 : public Scene {
+class Scene01 : public MasterScene {
 public:
-	Scene00();
-	virtual ~Scene00();
+	Scene01();
+	virtual ~Scene01();
 
 	virtual void Update(float deltaTime);
 

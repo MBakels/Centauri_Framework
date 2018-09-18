@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 
+#include "vectorx.h"
+
 class Mesh {
 public:
 	Mesh();
@@ -16,6 +18,8 @@ public:
 	unsigned int GetNumverts() { return _numverts; };
 
 	void GenerateSpriteMesh(int width, int height, float pivotx, float pivoty, float uvwidth, float uvheight);
+
+	void GenerateCircleMesh(int radius, int segments, float pivotx, float pivoty, float uvwidth, float uvheight);
 
 private:
 	GLuint _vertexbuffer; // list of vertices

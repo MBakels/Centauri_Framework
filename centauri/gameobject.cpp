@@ -7,6 +7,7 @@ GameObject::GameObject() {
 
 	_parent = NULL;
 	_sprite = NULL;
+	_basicShape = NULL;
 
 	_input = Singleton<Input>::Instance();
 }
@@ -15,6 +16,7 @@ GameObject::~GameObject() {
 	DeleteSprite();
 }
 
+// Children
 void GameObject::AddChild(GameObject* child) {
 	if (child->_parent != NULL) {
 		child->_parent->RemoveChild(child);
@@ -42,6 +44,7 @@ GameObject* GameObject::GetChild(unsigned int i) {
 	return NULL;
 }
 
+// Sprites
 void GameObject::AddSprite(const std::string& filename) {
 	DeleteSprite();
 	_sprite = new Sprite(filename);
@@ -67,4 +70,17 @@ void GameObject::DeleteSprite() {
 		delete _sprite;
 		_sprite = NULL;
 	}
-};
+}
+
+// Basic shapes
+BasicShapes* GameObject::AddBasicShape() {
+	_basicShape = new BasicShapes();
+	return _basicShape;
+}
+
+void GameObject::DeleteBasicShape() {
+	if (_basicShape != NULL) {
+		delete _basicShape;
+		_basicShape = NULL;
+	}
+}

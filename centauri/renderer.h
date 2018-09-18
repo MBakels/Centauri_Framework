@@ -41,6 +41,8 @@ private:
 
 	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
 
+	void RenderBasicShape(Camera* camera, glm::mat4 modelMatrix, BasicShapes* basicShape);
+
 	inline void RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode);
 
 	int Init();

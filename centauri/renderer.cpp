@@ -96,6 +96,12 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 		this->RenderSprite(camera, modelMatrix, sprite);
 	}
 
+	// Check for BasicShapes
+	BasicShapes* basicShape = entity->GetBasicShape();
+	if (basicShape != NULL) {
+		this->RenderBasicShape(camera, modelMatrix, basicShape);
+	}
+
 	// Render all Children
 	std::vector<GameObject*> children = entity->Children();
 	std::vector<GameObject*>::iterator child;
@@ -111,12 +117,20 @@ void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprit
 	if (sprite->size.x == 0) { sprite->size.x = texture->Width() * sprite->uvdim.x; }
 	if (sprite->size.y == 0) { sprite->size.y = texture->Height() * sprite->uvdim.y; }
 
-	Mesh* mesh = _resourcemanager.GetSpriteMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y);
+	Mesh* mesh = _resourcemanager.GetMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y, 0);
 
 	shader->SetVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+
+	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES);
+}
+
+void Renderer::RenderBasicShape(Camera* camera, glm::mat4 modelMatrix, BasicShapes* basicShape) {
+	Shader* shader = _resourcemanager.GetShader(basicShape->Vertexshader().c_str(), basicShape->Fragmentshader().c_str());
+
+	Mesh* mesh = _resourcemanager.GetMesh(basicShape->size.x, basicShape->size.y, basicShape->pivot.x, basicShape->pivot.y, basicShape->uvdim.x, basicShape->uvdim.y, basicShape->segments);
 
 	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES);
 }

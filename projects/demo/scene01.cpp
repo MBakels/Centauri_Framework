@@ -1,8 +1,8 @@
 #include <fstream>
 #include <sstream>
-#include "scene00.h"
+#include "scene01.h"
 
-Scene00::Scene00() : Scene() {
+Scene01::Scene01() : MasterScene() {
 	woodObj = new GameObject();
 	woodObj->AddSprite("assets/container.tga");
 	woodObj->position = Vector3(350, 220, 0);
@@ -25,7 +25,7 @@ Scene00::Scene00() : Scene() {
 	AddChild(kingkongObj);
 }
 
-Scene00::~Scene00() {
+Scene01::~Scene01() {
 	RemoveChild(woodObj);
 	RemoveChild(pencilsObj);
 	RemoveChild(kingkongObj);
@@ -34,8 +34,6 @@ Scene00::~Scene00() {
 	delete kingkongObj;
 }
 
-void Scene00::Update(float deltaTime) {
-	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
-		GetInput()->ExitApplication();
-	}
+void Scene01::Update(float deltaTime) {
+	MasterScene::Update(deltaTime);
 }

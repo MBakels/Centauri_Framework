@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "sprite.h"
+#include "basicshapes.h"
 #include "vectorx.h"
 #include "input.h"
 #include "singleton.h"
@@ -40,6 +41,11 @@ public:
 	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
 	void DeleteSprite();
 
+	// Basic shapes
+	BasicShapes* GetBasicShape() { return _basicShape; };
+	BasicShapes* AddBasicShape();
+	void DeleteBasicShape();
+
 	// Transform
 	Point3 position;
 	Point3 rotation;
@@ -55,6 +61,9 @@ private:
 
 	// Sprite
 	Sprite* _sprite;
+
+	// Basic shape
+	BasicShapes* _basicShape;
 
 };
 
