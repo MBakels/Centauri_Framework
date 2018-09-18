@@ -1,4 +1,4 @@
-## About tb2d
+## About Centauri framework
 
 Centauri framework is a basic 2D framework that is used for making games. It is still a work in progress.
 
