@@ -23,6 +23,7 @@ int Renderer::Init() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, RESIZABLE);
+	glfwWindowHint(GLFW_SAMPLES, MSAA);
 
 	// glfw window creation
 	if (FULLSCREEN == 1) {
@@ -60,6 +61,9 @@ int Renderer::Init() {
 	// Enable depth testing
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+
+	// Enable MSAA
+	glEnable(GL_MULTISAMPLE);
 	
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);

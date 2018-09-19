@@ -13,6 +13,8 @@
 
 #define VSYNC 1 // VSYNC on (1) or off (0)
 
+#define MSAA 4 // MSAA (Anti Aliasing) (0=off or use 4 or 8 for Anti Aliasing, higher is possible but it costs more performance)
+
 // defaultshader for Renderer as fallback if Sprite has no shader defined
 #define DEFAULTVERTEXSHADER "shaders/default_vert_shader.vert" // vertexshader (path to the file)
 #define DEFAULTFRAGMENTSHADER "shaders/default_frag_shader.frag" // fragmentshader (path to the file)
