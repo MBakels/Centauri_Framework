@@ -14,6 +14,7 @@ GameObject::GameObject() {
 
 GameObject::~GameObject() {
 	DeleteSprite();
+	DeleteBasicShape();
 }
 
 // Children
@@ -74,6 +75,7 @@ void GameObject::DeleteSprite() {
 
 // Basic shapes
 BasicShapes* GameObject::AddBasicShape() {
+	DeleteBasicShape();
 	_basicShape = new BasicShapes();
 	return _basicShape;
 }
