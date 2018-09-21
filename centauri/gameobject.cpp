@@ -17,6 +17,10 @@ GameObject::~GameObject() {
 	DeleteBasicShape();
 }
 
+void GameObject::Update(float deltaTime) {
+	if (_sprite != NULL) _sprite->Update(deltaTime);
+}
+
 // Children
 void GameObject::AddChild(GameObject* child) {
 	if (child->_parent != NULL) {
@@ -64,6 +68,13 @@ void GameObject::AddSprite(const std::string& filename, float pivotx, float pivo
 void GameObject::AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap) {
 	DeleteSprite();
 	_sprite = new Sprite(filename, pivotx, pivoty, uvwidth, uvheight, filter, wrap);
+}
+
+void GameObject::addSpriteSheet(const std::string& filename, int horizontal, int vertical) {
+	DeleteSprite();
+	float uvwidth = 1.0f / horizontal;
+	float uvheight = 1.0f / vertical;
+	_sprite = new Sprite(filename, 0.5f, 0.5f, uvwidth, uvheight);
 }
 
 void GameObject::DeleteSprite() {

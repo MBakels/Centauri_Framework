@@ -14,6 +14,8 @@ public:
 	Sprite(std::string image_path, float pivotx = 0.5f, float pivoty = 0.5f, float uvwidth = 1.0f, float uvheight = 1.0f, int filter = DEFAULTFILTER, int wrap = DEFAULTWRAP);
 	virtual ~Sprite();
 
+	void Update(float deltaTime);
+
 	std::string GetTexture() { return _texture; };
 
 	std::string Vertexshader() { return _vertexshader; };
@@ -27,6 +29,13 @@ public:
 
 	void Wrap(int w) { _wrap = w; };
 	int Wrap() { return _wrap; };
+
+	void IsAnimated(bool a) { _animated = a; };
+
+	int frame(int f);
+	int frame() { return _frame; };
+
+	int fps(int fps) { _fps = fps; };
 
 	Point2 pivot;
 	Point2 uvdim;
@@ -42,6 +51,11 @@ private:
 
 	int _filter;
 	int _wrap;
+
+	bool _animated; // is the sprite animated
+	int _frame; // current frame of the animated sprite
+	int _fps; // frames per second for the animated sprite
+	float _time; // keeps track of time since last frame swap
 
 	void SetupSprite(std::string image_path, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
 };

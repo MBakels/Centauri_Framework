@@ -22,7 +22,7 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	virtual void Update(float deltaTime) {};
+	virtual void Update(float deltaTime);
 
 	// Children
 	void AddChild(GameObject* child);
@@ -39,6 +39,7 @@ public:
 	void AddSprite(const std::string& filename, float pivotx, float pivoty);
 	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight);
 	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
+	void addSpriteSheet(const std::string& filename, int horizontal, int vertical);
 	void DeleteSprite();
 
 	// Basic shapes

@@ -18,9 +18,46 @@ void Sprite::SetupSprite(std::string image_path, float pivotx, float pivoty, flo
 	_filter = filter;
 	_wrap = wrap;
 
+	_animated = false;
+	_frame = 0;
+	_fps = 30;
+	_time = 0;
+
 	color = RGBAColor(255, 255, 255, 255);
 }
 
 Sprite::~Sprite() {
 
+}
+
+void Sprite::Update(float deltaTime) {
+	if (_animated) {
+		_time += deltaTime;
+		if (_fps * deltaTime < _time) {
+			frame(_frame++);
+			_time = 0;
+		}
+	}
+}
+
+int Sprite::frame(int f) {
+	int w = 1.0f / uvdim.x;
+	int h = 1.0f / uvdim.y;
+
+	if (f >= w * h) {
+		_frame = 0;
+		uvoffset.x = 0;
+		uvoffset.y = 0;
+		return _frame;
+	}
+
+	int ypos = f / w;
+	int xpos = f % w;
+
+	uvoffset.x = xpos * uvdim.x;
+	uvoffset.y = ypos * uvdim.y;
+
+	_frame = f;
+
+	return _frame;
 }
