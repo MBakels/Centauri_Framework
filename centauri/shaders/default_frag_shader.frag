@@ -7,7 +7,8 @@ out vec4 FragColor;
 
 // Uniform values are constant for whole mesh
 uniform sampler2D texture;
+uniform vec4 blendColor;
 
 void main() {
-	FragColor = texture2D(texture, UV);
+	FragColor = texture2D(texture, UV) * blendColor;
 }

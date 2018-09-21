@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "pointx.h"
+#include "centauri/color.h"
 
 class Sprite {
 public:
@@ -31,6 +32,7 @@ public:
 	Point2 uvdim;
 	Point2 uvoffset;
 	Point2 size;
+	RGBAColor color; // blend Color of the Sprite
 
 private:
 	std::string _texture;

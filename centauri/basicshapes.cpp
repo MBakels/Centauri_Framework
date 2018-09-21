@@ -5,11 +5,12 @@ BasicShapes::BasicShapes() {
 	uvdim = Point2(1.0f, 1.0f);
 	uvoffset = Point2(0.0f, 0.0f);
 	size = Point2(0.0f, 0.0f);
+	color = RGBAColor(255, 255, 255, 255);
 	radius = 0;
 	segments = 0;
 
 	_vertexshader = DEFAULTVERTEXSHADER;
-	_fragmentshader = "shaders/temp_frag_shader.frag";//DEFAULTFRAGMENTSHADER;
+	_fragmentshader = DEFAULTFRAGMENTSHADERBASICSHAPES;
 }
 
 BasicShapes::~BasicShapes() {

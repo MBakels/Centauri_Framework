@@ -79,6 +79,7 @@ add_library(centauri
 	centauri/mesh.cpp
 	centauri/basicshapes.h
 	centauri/basicshapes.cpp
+	centauri/color.h
 )
 
 file(

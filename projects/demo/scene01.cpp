@@ -5,7 +5,7 @@
 Scene01::Scene01() : MasterScene() {
 	woodObj = new GameObject();
 	woodObj->AddSprite("assets/container.tga");
-	woodObj->position = Vector3(350, 220, 0);
+	woodObj->position = Vector3(450, 220, 0);
 	woodObj->scale = Vector3(0.7f, 0.7f, 1);
 
 	pencilsObj = new GameObject();
@@ -20,18 +20,25 @@ Scene01::Scene01() : MasterScene() {
 	kingkongObj->position = Vector3(750, 500, -10);
 	kingkongObj->scale = Vector3(2.0f, 2.0f, 1);
 
+	grassObj = new GameObject();
+	grassObj->AddSprite("assets/grass.tga");
+	grassObj->position = Vector3(500, 220, 3);
+
 	AddChild(woodObj);
 	AddChild(pencilsObj);
 	AddChild(kingkongObj);
+	AddChild(grassObj);
 }
 
 Scene01::~Scene01() {
 	RemoveChild(woodObj);
 	RemoveChild(pencilsObj);
 	RemoveChild(kingkongObj);
+	RemoveChild(grassObj);
 	delete woodObj;
 	delete pencilsObj;
 	delete kingkongObj;
+	delete grassObj;
 }
 
 void Scene01::Update(float deltaTime) {

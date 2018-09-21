@@ -14,6 +14,24 @@
 #include "gameobject.h"
 #include "scene.h"
 
+struct TransparentRenderable {
+	glm::mat4 modelMatrix;
+	Sprite* sprite;
+	Texture* texture;
+
+	TransparentRenderable() {
+		modelMatrix = glm::mat4(1.0f);
+		sprite = NULL;
+		texture = NULL;
+	}
+
+	TransparentRenderable(glm::mat4 mm, Sprite* spr, Texture* tex) {
+		modelMatrix = mm;
+		sprite = spr;
+		texture = tex;
+	}
+};
+
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 class Renderer {
@@ -37,13 +55,15 @@ private:
 	glm::mat4 _projectionMatrix;
 	glm::mat4 _viewMatrix;
 
+	std::map<float, TransparentRenderable> transparentRenderableSpriteList;
+
 	void RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
 
-	void RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite);
+	void RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* texture);
 
-	void RenderBasicShape(Camera* camera, glm::mat4 modelMatrix, BasicShapes* basicShape);
+	void RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape);
 
-	inline void RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode);
+	inline void RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode, RGBAColor blendcolor);
 
 	int Init();
 };

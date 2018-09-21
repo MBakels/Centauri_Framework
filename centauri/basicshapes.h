@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "pointx.h"
+#include "centauri/color.h"
 
 class BasicShapes {
 public:
@@ -22,6 +23,7 @@ public:
 	Point2 uvdim;
 	Point2 uvoffset;
 	Point2 size;
+	RGBAColor color;
 	int radius;
 	int segments;
 

@@ -17,6 +17,8 @@ void Sprite::SetupSprite(std::string image_path, float pivotx, float pivoty, flo
 
 	_filter = filter;
 	_wrap = wrap;
+
+	color = RGBAColor(255, 255, 255, 255);
 }
 
 Sprite::~Sprite() {

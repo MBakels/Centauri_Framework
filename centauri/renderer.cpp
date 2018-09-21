@@ -64,6 +64,10 @@ int Renderer::Init() {
 
 	// Enable MSAA
 	glEnable(GL_MULTISAMPLE);
+
+	// Enable blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 	
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
@@ -78,7 +82,15 @@ void Renderer::RenderScene(Scene* scene) {
 
 	glm::mat4 modelMatrix = glm::mat4(1.0f); // The root scene has a identity matrix
 
+	// Render the scene
 	this->RenderGameObject(modelMatrix, scene, scene->GetCamera());
+
+	//Render transparent sprites in reverse order
+	for (std::map<float, TransparentRenderable>::reverse_iterator it = transparentRenderableSpriteList.rbegin(); it != transparentRenderableSpriteList.rend(); ++it) {
+		TransparentRenderable tr = it->second;
+		this->RenderSprite(tr.modelMatrix, tr.sprite, tr.texture);
+	}
+	transparentRenderableSpriteList.clear();
 	
 	glfwSwapBuffers(_window); // Swap buffers
 }
@@ -100,13 +112,22 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	// Check for Sprite
 	Sprite* sprite = entity->GetSprite();
 	if (sprite != NULL) {
-		this->RenderSprite(camera, modelMatrix, sprite);
+		// Check for transparent sprites and puth them in a list(they need to be rendered last)
+		Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
+		if (texture->Depth() == 4) {
+			float distance = Point3::Distance(camera->position, entity->position);
+			transparentRenderableSpriteList[distance] = TransparentRenderable(modelMatrix, sprite, texture);
+		}
+		else {
+			this->RenderSprite(modelMatrix, sprite, texture);
+		}
+		
 	}
 
 	// Check for BasicShapes
 	BasicShapes* basicShape = entity->GetBasicShape();
 	if (basicShape != NULL) {
-		this->RenderBasicShape(camera, modelMatrix, basicShape);
+		this->RenderBasicShape(modelMatrix, basicShape);
 	}
 
 	// Render all Children
@@ -117,32 +138,35 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	}
 }
 
-void Renderer::RenderSprite(Camera* camera, glm::mat4 modelMatrix, Sprite* sprite) {
-	Shader* shader = _resourcemanager.GetShader(sprite->Vertexshader().c_str(), sprite->Fragmentshader().c_str());
-
-	Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
+void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* texture) {
+	//Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
 	if (sprite->size.x == 0) { sprite->size.x = texture->Width() * sprite->uvdim.x; }
 	if (sprite->size.y == 0) { sprite->size.y = texture->Height() * sprite->uvdim.y; }
 
+	Shader* shader = _resourcemanager.GetShader(sprite->Vertexshader().c_str(), sprite->Fragmentshader().c_str());
+	shader->SetVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
+
 	Mesh* mesh = _resourcemanager.GetMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y, 0);
 
-	shader->SetVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
+	RGBAColor blendcolor = sprite->color;
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 
-	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES);
+	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES, blendcolor);
 }
 
-void Renderer::RenderBasicShape(Camera* camera, glm::mat4 modelMatrix, BasicShapes* basicShape) {
+void Renderer::RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape) {
 	Shader* shader = _resourcemanager.GetShader(basicShape->Vertexshader().c_str(), basicShape->Fragmentshader().c_str());
 
 	Mesh* mesh = _resourcemanager.GetMesh(basicShape->size.x, basicShape->size.y, basicShape->pivot.x, basicShape->pivot.y, basicShape->uvdim.x, basicShape->uvdim.y, basicShape->segments);
 
-	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES);
+	RGBAColor color = basicShape->color;
+
+	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES, color);
 }
 
-void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode) {
+void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode, RGBAColor blendcolor) {
 	shader->Use(); // Use the shader
 
 	glm::mat4 MVP = _projectionMatrix * _viewMatrix * modelMatrix; // Create MVP matrix
@@ -150,6 +174,8 @@ void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mes
 	shader->SetMat4("MVP", MVP); // Send transformation to the currently bound shader
 
 	shader->SetInt("texture", 0); // Set the "texture" sampler to user Texture Unit 0
+
+	shader->SetVec4("blendColor", (float)blendcolor.r / 255.0f, (float)blendcolor.g / 255.0f, (float)blendcolor.b / 255.0f, (float)blendcolor.a / 255.0f);
 
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0);

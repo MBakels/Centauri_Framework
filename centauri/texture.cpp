@@ -128,8 +128,6 @@ GLuint Texture::LoadTGA(const std::string& imagepath , int filter, int wrap) {
 	// handle transparency and grayscale and give the image to OpenGL
 	switch (_bitdepth) {
 	case 4:
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
 		break;
 	case 3:

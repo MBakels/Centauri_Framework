@@ -14,6 +14,7 @@ private:
 	GameObject* woodObj;
 	GameObject* pencilsObj;
 	GameObject* kingkongObj;
+	GameObject* grassObj;
 };
 
 #endif
