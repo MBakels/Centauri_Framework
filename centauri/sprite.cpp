@@ -33,14 +33,14 @@ Sprite::~Sprite() {
 void Sprite::Update(float deltaTime) {
 	if (_animated) {
 		_time += deltaTime;
-		if (_fps * deltaTime < _time) {
-			frame(_frame++);
+		if (1.0f / _fps < _time) {
+			Frame(_frame + 1);
 			_time = 0;
 		}
 	}
 }
 
-int Sprite::frame(int f) {
+void Sprite::Frame(int f) {
 	int w = 1.0f / uvdim.x;
 	int h = 1.0f / uvdim.y;
 
@@ -48,7 +48,6 @@ int Sprite::frame(int f) {
 		_frame = 0;
 		uvoffset.x = 0;
 		uvoffset.y = 0;
-		return _frame;
 	}
 
 	int ypos = f / w;
@@ -58,6 +57,4 @@ int Sprite::frame(int f) {
 	uvoffset.y = ypos * uvdim.y;
 
 	_frame = f;
-
-	return _frame;
 }

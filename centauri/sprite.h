@@ -32,10 +32,10 @@ public:
 
 	void IsAnimated(bool a) { _animated = a; };
 
-	int frame(int f);
-	int frame() { return _frame; };
+	void Frame(int f);
+	int Frame() { return _frame; };
 
-	int fps(int fps) { _fps = fps; };
+	void Fps(int fps) { _fps = fps; };
 
 	Point2 pivot;
 	Point2 uvdim;

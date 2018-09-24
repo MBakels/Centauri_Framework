@@ -70,7 +70,7 @@ void GameObject::AddSprite(const std::string& filename, float pivotx, float pivo
 	_sprite = new Sprite(filename, pivotx, pivoty, uvwidth, uvheight, filter, wrap);
 }
 
-void GameObject::addSpriteSheet(const std::string& filename, int horizontal, int vertical) {
+void GameObject::AddSpriteSheet(const std::string& filename, int horizontal, int vertical) {
 	DeleteSprite();
 	float uvwidth = 1.0f / horizontal;
 	float uvheight = 1.0f / vertical;

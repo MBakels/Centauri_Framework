@@ -39,7 +39,7 @@ public:
 	void AddSprite(const std::string& filename, float pivotx, float pivoty);
 	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight);
 	void AddSprite(const std::string& filename, float pivotx, float pivoty, float uvwidth, float uvheight, int filter, int wrap);
-	void addSpriteSheet(const std::string& filename, int horizontal, int vertical);
+	void AddSpriteSheet(const std::string& filename, int horizontal, int vertical);
 	void DeleteSprite();
 
 	// Basic shapes

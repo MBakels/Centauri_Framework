@@ -97,6 +97,8 @@ if(MAKE_DEMO)
 		projects/demo/scene01.h
 		projects/demo/scene02.cpp
 		projects/demo/scene02.h
+		projects/demo/scene03.cpp
+		projects/demo/scene03.h
 	)
 	
 	target_link_libraries(demo

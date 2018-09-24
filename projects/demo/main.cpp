@@ -2,6 +2,7 @@
 
 #include "scene01.h"
 #include "scene02.h"
+#include "scene03.h"
 
 int main() {
 
@@ -10,6 +11,7 @@ int main() {
 	std::vector<MasterScene*> scenes;
 	scenes.push_back(new Scene01());
 	scenes.push_back(new Scene02());
+	scenes.push_back(new Scene03());
 	int s = scenes.size();
 
 	MasterScene* scene = scenes[0];
