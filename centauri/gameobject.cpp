@@ -75,6 +75,7 @@ void GameObject::AddSpriteSheet(const std::string& filename, int horizontal, int
 	float uvwidth = 1.0f / horizontal;
 	float uvheight = 1.0f / vertical;
 	_sprite = new Sprite(filename, 0.5f, 0.5f, uvwidth, uvheight);
+	_sprite->Frame(0);
 }
 
 void GameObject::DeleteSprite() {

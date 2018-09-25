@@ -12,6 +12,7 @@ public:
 
 private:
 	GameObject* circle;
+	GameObject* square;
 };
 
 #endif
