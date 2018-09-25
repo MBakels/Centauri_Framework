@@ -44,13 +44,14 @@ void Sprite::Frame(int f) {
 	int w = 1.0f / uvdim.x;
 	int h = 1.0f / uvdim.y;
 
-	if (f >= w * h) {
+	if (f >= w * h || f == 0) {
 		_frame = 0;
 		uvoffset.x = 0;
-		uvoffset.y = 0;
+		uvoffset.y = (h - 1) * uvdim.y;
+		return;
 	}
 
-	int ypos = f / w;
+	int ypos = (h - 1) + ((f / h) * -1);
 	int xpos = f % w;
 
 	uvoffset.x = xpos * uvdim.x;
