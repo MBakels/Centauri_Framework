@@ -38,6 +38,7 @@ include_directories(
 	external/glm-0.9.8.5
 	external/glad/include
 	external/freetype-2.9.1/include
+	external/stb/include
 	centauri
 	.
 )
@@ -47,6 +48,7 @@ set(ALL_GRAPHICS_LIBS
 	centauri
 	glfw
 	GLAD
+	freetype
 )
 
 # Centauri_Framework lib
@@ -103,7 +105,6 @@ if(MAKE_DEMO)
 	
 	target_link_libraries(demo
 		${ALL_GRAPHICS_LIBS}
-		freetype
 	)
 	
 	file(
@@ -129,7 +130,6 @@ if(MAKE_SPACE_GAME_DEMO)
 	
 	target_link_libraries(space_game
 		${ALL_GRAPHICS_LIBS}
-		freetype
 	)
 	
 	file(

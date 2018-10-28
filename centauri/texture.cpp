@@ -1,4 +1,5 @@
 #include <glad/glad.h>
+#define STB_IMAGE_IMPLEMENTATION
 #include "texture.h"
 
 Texture::Texture() {
@@ -7,78 +8,23 @@ Texture::Texture() {
 	_bitdepth = 3;
 
 	_gltexture = 0;
+	stbi_set_flip_vertically_on_load(true);
 }
 
 Texture::~Texture() {
 	glDeleteTextures(1, &_gltexture);
 }
 
-GLuint Texture::LoadTGA(const std::string& imagepath , int filter, int wrap) {
+GLuint Texture::LoadImageFromDisk(const std::string& imagepath , int filter, int wrap) {
 	// Debug text
-	std::cout << "Loading TGA: " << imagepath << std::endl;
+	std::cout << "Loading Image: " << imagepath << std::endl;
 
-	FILE *file;
-	unsigned char type[4];
-	unsigned char info[6];
-
-#ifdef WIN32
-	errno_t err;
-	err = fopen_s(&file, imagepath.c_str(), "rb");
-#else
-	file = fopen(imagepath.c_str(), "rb");
-#endif
-
-	if (!file) {
-		std::cout << "ERROR::TEXTURE::OPENFILE::UNABLE_TO_OPEN_FILE" << std::endl;
+	// Load the image using stb_image
+	unsigned char *data = stbi_load(imagepath.c_str(), &_width, &_height, &_bitdepth, 0);
+	if(data == NULL) {
+		std::cout << "ERROR::TEXTURE::LOADFILE::UNABLE_TO_LOAD_FILE" << std::endl;
 		return 0;
 	}
-
-	if (!fread(&type, sizeof(char), 3, file)) return 0;
-	fseek(file, 12, SEEK_SET);
-	if (!fread(&info, sizeof(char), 6, file)) return 0;
-
-	//image type needs to be 2 (color) or 3 (grayscale)
-	if (type[1] != 0 || (type[2] != 2 && type[2] != 3)) {
-		std::cout << "ERROR::TEXTURE::IMAGETYPE::IMAGE_TYPE_NEITHER_COLOR_OR_GRAYSCALE" << std::endl;
-		fclose(file);
-		return 0;
-	}
-
-	unsigned char* data;
-
-	_width = info[0] + info[1] * 256;
-	_height = info[2] + info[3] * 256;
-	_bitdepth = info[4] / 8;
-
-	if (_bitdepth != 1 && _bitdepth != 3 && _bitdepth != 4) {
-		std::cout << "ERROR::TEXTURE::BITDEPTH::BYTECOUNT_NOT_1_3_OR_4" << std::endl;
-		fclose(file);
-		return 0;
-	}
-
-	/*
-	// Check if the image's width and height is a power of 2. No biggie, we can handle it.
-	if ((_width & (_width - 1)) != 0) {
-	std::cout << "warning: " << imagepath << "’s width is not a power of 2" << std::endl;
-	}
-	if ((_height & (_height - 1)) != 0) {
-	std::cout << "warning: " << imagepath << "’s height is not a power of 2" << std::endl;
-	}
-	if (_width != _height) {
-	std::cout << "warning: " << imagepath << " is not square" << std::endl;
-	}
-	*/
-
-	unsigned int imagesize = _width * _height * _bitdepth;
-
-	// Creating a buffer
-	data = new unsigned char[imagesize];
-
-	// Reading the actual data from the file into the buffer
-	if (!fread(data, 1, imagesize, file)) return 0;
-
-	// Everything is in memory now, closing file
-	fclose(file);
 
 	// Creating a OpenGL texture and binding it
 	glGenTextures(1, &_gltexture);
@@ -128,10 +74,10 @@ GLuint Texture::LoadTGA(const std::string& imagepath , int filter, int wrap) {
 	// handle transparency and grayscale and give the image to OpenGL
 	switch (_bitdepth) {
 	case 4:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		break;
 	case 3:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		break;
 	case 1:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, _width, _height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
@@ -147,7 +93,7 @@ GLuint Texture::LoadTGA(const std::string& imagepath , int filter, int wrap) {
 	}
 
 	// Freeing data as OpenGL copied it
-	delete[] data;
+	stbi_image_free(data);
 
 	// Returning ID of texture
 	return _gltexture;

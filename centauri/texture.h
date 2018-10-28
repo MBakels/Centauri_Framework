@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include "stb_image.h"
 
 class Texture {
 public:
@@ -16,7 +17,7 @@ public:
 	int Height() { return _height; };
 	int Depth() { return _bitdepth; };
 
-	GLuint LoadTGA(const std::string& filename, int filter, int wrap);
+	GLuint LoadImageFromDisk(const std::string& filename, int filter, int wrap);
 
 private:
 	int _width;

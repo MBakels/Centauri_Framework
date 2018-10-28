@@ -22,6 +22,7 @@ The framework is tested in windows 10 using visual studio 2017. If you are using
 - glfw: <http://www.glfw.org/>
 - glm: <http://glm.g-truc.net/index.html>
 - freetype2: <https://www.freetype.org/>
+- stb_image: <https://github.com/nothings/stb/>
 
 ## License & copyright
 

@@ -64,7 +64,7 @@ Texture* ResourceManager::GetTexture(const std::string& filename, int filter, in
 		return _textures[filename];
 	} else {
 		Texture* tex = new Texture();
-		tex->LoadTGA(filename, filter, wrap);
+		tex->LoadImageFromDisk(filename, filter, wrap);
 		_textures[filename] = tex;
 		return tex;
 	}
