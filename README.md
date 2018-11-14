@@ -24,6 +24,9 @@ The framework is tested in windows 10 using visual studio 2017. If you are using
 - freetype2: <https://www.freetype.org/>
 - stb_image: <https://github.com/nothings/stb/>
 
+## Other files
+- acari-sans font [License](centauri/fonts/acari-sans/OFL.TXT)
+
 ## License & copyright
 
 @ Marco Bakels

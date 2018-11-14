@@ -28,6 +28,21 @@ Scene01::Scene01() : MasterScene() {
 	AddChild(pencilsObj);
 	AddChild(kingkongObj);
 	AddChild(grassObj);
+
+
+	// Freetype tests
+	GameObject* text = new GameObject();
+	text->position = Vector2(100, 100);
+	AddChild(text);
+
+	FT_Library ft;
+	if(FT_Init_FreeType(&ft))
+		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+
+	FT_Face face;
+	if(FT_New_Face(ft, "fonts/acari-sans/AcariSans-Regular.ttf", 0, &face))
+		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+
 }
 
 Scene01::~Scene01() {

@@ -89,6 +89,11 @@ file(
 	DESTINATION ${CMAKE_BINARY_DIR}
 )
 
+file(
+	COPY centauri/fonts
+	DESTINATION ${CMAKE_BINARY_DIR}
+	)
+
 # Demo
 if(MAKE_DEMO)
 	add_executable(demo
