@@ -82,6 +82,10 @@ add_library(centauri
 	centauri/basicshapes.h
 	centauri/basicshapes.cpp
 	centauri/color.h
+	centauri/text.h
+	centauri/text.cpp
+	centauri/font.h
+	centauri/font.cpp
 )
 
 file(

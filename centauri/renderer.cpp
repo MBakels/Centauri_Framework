@@ -72,6 +72,9 @@ int Renderer::Init() {
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
 
+	// setting unpack alignment
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
 	return 0;
 }
 

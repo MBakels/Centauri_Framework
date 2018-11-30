@@ -14,9 +14,6 @@
 #include "input.h"
 #include "singleton.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H 
-
 class GameObject {
 public:
 	GameObject();
