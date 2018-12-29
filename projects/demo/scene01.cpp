@@ -32,6 +32,13 @@ Scene01::Scene01() : MasterScene() {
 	AddChild(grassObj);
 
 	Font* font = new Font("fonts/acari-sans/AcariSans-Regular.ttf");
+	GameObject* textTest = new GameObject();
+	//textTest->AddSprite("assets/pencils.tga");
+	//textTest->GetSprite()->size = Point2(100, 20);
+	textTest->position = Vector3(80, 80, 1);
+	textTest->AddText("testing", font);
+	AddChild(textTest);
+
 }
 
 Scene01::~Scene01() {

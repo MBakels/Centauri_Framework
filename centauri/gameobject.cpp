@@ -7,6 +7,7 @@ GameObject::GameObject() {
 
 	_parent = NULL;
 	_sprite = NULL;
+	_text = NULL;
 	_basicShape = NULL;
 
 	_input = Singleton<Input>::Instance();
@@ -82,6 +83,19 @@ void GameObject::DeleteSprite() {
 	if (_sprite != NULL) {
 		delete _sprite;
 		_sprite = NULL;
+	}
+}
+
+// Text
+void GameObject::AddText(std::string text, Font* font) {
+	DeleteText();
+	_text = new Text(text, font);
+}
+
+void GameObject::DeleteText() {
+	if (_text != NULL) {
+		delete _text;
+		_text = NULL;
 	}
 }
 

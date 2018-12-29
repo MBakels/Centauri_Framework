@@ -10,7 +10,7 @@ Font::Font(const char* fontPath, int fontSize, int numberOfCharactersToLoad) {
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
 	FT_Set_Pixel_Sizes(face, 0, fontSize);
-	
+
 	for (GLubyte c = 0; c < numberOfCharactersToLoad; c++) {
 		// Load character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
@@ -47,8 +47,8 @@ Font::Font(const char* fontPath, int fontSize, int numberOfCharactersToLoad) {
 		Characters.insert(std::pair<GLchar, Character>(c, character));
 	}
 
-		FT_Done_Face(face);
-		FT_Done_FreeType(ft);
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
 }
 
 Font::~Font() {

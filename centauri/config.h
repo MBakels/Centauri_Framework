@@ -19,6 +19,8 @@
 #define DEFAULTVERTEXSHADER "shaders/default_vert_shader.vert" // vertexshader (path to the file)
 #define DEFAULTFRAGMENTSHADER "shaders/default_frag_shader.frag" // fragmentshader (path to the file)
 #define DEFAULTGRAYSCALEFRAGMENTSHADER "shaders/default_frag_shader_grayscale.frag" // grayscale fragmentshader (path to the file)
+#define DEFAULTTEXTVERTEXSHADER "shaders/default_text_shader.vert" // Text shader (path to the file)
+#define DEFAULTTEXTFRAGMENTSHADER "shaders/default_text_shader.frag" // Text shader (path to the file)
 #define DEFAULTFRAGMENTSHADERBASICSHAPES "shaders/default_frag_shader_basicshapes.frag" // BasicShapes fragmentshader (path to the file)
 
 #define DEFAULTFILTER 3 // texture filter (0=No filtering, 1=Bilinear, 2=Bilinear mipmap, 3=Trilinear)

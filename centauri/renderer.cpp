@@ -9,7 +9,7 @@ Renderer::Renderer() {
 }
 
 Renderer::~Renderer() {
-	glDeleteVertexArrays(1, &_VAO);
+	glDeleteVertexArrays(1, &_SpriteVAO);
 	glfwTerminate(); // glfw: terminate, clearing all previously allocated GLFW resources.
 }
 
@@ -69,8 +69,17 @@ int Renderer::Init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	
-	glGenVertexArrays(1, &_VAO);
-	glBindVertexArray(_VAO);
+	glGenVertexArrays(1, &_SpriteVAO);
+
+	glGenVertexArrays(1, &TextVAO);
+	glGenBuffers(1, &TextVBO);
+	glBindVertexArray(TextVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, TextVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 	// setting unpack alignment
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -127,6 +136,12 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 		
 	}
 
+	// Check for Text
+	Text* text = entity->GetText();
+	if (text != NULL) {
+		//this->RenderText(text, position.x, position.y);
+	}
+
 	// Check for BasicShapes
 	BasicShapes* basicShape = entity->GetBasicShape();
 	if (basicShape != NULL) {
@@ -156,7 +171,53 @@ void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* text
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 
+	glBindVertexArray(_SpriteVAO);
 	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES, blendcolor);
+	glBindVertexArray(0);
+}
+
+void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
+	Shader* shader = text->shader;
+	shader->Use();
+	//glUniform3f(glGetUniformLocation(shader->ID, "textColor"), text->color.r, text->color.g, text->color.b);
+	shader->SetVec3("textColor", (float)text->color.r / 255.0f, (float)text->color.g / 255.0f, (float)text->color.b / 255.0f);
+	shader->SetMat4("projection", _projectionMatrix);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(TextVAO);
+
+	// Iterate through all characters
+	std::string::const_iterator c;
+	for (c = text->text.begin(); c != text->text.end(); c++) {
+		Character ch = text->font->Characters[*c];
+
+		GLfloat xpos = x + ch.Bearing.x;
+		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y);
+
+		GLfloat w = ch.Size.x;
+		GLfloat h = ch.Size.y;
+		// Update VBO for each character
+		GLfloat vertices[6][4] = {
+		{xpos,     ypos + h,   0.0, 0.0},
+		{xpos,     ypos,       0.0, 1.0},
+		{xpos + w, ypos,       1.0, 1.0},
+
+		{xpos,     ypos + h,   0.0, 0.0},
+		{xpos + w, ypos,       1.0, 1.0},
+		{xpos + w, ypos + h,   1.0, 0.0}
+		};
+		// Render glyph texture over quad
+		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		// Update content of VBO memory
+		glBindBuffer(GL_ARRAY_BUFFER, TextVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Render quad
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		x += (ch.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
+	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape) {
@@ -166,7 +227,9 @@ void Renderer::RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape) 
 
 	RGBAColor color = basicShape->color;
 
+	glBindVertexArray(_SpriteVAO);
 	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES, color);
+	glBindVertexArray(0);
 }
 
 void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode, RGBAColor blendcolor) {

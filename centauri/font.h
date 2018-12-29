@@ -22,9 +22,6 @@ public:
 	virtual ~Font();
 
 	std::map<char, Character> Characters;
-
-private:
-	
 };
 
 #endif

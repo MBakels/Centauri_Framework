@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "sprite.h"
+#include "text.h"
 #include "basicshapes.h"
 #include "vectorx.h"
 #include "input.h"
@@ -39,6 +40,11 @@ public:
 	void AddSpriteSheet(const std::string& filename, int horizontal, int vertical);
 	void DeleteSprite();
 
+	// Text
+	Text* GetText() { return _text; };
+	void AddText(std::string text, Font* font);
+	void DeleteText();
+
 	// Basic shapes
 	BasicShapes* GetBasicShape() { return _basicShape; };
 	BasicShapes* AddBasicShape();
@@ -51,7 +57,7 @@ public:
 
 private:
 	// Parent and child
-	GameObject* _parent;
+	GameObject * _parent;
 	std::vector<GameObject*> _children;
 
 	// Input
@@ -59,6 +65,9 @@ private:
 
 	// Sprite
 	Sprite* _sprite;
+
+	// Text
+	Text* _text;
 
 	// Basic shape
 	BasicShapes* _basicShape;

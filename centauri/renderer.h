@@ -44,7 +44,8 @@ public:
 	GLFWwindow* GetWindow() { return _window; };
 
 private:
-	unsigned int _VAO;
+	GLuint _SpriteVAO;
+	GLuint TextVAO, TextVBO;
 
 	ResourceManager _resourcemanager;
 
@@ -60,6 +61,8 @@ private:
 	void RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
 
 	void RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* texture);
+
+	void RenderText(Text* text, GLfloat x, GLfloat y);
 
 	void RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape);
 
