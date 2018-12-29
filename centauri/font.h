@@ -18,7 +18,7 @@ struct Character {
 
 class Font {
 public:
-	Font(const char* fontPath, int fontSize = 20, int numberOfCharactersToLoad = 128);
+	Font(const char* fontPath, int fontSize = 48, int numberOfCharactersToLoad = 128);
 	virtual ~Font();
 
 	std::map<char, Character> Characters;

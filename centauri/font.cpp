@@ -46,7 +46,7 @@ Font::Font(const char* fontPath, int fontSize, int numberOfCharactersToLoad) {
 		};
 		Characters.insert(std::pair<GLchar, Character>(c, character));
 	}
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 }

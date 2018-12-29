@@ -45,7 +45,7 @@ public:
 
 private:
 	GLuint _SpriteVAO;
-	GLuint TextVAO, TextVBO;
+	GLuint _TextVAO, _TextVBO;
 
 	ResourceManager _resourcemanager;
 

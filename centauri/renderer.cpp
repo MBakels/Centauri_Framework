@@ -69,12 +69,14 @@ int Renderer::Init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	
+	// Sprite VAO
 	glGenVertexArrays(1, &_SpriteVAO);
 
-	glGenVertexArrays(1, &TextVAO);
-	glGenBuffers(1, &TextVBO);
-	glBindVertexArray(TextVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, TextVBO);
+	// Text VAO and VBO
+	glGenVertexArrays(1, &_TextVAO);
+	glGenBuffers(1, &_TextVBO);
+	glBindVertexArray(_TextVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _TextVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -139,7 +141,7 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	// Check for Text
 	Text* text = entity->GetText();
 	if (text != NULL) {
-		//this->RenderText(text, position.x, position.y);
+		this->RenderText(text, position.x, position.y);
 	}
 
 	// Check for BasicShapes
@@ -183,7 +185,7 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 	shader->SetVec3("textColor", (float)text->color.r / 255.0f, (float)text->color.g / 255.0f, (float)text->color.b / 255.0f);
 	shader->SetMat4("projection", _projectionMatrix);
 	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(TextVAO);
+	glBindVertexArray(_TextVAO);
 
 	// Iterate through all characters
 	std::string::const_iterator c;
@@ -208,8 +210,9 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 		// Render glyph texture over quad
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 		// Update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, TextVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, _TextVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		// Render quad
 		glDrawArrays(GL_TRIANGLES, 0, 6);
