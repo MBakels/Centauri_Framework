@@ -8,10 +8,7 @@
 #include <glm/gtx/euler_angles.hpp>
 
 #include "resourcemanager.h"
-#include "sprite.h"
 #include "shader.h"
-#include "camera.h"
-#include "gameobject.h"
 #include "scene.h"
 
 struct TransparentRenderable {

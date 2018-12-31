@@ -11,8 +11,7 @@
 
 class Text {
 public:
-	Text(std::string text, std::string fontPath, RGBAColor textColor = WHITE);
-	Text(std::string text, Font* font, RGBAColor textColor = WHITE);
+	Text(std::string text, std::string fontPath, int fontSize, RGBAColor textColor);
 	virtual ~Text();
 
 	std::string Vertexshader() { return _vertexshader; };
@@ -23,8 +22,8 @@ public:
 
 	std::string text;
 	RGBAColor color;
-	Font* font;
-	Shader* shader;
+	std::string fontPath;
+	int fontSize;
 
 private:
 	std::string _vertexshader;

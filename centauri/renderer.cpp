@@ -68,7 +68,7 @@ int Renderer::Init() {
 	// Enable blending
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	
+
 	// Sprite VAO
 	glGenVertexArrays(1, &_SpriteVAO);
 
@@ -105,7 +105,7 @@ void Renderer::RenderScene(Scene* scene) {
 		this->RenderSprite(tr.modelMatrix, tr.sprite, tr.texture);
 	}
 	transparentRenderableSpriteList.clear();
-	
+
 	glfwSwapBuffers(_window); // Swap buffers
 }
 
@@ -131,11 +131,9 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 		if (texture->Depth() == 4) {
 			float distance = (camera->position.z - position.z);
 			transparentRenderableSpriteList[distance] = TransparentRenderable(modelMatrix, sprite, texture);
-		}
-		else {
+		} else {
 			this->RenderSprite(modelMatrix, sprite, texture);
 		}
-		
 	}
 
 	// Check for Text
@@ -159,7 +157,6 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 }
 
 void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* texture) {
-	//Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
 	if (sprite->size.x == 0) { sprite->size.x = texture->Width() * sprite->uvdim.x; }
 	if (sprite->size.y == 0) { sprite->size.y = texture->Height() * sprite->uvdim.y; }
 
@@ -179,40 +176,40 @@ void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* text
 }
 
 void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
-	Shader* shader = text->shader;
+	Shader* shader = _resourcemanager.GetShader(text->Vertexshader().c_str(), text->Fragmentshader().c_str());
 	shader->Use();
-	//glUniform3f(glGetUniformLocation(shader->ID, "textColor"), text->color.r, text->color.g, text->color.b);
 	shader->SetVec3("textColor", (float)text->color.r / 255.0f, (float)text->color.g / 255.0f, (float)text->color.b / 255.0f);
 	shader->SetMat4("projection", _projectionMatrix);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(_TextVAO);
 
+	Font* font = _resourcemanager.GetFont(text->fontPath, text->fontSize);
 	// Iterate through all characters
 	std::string::const_iterator c;
 	for (c = text->text.begin(); c != text->text.end(); c++) {
-		Character ch = text->font->Characters[*c];
+		Character ch = font->Characters[*c];
 
 		GLfloat xpos = x + ch.Bearing.x;
-		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y);
+		GLfloat ypos = y - ch.Bearing.y;
 
 		GLfloat w = ch.Size.x;
 		GLfloat h = ch.Size.y;
 		// Update VBO for each character
 		GLfloat vertices[6][4] = {
-		{xpos,     ypos + h,   0.0, 0.0},
-		{xpos,     ypos,       0.0, 1.0},
-		{xpos + w, ypos,       1.0, 1.0},
+		{xpos,     ypos,       0.0, 0.0},
+		{xpos,     ypos + h,   0.0, 1.0},
+		{xpos + w, ypos + h,   1.0, 1.0},
 
-		{xpos,     ypos + h,   0.0, 0.0},
-		{xpos + w, ypos,       1.0, 1.0},
-		{xpos + w, ypos + h,   1.0, 0.0}
+		{xpos + w, ypos + h,   1.0, 1.0},
+		{xpos + w, ypos,       1.0, 0.0},
+		{xpos,     ypos,       0.0, 0.0}
+
 		};
 		// Render glyph texture over quad
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 		// Update content of VBO memory
 		glBindBuffer(GL_ARRAY_BUFFER, _TextVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		// Render quad
 		glDrawArrays(GL_TRIANGLES, 0, 6);

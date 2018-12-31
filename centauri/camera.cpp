@@ -17,7 +17,7 @@ Camera::~Camera() {
 }
 
 void Camera::Orthogonal() {
-	_projectionMatrix = glm::ortho(0.0f, (float)SWIDTH, (float)SHEIGHT, 0.0f, 0.1f, 200.0f);
+	_projectionMatrix = glm::ortho(0.0f, (float)SWIDTH, (float)SHEIGHT, 0.0f, 0.0f, 200.0f);
 }
 
 void Camera::UpdateCamera() {

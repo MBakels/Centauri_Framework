@@ -16,16 +16,16 @@ ResourceManager::~ResourceManager() {
 	}
 	_shaders.clear();
 
-	std::cout << "----- Delete Textures -----" << std::endl;
-	std::map<std::string, Texture*>::iterator text_it;
-	for (text_it = _textures.begin(); text_it != _textures.end(); ++text_it) {
-		if (text_it->second != NULL) {
-			DeleteTexture(text_it->first);
+	std::cout << "----- Deleting Textures -----" << std::endl;
+	std::map<std::string, Texture*>::iterator texture_it;
+	for (texture_it = _textures.begin(); texture_it != _textures.end(); ++texture_it) {
+		if (texture_it->second != NULL) {
+			DeleteTexture(texture_it->first);
 		}
 	}
 	_textures.clear();
 
-	std::cout << "----- Delete Meshes -----" << std::endl;
+	std::cout << "----- Deleting Meshes -----" << std::endl;
 	std::map<std::string, Mesh*>::iterator mesh_it;
 	for (mesh_it = _meshes.begin(); mesh_it != _meshes.end(); ++mesh_it) {
 		if (mesh_it->second != NULL) {
@@ -34,16 +34,21 @@ ResourceManager::~ResourceManager() {
 	}
 	_meshes.clear();
 
+	std::cout << "----- Deleting Fonts -----" << std::endl;
+	std::map<std::string, Font*>::iterator font_it;
+	for (font_it = _fonts.begin(); font_it != _fonts.end(); ++font_it) {
+		if (font_it->second != NULL) {
+			DeleteFont(font_it->first);
+		}
+	}
+	_fonts.clear();
+
 	std::cout << "##### ResourceManager cleanup is done #####" << std::endl;
 }
 
 // Shaders
 Shader* ResourceManager::GetShader(const std::string& vs, const std::string& fs) {
-	std::string filename;
-	filename = vs;
-	std::string tmp("_");
-	filename.append(tmp);
-	filename.append(fs);
+	std::string filename = vs + "_" + fs;
 	if (_shaders[filename] != NULL) {
 		return _shaders[filename];
 	} else {
@@ -59,13 +64,13 @@ void ResourceManager::DeleteShader(const std::string& shadername) {
 }
 
 // Textures
-Texture* ResourceManager::GetTexture(const std::string& filename, int filter, int wrap) {
-	if (_textures[filename] != NULL) {
-		return _textures[filename];
+Texture* ResourceManager::GetTexture(const std::string& filePath, int filter, int wrap) {
+	if (_textures[filePath] != NULL) {
+		return _textures[filePath];
 	} else {
 		Texture* tex = new Texture();
-		tex->LoadImageFromDisk(filename, filter, wrap);
-		_textures[filename] = tex;
+		tex->LoadImageFromDisk(filePath, filter, wrap);
+		_textures[filePath] = tex;
 		return tex;
 	}
 }
@@ -98,4 +103,21 @@ Mesh* ResourceManager::GetMesh(int width, int height, float pivotx, float pivoty
 void ResourceManager::DeleteMesh(const std::string& meshname) {
 	delete _meshes[meshname];
 	_meshes[meshname] = NULL;
+}
+
+// Fonts
+Font* ResourceManager::GetFont(const std::string& filePath, int fontSize) {
+	std::string filename = filePath + "_" + std::to_string(fontSize);
+	if (_fonts[filename] != NULL) {
+		return _fonts[filename];
+	} else {
+		Font* font = new Font(filePath.c_str(), fontSize);
+		_fonts[filename] = font;
+		return font;
+	}
+}
+
+void ResourceManager::DeleteFont(const std::string& fontname) {
+	delete _fonts[fontname];
+	_fonts[fontname] = NULL;
 }

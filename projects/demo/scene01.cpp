@@ -2,8 +2,6 @@
 #include <sstream>
 #include "scene01.h"
 
-#include "font.h"
-
 Scene01::Scene01() : MasterScene() {
 	woodObj = new GameObject();
 	woodObj->AddSprite("assets/container.tga");
@@ -31,14 +29,10 @@ Scene01::Scene01() : MasterScene() {
 	AddChild(kingkongObj);
 	AddChild(grassObj);
 
-	Font* font = new Font("fonts/acari-sans/AcariSans-Regular.ttf");
-	GameObject* textTest = new GameObject();
-	//textTest->AddSprite("assets/pencils.tga");
-	//textTest->GetSprite()->size = Point2(100, 20);
-	textTest->position = Vector3(80, 80, 1);
-	textTest->AddText("testing", font);
-	AddChild(textTest);
-
+	sceneText = new GameObject();
+	sceneText->position = Vector3(10, 30, 1);
+	sceneText->AddText("Demo scene 01 | Sprites and depthbuffer demo", "fonts/acari-sans/AcariSans-Regular.ttf", 24);
+	AddChild(sceneText);
 }
 
 Scene01::~Scene01() {
@@ -46,10 +40,12 @@ Scene01::~Scene01() {
 	RemoveChild(pencilsObj);
 	RemoveChild(kingkongObj);
 	RemoveChild(grassObj);
+	RemoveChild(sceneText);
 	delete woodObj;
 	delete pencilsObj;
 	delete kingkongObj;
 	delete grassObj;
+	delete sceneText;
 }
 
 void Scene01::Update(float deltaTime) {

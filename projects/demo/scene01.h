@@ -15,6 +15,7 @@ private:
 	GameObject* pencilsObj;
 	GameObject* kingkongObj;
 	GameObject* grassObj;
+	GameObject* sceneText;
 };
 
 #endif

@@ -16,6 +16,7 @@ GameObject::GameObject() {
 GameObject::~GameObject() {
 	DeleteSprite();
 	DeleteBasicShape();
+	DeleteText();
 }
 
 void GameObject::Update(float deltaTime) {
@@ -87,9 +88,9 @@ void GameObject::DeleteSprite() {
 }
 
 // Text
-void GameObject::AddText(std::string text, Font* font) {
+void GameObject::AddText(std::string text, std::string fontPath, int fontSize, RGBAColor textColor) {
 	DeleteText();
-	_text = new Text(text, font);
+	_text = new Text(text, fontPath, fontSize, textColor);
 }
 
 void GameObject::DeleteText() {
