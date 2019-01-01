@@ -1,7 +1,6 @@
 #include "core.h"
 
 Core::Core() {
-	_deltaTime = 0;
 	_running = true;
 }
 
@@ -10,14 +9,14 @@ Core::~Core() {
 }
 
 void Core::Run(Scene* scene) {
-	// update our _deltaTime
-	CalculateDeltaTime();
+	// Update Time
+	Time::Update();
 
 	// Input
 	Singleton<Input>::Instance()->UpdateInput(_renderer.GetWindow());
 
 	// Update current Scene
-	scene->UpdateScene((float)_deltaTime);
+	scene->UpdateScene();
 
 	// Render Scene
 	_renderer.RenderScene(scene);
@@ -25,6 +24,7 @@ void Core::Run(Scene* scene) {
 	if (glfwWindowShouldClose(_renderer.GetWindow()) == 1) { _running = false; }
 }
 
+/*
 void Core::ShowFrameRate(float numsecs) {
 	static int frames = 0;
 	static double time = 0;
@@ -37,12 +37,4 @@ void Core::ShowFrameRate(float numsecs) {
 		time = 0;
 	}
 }
-
-double Core::CalculateDeltaTime() {
-	static double lastTime = glfwGetTime();
-	double startTime = glfwGetTime();
-	_deltaTime = startTime - lastTime;
-	lastTime = startTime;
-
-	return _deltaTime;
-}
+*/

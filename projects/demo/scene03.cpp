@@ -26,6 +26,6 @@ Scene03::~Scene03() {
 	delete circle;
 }
 
-void Scene03::Update(float deltaTime) {
-	MasterScene::Update(deltaTime);
+void Scene03::Update() {
+	MasterScene::Update();
 }

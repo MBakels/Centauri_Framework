@@ -20,7 +20,7 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	virtual void Update(float deltaTime);
+	virtual void Update();
 
 	// Children
 	void AddChild(GameObject* child);

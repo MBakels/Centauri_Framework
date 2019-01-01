@@ -10,7 +10,7 @@ MasterScene::~MasterScene() {
 
 }
 
-void MasterScene::Update(float deltaTime) {
+void MasterScene::Update() {
 	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
 		GetInput()->ExitApplication();
 	}

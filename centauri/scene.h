@@ -11,10 +11,10 @@ public:
 
 	Camera* GetCamera() { return _camera; };
 
-	void UpdateScene(float deltaTime);
+	void UpdateScene();
 
 private:
-	void UpdateGameObject(GameObject* gameObject, float deltaTime);
+	void UpdateGameObject(GameObject* gameObject);
 
 	Camera* _camera;
 };

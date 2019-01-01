@@ -86,6 +86,8 @@ add_library(centauri
 	centauri/text.cpp
 	centauri/font.h
 	centauri/font.cpp
+	centauri/math/time.h
+	centauri/math/time.cpp
 )
 
 file(

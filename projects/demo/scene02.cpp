@@ -32,6 +32,6 @@ Scene02::~Scene02() {
 	delete triangle;
 }
 
-void Scene02::Update(float deltaTime) {
-	MasterScene::Update(deltaTime);
+void Scene02::Update() {
+	MasterScene::Update();
 }

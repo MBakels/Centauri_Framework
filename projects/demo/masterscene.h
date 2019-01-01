@@ -8,7 +8,7 @@ public:
 	MasterScene();
 	virtual ~MasterScene();
 
-	virtual void Update(float deltaTime);
+	virtual void Update();
 
 	static int activescene;
 };

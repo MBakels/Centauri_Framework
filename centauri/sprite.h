@@ -8,13 +8,14 @@
 #include "config.h"
 #include "pointx.h"
 #include "centauri/color.h"
+#include "math/time.h"
 
 class Sprite {
 public:
 	Sprite(std::string image_path, float pivotx = 0.5f, float pivoty = 0.5f, float uvwidth = 1.0f, float uvheight = 1.0f, int filter = DEFAULTFILTER, int wrap = DEFAULTWRAP);
 	virtual ~Sprite();
 
-	void Update(float deltaTime);
+	void Update();
 
 	std::string GetTexture() { return _texture; };
 

@@ -30,9 +30,9 @@ Sprite::~Sprite() {
 
 }
 
-void Sprite::Update(float deltaTime) {
+void Sprite::Update() {
 	if (_animated) {
-		_time += deltaTime;
+		_time += Time::DeltaTime();
 		if (1.0f / _fps < _time) {
 			Frame(_frame + 1);
 			_time = 0;

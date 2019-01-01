@@ -19,8 +19,8 @@ GameObject::~GameObject() {
 	DeleteText();
 }
 
-void GameObject::Update(float deltaTime) {
-	if (_sprite != NULL) _sprite->Update(deltaTime);
+void GameObject::Update() {
+	if (_sprite != NULL) _sprite->Update();
 }
 
 // Children

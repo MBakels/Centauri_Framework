@@ -8,7 +8,7 @@ public:
 	Scene02();
 	virtual ~Scene02();
 
-	virtual void Update(float deltaTime);
+	virtual void Update();
 
 private:
 	GameObject* circle10;

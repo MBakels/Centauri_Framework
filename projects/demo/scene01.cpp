@@ -48,6 +48,6 @@ Scene01::~Scene01() {
 	delete sceneText;
 }
 
-void Scene01::Update(float deltaTime) {
-	MasterScene::Update(deltaTime);
+void Scene01::Update() {
+	MasterScene::Update();
 }

@@ -19,18 +19,13 @@ public:
 
 	void Run(Scene* scene);
 
-	float DeltaTime() { return (float)_deltaTime; };
-
-	void ShowFrameRate(float numsecs);
+	//void ShowFrameRate(float numsecs);
 
 	bool IsRunning() { return _running; };
 
 private:
 	Renderer _renderer;
-	double _deltaTime;
 	bool _running;
-
-	double CalculateDeltaTime();
 
 };
 

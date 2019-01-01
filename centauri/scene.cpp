@@ -8,21 +8,21 @@ Scene::~Scene() {
 	delete _camera;
 }
 
-void Scene::UpdateScene(float deltaTime) {
+void Scene::UpdateScene() {
 	// Update camera in the scene
 	_camera->UpdateCamera();
 
 	// Update all game objects in scene
-	this->UpdateGameObject(this, deltaTime);
+	this->UpdateGameObject(this);
 }
 
-void Scene::UpdateGameObject(GameObject* gameObject, float deltaTime) {
-	gameObject->Update(deltaTime); // Update self
+void Scene::UpdateGameObject(GameObject* gameObject) {
+	gameObject->Update(); // Update self
 
 	// Update children
 	std::vector<GameObject*> children = gameObject->Children();
 	std::vector<GameObject*>::iterator child;
 	for (child = children.begin(); child != children.end(); child++) {
-		this->UpdateGameObject(*child, deltaTime);
+		this->UpdateGameObject(*child);
 	}
 }
