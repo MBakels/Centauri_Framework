@@ -161,6 +161,7 @@ void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* text
 	if (sprite->size.y == 0) { sprite->size.y = texture->Height() * sprite->uvdim.y; }
 
 	Shader* shader = _resourcemanager.GetShader(sprite->Vertexshader().c_str(), sprite->Fragmentshader().c_str());
+	shader->Use();
 	shader->SetVec2("UVoffset", sprite->uvoffset.x, sprite->uvoffset.y); // Set uvoffset
 
 	Mesh* mesh = _resourcemanager.GetMesh(sprite->size.x, sprite->size.y, sprite->pivot.x, sprite->pivot.y, sprite->uvdim.x, sprite->uvdim.y, 0);
@@ -183,15 +184,27 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(_TextVAO);
 
+	// Number of enter characters passed in text
+	int enterCounter = 0;
+	// Start point of new line of text
+	int startPoint = x;
+
 	Font* font = _resourcemanager.GetFont(text->fontPath, text->fontSize);
 	// Iterate through all characters
 	std::string::const_iterator c;
 	for (c = text->text.begin(); c != text->text.end(); c++) {
+		//If enter char, start new line
+		if (*c == '\n') {
+			enterCounter++;
+			x = startPoint;
+			continue;
+		}
+		//Get character from font
 		Character ch = font->Characters[*c];
-
+		//Set position
 		GLfloat xpos = x + ch.Bearing.x;
-		GLfloat ypos = y - ch.Bearing.y;
-
+		GLfloat ypos = y - ch.Bearing.y + enterCounter * text->fontSize;
+		//Get witch and height
 		GLfloat w = ch.Size.x;
 		GLfloat h = ch.Size.y;
 		// Update VBO for each character
@@ -222,6 +235,7 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 
 void Renderer::RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape) {
 	Shader* shader = _resourcemanager.GetShader(basicShape->Vertexshader().c_str(), basicShape->Fragmentshader().c_str());
+	shader->Use();
 
 	Mesh* mesh = _resourcemanager.GetMesh(basicShape->size.x, basicShape->size.y, basicShape->pivot.x, basicShape->pivot.y, basicShape->uvdim.x, basicShape->uvdim.y, basicShape->segments);
 
@@ -233,8 +247,6 @@ void Renderer::RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape) 
 }
 
 void Renderer::RenderMesh(const glm::mat4 modelMatrix, Shader* shader, Mesh* mesh, GLuint mode, RGBAColor blendcolor) {
-	shader->Use(); // Use the shader
-
 	glm::mat4 MVP = _projectionMatrix * _viewMatrix * modelMatrix; // Create MVP matrix
 
 	shader->SetMat4("MVP", MVP); // Send transformation to the currently bound shader

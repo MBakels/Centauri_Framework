@@ -42,7 +42,7 @@ public:
 
 	// Text
 	Text* GetText() { return _text; };
-	void AddText(std::string text, std::string fontPath, int fontSize = 48, RGBAColor textColor = WHITE);
+	void AddText(std::string text, std::string fontPath, int fontSize = 24, RGBAColor textColor = WHITE);
 	void DeleteText();
 
 	// Basic shapes

@@ -11,8 +11,8 @@ public:
 	virtual void Update();
 
 private:
-	GameObject* circle;
-	GameObject* square;
+	GameObject* animatedFace;
+	GameObject* sceneText;
 };
 
 #endif

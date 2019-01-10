@@ -14,6 +14,7 @@ private:
 	GameObject* circle10;
 	GameObject* circle50;
 	GameObject* triangle;
+	GameObject* sceneText;
 };
 
 #endif

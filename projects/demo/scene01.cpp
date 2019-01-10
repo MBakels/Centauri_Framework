@@ -31,7 +31,7 @@ Scene01::Scene01() : MasterScene() {
 
 	sceneText = new GameObject();
 	sceneText->position = Vector3(10, 30, 1);
-	sceneText->AddText("Demo scene 01 | Sprites and depthbuffer demo", "fonts/acari-sans/AcariSans-Regular.ttf", 24);
+	sceneText->AddText("Demo scene 01 | Sprites and depthbuffer demo\nSwitch scenes with the [ ] keys", "fonts/acari-sans/AcariSans-Regular.ttf");
 	AddChild(sceneText);
 }
 

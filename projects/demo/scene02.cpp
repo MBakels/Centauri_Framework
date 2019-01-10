@@ -21,15 +21,22 @@ Scene02::Scene02() : MasterScene() {
 	AddChild(circle10);
 	AddChild(circle50);
 	AddChild(triangle);
+
+	sceneText = new GameObject();
+	sceneText->position = Vector3(10, 30, 1);
+	sceneText->AddText("Demo scene 02 | BasicShape demo\nSwitch scenes with the [ ] keys", "fonts/acari-sans/AcariSans-Regular.ttf");
+	AddChild(sceneText);
 }
 
 Scene02::~Scene02() {
 	RemoveChild(circle10);
 	RemoveChild(circle50);
 	RemoveChild(triangle);
+	RemoveChild(sceneText);
 	delete circle10;
 	delete circle50;
 	delete triangle;
+	delete sceneText;
 }
 
 void Scene02::Update() {
