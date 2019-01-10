@@ -12,6 +12,6 @@ EnemyShip::~EnemyShip() {
 
 }
 
-void EnemyShip::Update(float deltaTime) {
-	position.x -= speed * deltaTime;
+void EnemyShip::Update() {
+	position.x -= speed * Time::DeltaTime();
 }

@@ -12,6 +12,6 @@ Laser::~Laser() {
 	
 }
 
-void Laser::Update(float deltaTime) {
-	position.x += speed * deltaTime;
+void Laser::Update() {
+	position.x += speed * Time::DeltaTime();
 }

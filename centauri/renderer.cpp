@@ -129,7 +129,7 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 		// Check for transparent sprites and puth them in a list(they need to be rendered last)
 		Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
 		if (texture->Depth() == 4) {
-			float distance = (camera->position.z - position.z);
+			float distance = Point::Distance(camera->position, entity->position);
 			transparentRenderableSpriteList[distance] = TransparentRenderable(modelMatrix, sprite, texture);
 		} else {
 			this->RenderSprite(modelMatrix, sprite, texture);

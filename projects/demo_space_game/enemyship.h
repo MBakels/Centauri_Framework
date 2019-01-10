@@ -8,7 +8,7 @@ public:
 	EnemyShip(Point2 pos);
 	virtual ~EnemyShip();
 
-	virtual void Update(float deltaTime);
+	virtual void Update();
 
 private:
 	float speed;

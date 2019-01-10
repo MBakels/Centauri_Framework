@@ -11,7 +11,7 @@ public:
 	GameScene();
 	virtual ~GameScene();
 
-	virtual void Update(float deltaTime);
+	virtual void Update();
 
 private:
 	PlayerShip* player;
@@ -21,7 +21,7 @@ private:
 
 	float time;
 
-	void SpawnEnemy(float deltaTime);
+	void SpawnEnemy();
 	void CheckCollisions();
 };
 
