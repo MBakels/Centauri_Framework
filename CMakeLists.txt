@@ -6,6 +6,7 @@ project (Centauri_Framework)
 ############################################################################
 OPTION(MAKE_DEMO "Make Framework demo (tests) application" ON)
 OPTION(MAKE_SPACE_GAME_DEMO "Make Framework demo game" ON)
+OPTION(MAKE_PINGUIN_WARFARE "Make the game" ON)
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
 	message( FATAL_ERROR "Please select another Build Directory ! (and give it a clever name, like 'build')" )
@@ -145,6 +146,29 @@ if(MAKE_SPACE_GAME_DEMO)
 	
 	file(
 		COPY projects/demo_space_game/assets
+		DESTINATION ${CMAKE_BINARY_DIR}
+	)
+
+endif()
+
+# Pinguin warfare
+if(MAKE_PINGUIN_WARFARE)
+	add_executable(pinguin_warfare
+		projects/pinguin_warfare/main.cpp
+		projects/pinguin_warfare/gamescene.cpp
+		projects/pinguin_warfare/gamescene.h
+		projects/pinguin_warfare/map.cpp
+		projects/pinguin_warfare/map.h
+		projects/pinguin_warfare/tile.cpp
+		projects/pinguin_warfare/tile.h
+	)
+	
+	target_link_libraries(pinguin_warfare
+		${ALL_GRAPHICS_LIBS}
+	)
+	
+	file(
+		COPY projects/pinguin_warfare/assets
 		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 
