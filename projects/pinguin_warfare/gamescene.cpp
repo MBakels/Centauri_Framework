@@ -17,17 +17,13 @@ GameScene::GameScene() : Scene() {
 		2,1,1,1,1,1,1,1,1,2,
 		2,2,2,2,2,2,2,2,2,2
 	};
-	/*
-	std::vector<int> tiles;
-	for (int i = 0; i < mapSizeX * mapSizeY; i++) {
-		tiles.push_back(1);
-	}
-	*/
+
 	map = new Map(mapSizeX, mapSizeY, tiles);
 	AddChild(map);
 }
 
 GameScene::~GameScene() {
+	RemoveChild(map);
 	delete map;
 }
 

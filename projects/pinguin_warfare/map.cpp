@@ -14,10 +14,27 @@ Map::Map(int width, int height, std::vector<int> tiles) : GameObject() {
 		}
 		this->tiles.push_back(tempVec);
 	}
+
+	player = new Player();
+	player->position = this->tiles[3][5]->position;
+	player->position.z = 5;
+	AddChild(player);
 }
 
 Map::~Map() {
+	RemoveChild(player);
+	delete player;
 
+	std::vector<std::vector<Tile*>>::iterator tilesRowIt;
+	std::vector<Tile*>::iterator tilesColIt;
+	for (tilesRowIt = tiles.begin(); tilesRowIt != tiles.end(); tilesRowIt++) {
+		for (tilesColIt = tilesRowIt->begin(); tilesColIt != tilesRowIt->end(); tilesColIt++) {
+			RemoveChild((*tilesColIt));
+			delete (*tilesColIt);
+		}
+		tilesRowIt->clear();
+	}
+	tiles.clear();
 }
 
 Point2 Map::GetMaxDistanceInDirectionTravelable(Point StartPos, Direction direction) {

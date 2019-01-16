@@ -161,6 +161,10 @@ if(MAKE_PINGUIN_WARFARE)
 		projects/pinguin_warfare/map.h
 		projects/pinguin_warfare/tile.cpp
 		projects/pinguin_warfare/tile.h
+		projects/pinguin_warfare/pinguin.cpp
+		projects/pinguin_warfare/pinguin.h
+		projects/pinguin_warfare/player.cpp
+		projects/pinguin_warfare/player.h
 	)
 	
 	target_link_libraries(pinguin_warfare

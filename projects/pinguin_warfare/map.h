@@ -3,6 +3,7 @@
 
 #include "gameobject.h"
 #include "tile.h"
+#include "player.h"
 
 enum Direction {
 	North,
@@ -30,6 +31,8 @@ private:
 	int height;
 
 	std::vector< std::vector<Tile*> > tiles;
+
+	Player* player;
 
 	Point2 GetTilePosition(Point position);
 
