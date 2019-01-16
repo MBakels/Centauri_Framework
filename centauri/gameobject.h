@@ -14,6 +14,7 @@
 #include "vectorx.h"
 #include "input.h"
 #include "singleton.h"
+#include "camera.h"
 
 class GameObject {
 public:

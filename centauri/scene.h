@@ -2,7 +2,6 @@
 #define SCENE_H
 
 #include "gameobject.h"
-#include "camera.h"
 
 class Scene : public GameObject {
 public:
