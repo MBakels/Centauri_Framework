@@ -15,6 +15,10 @@ Tile::Tile(int x, int y, int type) : GameObject() {
 			GetSprite()->Frame(3);
 			tileBehaviour = TileBehaviour::SlowDown;
 			break;
+		case 3:
+			GetSprite()->Frame(1);
+			tileBehaviour = TileBehaviour::Solid;
+			break;
 	}
 }
 

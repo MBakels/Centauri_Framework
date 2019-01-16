@@ -25,13 +25,13 @@ public:
 
 	Point2 GetMaxDistanceInDirectionTravelable(Point StartPos, Direction direction);
 
-	Point2 GetTilePosition(Point position);
-
 private:
 	int width;
 	int height;
 
 	std::vector< std::vector<Tile*> > tiles;
+
+	Point2 GetTilePosition(Point position);
 
 };
 

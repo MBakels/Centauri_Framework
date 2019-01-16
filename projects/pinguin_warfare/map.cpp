@@ -27,40 +27,43 @@ Point2 Map::GetMaxDistanceInDirectionTravelable(Point StartPos, Direction direct
 	do {
 		switch (direction) {
 			case Direction::North:
-				if (tiles[tilePos.x][tilePos.y - 1]->tileBehaviour == TileBehaviour::Solid) {
-					tiles[tilePos.x][tilePos.y]->GetSprite()->color.a = 130;
-					return tiles[tilePos.x][tilePos.y]->position;
-				}
+				if (tiles[tilePos.x][tilePos.y - 1]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.y -= 1;
 				break;
 			case Direction::NorthEast:
+				if (tiles[tilePos.x + 1][tilePos.y - 1]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.x += 1;
 				tilePos.y -= 1;
 				break;
 			case Direction::East:
+				if (tiles[tilePos.x + 1][tilePos.y]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.x += 1;
 				break;
 			case Direction::SouthEast:
+				if (tiles[tilePos.x + 1][tilePos.y + 1]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.x += 1;
 				tilePos.y += 1;
 				break;
 			case Direction::South:
+				if (tiles[tilePos.x][tilePos.y + 1]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.y += 1;
 				break;
 			case Direction::SouthWest:
+				if (tiles[tilePos.x - 1][tilePos.y + 1]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.x -= 1;
 				tilePos.y += 1;
 				break;
 			case Direction::West:
+				if (tiles[tilePos.x - 1][tilePos.y]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.x -= 1;
 				break;
 			case Direction::NorthWest:
+				if (tiles[tilePos.x - 1][tilePos.y - 1]->tileBehaviour == TileBehaviour::Solid) return tiles[tilePos.x][tilePos.y]->position;
 				tilePos.x -= 1;
 				tilePos.y -= 1;
 				break;
 		}
 		if (tiles[tilePos.x][tilePos.y]->tileBehaviour == TileBehaviour::SlowDown) {
-			tiles[tilePos.x][tilePos.y]->GetSprite()->color.a = 130;
 			return tiles[tilePos.x][tilePos.y]->position;
 		}
 	} while (tilePos.x < width && tilePos.y < height);
