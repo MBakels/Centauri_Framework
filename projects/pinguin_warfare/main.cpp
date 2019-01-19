@@ -1,18 +1,18 @@
 #include "core.h"
 
-#include "gamescene.h"
+#include "map.h"
 
 int main() {
 
 	Core core;
 
-	GameScene* gameScene = new GameScene();
+	Map* map = new Map("maps/test.m");
 
 	while (core.IsRunning()) {
-		core.Run(gameScene);
+		core.Run(map);
 	}
 
-	delete gameScene;
+	delete map;
 
 	return 0;
 }

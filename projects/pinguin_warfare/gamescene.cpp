@@ -18,7 +18,7 @@ GameScene::GameScene() : Scene() {
 		2,2,2,2,2,2,2,2,2,2
 	};
 
-	map = new Map(mapSizeX, mapSizeY, tiles);
+	//map = new Map(mapSizeX, mapSizeY, tiles);
 	AddChild(map);
 }
 

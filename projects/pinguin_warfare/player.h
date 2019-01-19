@@ -5,8 +5,10 @@
 
 class Player : public Pinguin {
 public:
-	Player();
+	Player(int xPos, int yPos);
 	virtual ~Player();
+
+	virtual void Update();
 
 private:
 

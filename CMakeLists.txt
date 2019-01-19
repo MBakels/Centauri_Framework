@@ -89,6 +89,8 @@ add_library(centauri
 	centauri/font.cpp
 	centauri/math/time.h
 	centauri/math/time.cpp
+	centauri/textfile.cpp
+	centauri/textfile.h
 )
 
 file(
@@ -155,8 +157,6 @@ endif()
 if(MAKE_PINGUIN_WARFARE)
 	add_executable(pinguin_warfare
 		projects/pinguin_warfare/main.cpp
-		projects/pinguin_warfare/gamescene.cpp
-		projects/pinguin_warfare/gamescene.h
 		projects/pinguin_warfare/map.cpp
 		projects/pinguin_warfare/map.h
 		projects/pinguin_warfare/tile.cpp
@@ -173,6 +173,11 @@ if(MAKE_PINGUIN_WARFARE)
 	
 	file(
 		COPY projects/pinguin_warfare/assets
+		DESTINATION ${CMAKE_BINARY_DIR}
+	)
+	
+	file(
+		COPY projects/pinguin_warfare/maps
 		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 

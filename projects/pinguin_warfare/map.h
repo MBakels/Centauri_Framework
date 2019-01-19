@@ -1,9 +1,10 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "gameobject.h"
+#include "scene.h"
 #include "tile.h"
 #include "player.h"
+#include "textfile.h"
 
 enum Direction {
 	North,
@@ -16,13 +17,12 @@ enum Direction {
 	NorthWest
 };
 
-class Map : public GameObject {
+class Map : public Scene {
 public:
-	Map(int width, int height, std::vector<int> tiles);
+	Map(std::string filepath);
 	virtual ~Map();
 
-	int Width() { return width; }
-	int Height() { return height; }
+	virtual void Update();
 
 	Point2 GetMaxDistanceInDirectionTravelable(Point StartPos, Direction direction);
 
@@ -33,6 +33,8 @@ private:
 	std::vector< std::vector<Tile*> > tiles;
 
 	Player* player;
+
+	Vector2 GetDirection();
 
 	Point2 GetTilePosition(Point position);
 

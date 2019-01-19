@@ -19,8 +19,6 @@ public:
 
 	void Run(Scene* scene);
 
-	//void ShowFrameRate(float numsecs);
-
 	bool IsRunning() { return _running; };
 
 private:
