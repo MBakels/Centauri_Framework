@@ -69,8 +69,8 @@ void Map::Update() {
 		GetInput()->ExitApplication();
 	}
 	if (GetInput()->GetMouseDown(0)) {
-		GetDirection();
-		//GetMaxDistanceInDirectionTravelable(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()), Direction::North);
+		Vector2 direction = GetDirection();
+		Point2 tilePos = GetMaxDistanceInDirectionTravelable(Point2(player->x, player->y), direction);
 	}
 }
 
@@ -79,79 +79,47 @@ Vector2 Map::GetDirection() {
 	double mouseY = GetInput()->GetMouseY();
 	Vector2 playerPos = player->position + position;
 
-	double angle = atan2(mouseX - playerPos.x, playerPos.y - mouseY);
+	float angle = atan2(mouseX - playerPos.x, playerPos.y - mouseY);
 	if (angle < 0.0) angle += TWO_PI;
 	angle *= 180 / PI;
-	std::cout << angle << std::endl;
-	return Vector2(0, 0);
+
+	if (angle > 22.5f && angle <= 67.5f) {
+		// NorthEast
+		return Vector2(1, -1);
+	} else if (angle >= 67.5f && angle <= 112.5f) {
+		// East
+		return Vector2(1, 0);
+	} else if (angle >= 112.5f && angle <= 157.5f) {
+		// SouthEast
+		return Vector2(1, 1);
+	} else if (angle >= 157.5f && angle <= 202.5f) {
+		// South
+		return Vector2(0, 1);
+	} else if (angle >= 202.5f && angle <= 247.5f) {
+		// SouthWest
+		return Vector2(-1, 1);
+	} else if (angle >= 247.5f && angle <= 292.5f) {
+		// West
+		return Vector2(-1, 0);
+	} else if (angle >= 292.5f && angle <= 337.5f) {
+		// NorthWest
+		return Vector2(-1, -1);
+	} else {
+		// North
+		return Vector2(0, -1);
+	}
 }
 
-Point2 Map::GetMaxDistanceInDirectionTravelable(Point StartPos, Direction direction) {
-	Point2 tilePos = GetTilePosition(StartPos);
-	// If GetTilePosition returns (-1, -1) return fallback to avoid crash
-	if (tilePos == Point(-1, -1)) return tilePos;
-	Vector2 moveDirection;
-	switch (direction) {
-		case Direction::North:
-			moveDirection = Vector2(0, -1);
-			break;
-		case Direction::NorthEast:
-			moveDirection = Vector2(1, -1);
-			break;
-		case Direction::East:
-			moveDirection = Vector2(1, 0);
-			break;
-		case Direction::SouthEast:
-			moveDirection = Vector2(1, 1);
-			break;
-		case Direction::South:
-			moveDirection = Vector2(0, 1);
-			break;
-		case Direction::SouthWest:
-			moveDirection = Vector2(-1, 1);
-			break;
-		case Direction::West:
-			moveDirection = Vector2(1, 0);
-			break;
-		case Direction::NorthWest:
-			moveDirection = Vector2(-1, -1);
-			break;
-	}
-
+Point2 Map::GetMaxDistanceInDirectionTravelable(Point2 StartPos, Vector2 direction) {
 	do {
-		tilePos += moveDirection;
-		if (tiles[tilePos.x][tilePos.y]->tileBehaviour == TileBehaviour::SlowDown) {
-			tiles[tilePos.x][tilePos.y]->GetSprite()->color.a = 130;
-			return tiles[tilePos.x][tilePos.y]->position;
+		StartPos += direction;
+		if (tiles[StartPos.x][StartPos.y]->tileBehaviour == TileBehaviour::SlowDown) {
+			tiles[StartPos.x][StartPos.y]->GetSprite()->color.a = 130;
+			return tiles[StartPos.x][StartPos.y]->position;
 		}
-		if (tiles[tilePos.x + moveDirection.x][tilePos.y + moveDirection.y]->tileBehaviour == TileBehaviour::Solid) {
-			tiles[tilePos.x][tilePos.y]->GetSprite()->color.a = 130;
-			return tiles[tilePos.x][tilePos.y]->position;
+		if (tiles[StartPos.x + direction.x][StartPos.y + direction.y]->tileBehaviour == TileBehaviour::Solid) {
+			tiles[StartPos.x][StartPos.y]->GetSprite()->color.a = 130;
+			return tiles[StartPos.x][StartPos.y]->position;
 		}
-	} while (tilePos.x < width && tilePos.y < height);
-}
-
-Point2 Map::GetTilePosition(Point position) {
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			Tile* tile = tiles[x][y];
-			Point2 tilePos = tile->position;
-
-			int halfwidth = 32;
-			int halfheight = 32;
-			int left = tilePos.x - halfwidth;
-			int right = tilePos.x + halfwidth;
-			int top = tilePos.y - halfheight;
-			int bottom = tilePos.y + halfheight;
-
-			int checkPosX = position.x - this->position.x;
-			int checkPosY = position.y - this->position.y;
-
-			if (checkPosX > left && checkPosX < right && checkPosY > top && checkPosY < bottom) {
-				return Point2(tile->x, tile->y);
-			}
-		}
-	}
-	// fallback if no tile match found
-	return Point(-1, -1);
+	} while (StartPos.x < width && StartPos.y < height);
 }

@@ -8,6 +8,8 @@ public:
 	Pinguin();
 	virtual ~Pinguin();
 
+	int x, y;
+
 private:
 
 };

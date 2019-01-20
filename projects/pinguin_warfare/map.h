@@ -24,8 +24,6 @@ public:
 
 	virtual void Update();
 
-	Point2 GetMaxDistanceInDirectionTravelable(Point StartPos, Direction direction);
-
 private:
 	int width;
 	int height;
@@ -36,7 +34,7 @@ private:
 
 	Vector2 GetDirection();
 
-	Point2 GetTilePosition(Point position);
+	Point2 GetMaxDistanceInDirectionTravelable(Point2 StartPos, Vector2 direction);
 
 };
 
