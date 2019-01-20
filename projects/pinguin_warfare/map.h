@@ -34,7 +34,7 @@ private:
 
 	Vector2 GetDirection();
 
-	Point2 GetMaxDistanceInDirectionTravelable(Point2 StartPos, Vector2 direction);
+	Point2 GetTilePositionOfMaxReachableTileInDirection(Point2 StartPos, Vector2 direction);
 
 };
 

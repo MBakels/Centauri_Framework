@@ -8,8 +8,6 @@ public:
 	Player(int xPos, int yPos);
 	virtual ~Player();
 
-	virtual void Update();
-
 private:
 
 };

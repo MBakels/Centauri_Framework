@@ -68,9 +68,10 @@ void Map::Update() {
 	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
 		GetInput()->ExitApplication();
 	}
-	if (GetInput()->GetMouseDown(0)) {
+	if (GetInput()->GetMouseDown(0) && !player->IsMoving()) {
 		Vector2 direction = GetDirection();
-		Point2 tilePos = GetMaxDistanceInDirectionTravelable(Point2(player->x, player->y), direction);
+		Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(player->x, player->y), direction);
+		player->MoveTo(tilePos, direction);
 	}
 }
 
@@ -110,16 +111,17 @@ Vector2 Map::GetDirection() {
 	}
 }
 
-Point2 Map::GetMaxDistanceInDirectionTravelable(Point2 StartPos, Vector2 direction) {
+Point2 Map::GetTilePositionOfMaxReachableTileInDirection(Point2 StartPos, Vector2 direction) {
 	do {
 		StartPos += direction;
-		if (tiles[StartPos.x][StartPos.y]->tileBehaviour == TileBehaviour::SlowDown) {
-			tiles[StartPos.x][StartPos.y]->GetSprite()->color.a = 130;
-			return tiles[StartPos.x][StartPos.y]->position;
+		Tile* tile = tiles[StartPos.x][StartPos.y];
+		if (tile->tileBehaviour == TileBehaviour::SlowDown) {
+			tile->GetSprite()->color.a = 130;
+			return Point2(tile->x, tile->y);
 		}
 		if (tiles[StartPos.x + direction.x][StartPos.y + direction.y]->tileBehaviour == TileBehaviour::Solid) {
-			tiles[StartPos.x][StartPos.y]->GetSprite()->color.a = 130;
-			return tiles[StartPos.x][StartPos.y]->position;
+			tile->GetSprite()->color.a = 130;
+			return Point2(tile->x, tile->y);
 		}
 	} while (StartPos.x < width && StartPos.y < height);
 }

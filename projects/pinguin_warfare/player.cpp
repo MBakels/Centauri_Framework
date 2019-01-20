@@ -9,7 +9,3 @@ Player::Player(int xPos, int yPos) : Pinguin() {
 Player::~Player() {
 
 }
-
-void Player::Update() {
-	
-}
