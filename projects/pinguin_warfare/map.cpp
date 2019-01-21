@@ -1,6 +1,7 @@
 #include "map.h"
 
 Map::Map(std::string filepath) : Scene() {
+	srand(time(NULL));
 	std::vector<int> tiles;
 	TextFile textfile;
 
@@ -24,8 +25,16 @@ Map::Map(std::string filepath) : Scene() {
 			if (lineoftext[0] == 'p') {
 				int xPos, yPos;
 				sscanf(lineoftext.c_str(), "p %d %d", &xPos, &yPos);
-				player = new Player(xPos, yPos);
+				player = new Pinguin(xPos, yPos, 3);
 				AddChild(player);
+			}
+			// Enemy
+			if (lineoftext[0] == 'e') {
+				int xPos, yPos;
+				sscanf(lineoftext.c_str(), "e %d %d", &xPos, &yPos);
+				Pinguin* enemy = new Pinguin(xPos, yPos, 2);
+				enemys.push_back(enemy);
+				AddChild(enemy);
 			}
 		}
 		// Close the file
@@ -62,6 +71,13 @@ Map::~Map() {
 		tilesRowIt->clear();
 	}
 	tiles.clear();
+
+	std::vector<Pinguin*>::iterator enemysIt;
+	for (enemysIt = enemys.begin(); enemysIt != enemys.end(); enemysIt++) {
+		RemoveChild((*enemysIt));
+		delete (*enemysIt);
+	}
+	enemys.clear();
 }
 
 void Map::Update() {
@@ -71,8 +87,9 @@ void Map::Update() {
 	if (GetInput()->GetMouseDown(0) && !player->IsMoving()) {
 		Vector2 direction = GetDirection();
 		Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(player->x, player->y), direction);
-		player->MoveTo(tilePos, direction);
+		if (tilePos != Vector2(-1, -1)) player->MoveTo(tilePos, direction);
 	}
+	EnemyAI();
 }
 
 Vector2 Map::GetDirection() {
@@ -114,14 +131,47 @@ Vector2 Map::GetDirection() {
 Point2 Map::GetTilePositionOfMaxReachableTileInDirection(Point2 StartPos, Vector2 direction) {
 	do {
 		StartPos += direction;
+		if (!IsTileInBounds(StartPos)) return Vector2(-1, -1);
 		Tile* tile = tiles[StartPos.x][StartPos.y];
 		if (tile->tileBehaviour == TileBehaviour::SlowDown) {
-			tile->GetSprite()->color.a = 130;
+			//tile->GetSprite()->color.a = 130;
 			return Point2(tile->x, tile->y);
 		}
 		if (tiles[StartPos.x + direction.x][StartPos.y + direction.y]->tileBehaviour == TileBehaviour::Solid) {
-			tile->GetSprite()->color.a = 130;
+			//tile->GetSprite()->color.a = 130;
 			return Point2(tile->x, tile->y);
 		}
-	} while (StartPos.x < width && StartPos.y < height);
+
+	} while (true);
+}
+
+bool Map::IsTileInBounds(Point2 tilePos) {
+	if (tilePos.x >= width || tilePos.x < 0 || tilePos.y >= height || tilePos.y < 0) {
+		return false;
+	}
+	return true;
+}
+
+std::vector<Vector2> Map::GetPotentialMoveDirections(Point2 tilePos) {
+	std::vector<Vector2> potentialDirections;
+	for (int x = -1; x <= 1; x++) {
+		for (int y = -1; y <= 1; y++) {
+			if (x == 0 && y == 0) continue;
+			if (IsTileInBounds(Point2(tilePos.x + x, tilePos.y + y))) {
+				potentialDirections.push_back(Vector2(x, y));
+			}
+		}
+	}
+	return potentialDirections;
+}
+
+void Map::EnemyAI() {
+	for each (Pinguin* enemy in enemys) {
+		if (!enemy->IsMoving()) {
+			std::vector<Vector2> directions = GetPotentialMoveDirections(Point2(enemy->x, enemy->y));
+			Vector2 randomDirection = directions[rand() % directions.size()];
+			Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(enemy->x, enemy->y), randomDirection);
+			enemy->MoveTo(tilePos, randomDirection);
+		}
+	}
 }

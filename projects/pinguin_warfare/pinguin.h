@@ -5,7 +5,7 @@
 
 class Pinguin : public GameObject {
 public:
-	Pinguin();
+	Pinguin(int xPos, int yPos, int zPos);
 	virtual ~Pinguin();
 
 	virtual void Update();

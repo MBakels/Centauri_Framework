@@ -1,10 +1,13 @@
 #include "pinguin.h"
 
-Pinguin::Pinguin() : GameObject() {
+Pinguin::Pinguin(int xPos, int yPos, int zPos) : GameObject() {
 	AddSprite("assets/pinguin.png");
 	moveDirection = Vector2(0, 0);
 	targetPos = Point2(0, 0);
 	moveSpeed = 150;
+	position = Vector3(xPos * 64, yPos * 64, zPos);
+	x = xPos;
+	y = yPos;
 }
 
 Pinguin::~Pinguin() {
@@ -30,7 +33,7 @@ void Pinguin::MoveTo(Point2 tilePos, Vector2 direction) {
 	x = tilePos.x;
 	y = tilePos.y;
 	targetPos = tilePos * 64;
-	moveDirection = direction;
+	moveDirection = direction.getNormalized();
 }
 
 void Pinguin::TargetPosReached() {

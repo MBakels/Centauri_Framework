@@ -3,19 +3,8 @@
 
 #include "scene.h"
 #include "tile.h"
-#include "player.h"
+#include "pinguin.h"
 #include "textfile.h"
-
-enum Direction {
-	North,
-	NorthEast,
-	East,
-	SouthEast,
-	South,
-	SouthWest,
-	West,
-	NorthWest
-};
 
 class Map : public Scene {
 public:
@@ -29,12 +18,19 @@ private:
 	int height;
 
 	std::vector< std::vector<Tile*> > tiles;
+	std::vector<Pinguin*> enemys;
 
-	Player* player;
+	Pinguin* player;
 
 	Vector2 GetDirection();
 
 	Point2 GetTilePositionOfMaxReachableTileInDirection(Point2 StartPos, Vector2 direction);
+
+	bool IsTileInBounds(Point2 tilePos);
+
+	std::vector<Vector2> GetPotentialMoveDirections(Point2 tilePos);
+
+	void EnemyAI();
 
 };
 
