@@ -91,6 +91,8 @@ add_library(centauri
 	centauri/math/time.cpp
 	centauri/textfile.cpp
 	centauri/textfile.h
+	centauri/ui/button.cpp
+	centauri/ui/button.h
 )
 
 file(

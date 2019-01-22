@@ -5,11 +5,16 @@
 #include "tile.h"
 #include "pinguin.h"
 #include "textfile.h"
+#include "ui/button.h"
 
 class Map : public Scene {
 public:
 	Map(std::string filepath);
 	virtual ~Map();
+
+	void testlog() {
+		std::cout << "working" << std::endl;
+	}
 
 	virtual void Update();
 

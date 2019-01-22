@@ -55,6 +55,8 @@ Map::Map(std::string filepath) : Scene() {
 		}
 		this->tiles.push_back(tempVec);
 	}
+
+	Button* button = new Button(Point2(100, 100), "button", "assets/white.png", &Map::testlog);
 }
 
 Map::~Map() {
