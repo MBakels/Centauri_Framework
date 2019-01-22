@@ -56,7 +56,9 @@ Map::Map(std::string filepath) : Scene() {
 		this->tiles.push_back(tempVec);
 	}
 
-	Button* button = new Button(Point2(100, 100), "button", "assets/white.png", &Map::testlog);
+	button = new Button(Point2(-100, -50, 10), "button", "assets/white.png", BLACK);
+	button->AddButtonText("X", 50);
+	AddChild(button);
 }
 
 Map::~Map() {
@@ -83,14 +85,14 @@ Map::~Map() {
 }
 
 void Map::Update() {
-	if (GetInput()->GetKeyDown(KeyCode::EscapeKey)) {
+	if (GetInput()->GetKeyDown(KeyCode::GraveAccent)) {
 		if (Time::timeScale == 1) {
 			Time::timeScale = 0;
 		} else {
 			Time::timeScale = 1;
 		}
 	}
-	if (GetInput()->GetKey(KeyCode::GraveAccent)) {
+	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
 		GetInput()->ExitApplication();
 	}
 	if (GetInput()->GetMouseDown(0) && !player->IsMoving()) {
@@ -99,6 +101,10 @@ void Map::Update() {
 		if (tilePos != Vector2(-1, -1)) player->MoveTo(tilePos, direction);
 	}
 	EnemyAI();
+	
+	if (button->CheckPressed(Point2(GetInput()->GetMouseX() - position.x, GetInput()->GetMouseY() - position.y))) {
+		std::cout << "pressed" << std::endl;
+	}
 }
 
 Vector2 Map::GetDirection() {

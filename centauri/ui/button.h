@@ -5,22 +5,16 @@
 
 class Button : public GameObject {
 public:
-	template<class T>
-	Button(Point2 position, std::string text, std::string spritePath, void(T::*callback_func)()) {
-		AddSprite(spritePath);
-		//this->callback_func = callback_func;
-		std::cout << "testing buttons" << std::endl;
-	}
+	Button(Point2 position, std::string text, std::string spritePath, RGBAColor color = WHITE);
 
 	virtual ~Button();
 
-	void CheckIfPressed(Point2 mousePos);
+	bool CheckPressed(Point2 mousePos);
 
-	void OnClick();
+	void AddButtonText(std::string text, int x = 0, int y = 0, std::string fontPath = "fonts/acari-sans/AcariSans-Regular.ttf");
 
 private:
-	template<class T>
-	void(T::*callback_func)();
+	GameObject* buttonText;
 
 };
 

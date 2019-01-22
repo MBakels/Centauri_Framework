@@ -16,7 +16,7 @@ public:
 		std::cout << "working" << std::endl;
 	}
 
-	virtual void Update();
+	void Update();
 
 private:
 	int width;
@@ -36,6 +36,8 @@ private:
 	std::vector<Vector2> GetPotentialMoveDirections(Point2 tilePos);
 
 	void EnemyAI();
+
+	Button* button;
 
 };
 

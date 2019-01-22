@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include "scene01.h"
+#include "ui/button.h"
 
 Scene01::Scene01() : MasterScene() {
 	woodObj = new GameObject();
