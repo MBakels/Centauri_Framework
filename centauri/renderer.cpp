@@ -100,7 +100,7 @@ void Renderer::RenderScene(Scene* scene) {
 	this->RenderGameObject(modelMatrix, scene, scene->GetCamera());
 
 	//Render transparent sprites in reverse order
-	for (std::map<float, TransparentRenderable>::reverse_iterator it = transparentRenderableSpriteList.rbegin(); it != transparentRenderableSpriteList.rend(); ++it) {
+	for (std::multimap<float, TransparentRenderable>::reverse_iterator it = transparentRenderableSpriteList.rbegin(); it != transparentRenderableSpriteList.rend(); ++it) {
 		TransparentRenderable tr = it->second;
 		this->RenderSprite(tr.modelMatrix, tr.sprite, tr.texture);
 	}
@@ -129,8 +129,8 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 		// Check for transparent sprites and puth them in a list(they need to be rendered last)
 		Texture* texture = _resourcemanager.GetTexture(sprite->GetTexture(), sprite->Filter(), sprite->Wrap());
 		if (texture->Depth() == 4) {
-			float distance = Point::Distance(camera->position, entity->position);
-			transparentRenderableSpriteList[distance] = TransparentRenderable(modelMatrix, sprite, texture);
+			float distance = glm::length(camera->position.z - entity->position.z);
+			transparentRenderableSpriteList.insert(std::pair<float, TransparentRenderable>(distance, TransparentRenderable(modelMatrix, sprite, texture)));
 		} else {
 			this->RenderSprite(modelMatrix, sprite, texture);
 		}

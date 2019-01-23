@@ -53,7 +53,7 @@ private:
 	glm::mat4 _projectionMatrix;
 	glm::mat4 _viewMatrix;
 
-	std::map<float, TransparentRenderable> transparentRenderableSpriteList;
+	std::multimap<float, TransparentRenderable> transparentRenderableSpriteList;
 
 	void RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera);
 
