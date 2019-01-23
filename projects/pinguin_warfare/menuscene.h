@@ -12,7 +12,10 @@ public:
 	void Update();
 
 private:
+	// Menu buttons
 	Button* startButton;
+	Button* mapBuilderButton;
+	Button* quitButton;
 
 };
 

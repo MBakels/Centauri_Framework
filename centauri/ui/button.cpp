@@ -1,13 +1,16 @@
 #include "ui/button.h"
 
-Button::Button(Point2 position, std::string text, std::string spritePath, RGBAColor color) : GameObject() {
+Button::Button(Point2 position, std::string spritePath, RGBAColor color) : GameObject() {
 	this->position = position;
 	AddSprite(spritePath);
 	GetSprite()->color = color;
+	buttonText = NULL;
 }
 
 Button::~Button() {
-	delete buttonText;
+	if (buttonText != NULL) {
+		delete buttonText;
+	}
 }
 
 bool Button::CheckPressed(Point2 mousePos) {
