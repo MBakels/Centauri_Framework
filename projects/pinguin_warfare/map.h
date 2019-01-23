@@ -5,7 +5,6 @@
 #include "tile.h"
 #include "pinguin.h"
 #include "textfile.h"
-#include "ui/button.h"
 
 class Map : public Scene {
 public:
@@ -36,8 +35,6 @@ private:
 	std::vector<Vector2> GetPotentialMoveDirections(Point2 tilePos);
 
 	void EnemyAI();
-
-	Button* button;
 
 };
 

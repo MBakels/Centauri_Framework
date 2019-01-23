@@ -7,8 +7,7 @@
 #include <string>
 
 #include "renderer.h"
-#include "gameobject.h"
-#include "scene.h"
+#include "scenemanager.h"
 
 #include <GLFW/glfw3.h>
 
@@ -17,12 +16,13 @@ public:
 	Core();
 	virtual ~Core();
 
-	void Run(Scene* scene);
+	void Run();
 
 	bool IsRunning() { return _running; };
 
 private:
 	Renderer _renderer;
+	SceneMaganger _scenemanager;
 	bool _running;
 
 };

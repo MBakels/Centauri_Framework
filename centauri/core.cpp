@@ -8,7 +8,7 @@ Core::~Core() {
 
 }
 
-void Core::Run(Scene* scene) {
+void Core::Run() {
 	// Update Time
 	Time::Update();
 
@@ -16,10 +16,10 @@ void Core::Run(Scene* scene) {
 	Singleton<Input>::Instance()->UpdateInput(_renderer.GetWindow());
 
 	// Update current Scene
-	scene->UpdateScene();
+	 _scenemanager.CurrentScene()->UpdateScene();
 
 	// Render Scene
-	_renderer.RenderScene(scene);
+	_renderer.RenderScene(_scenemanager.CurrentScene());
 
 	if (glfwWindowShouldClose(_renderer.GetWindow()) == 1) { _running = false; }
 }

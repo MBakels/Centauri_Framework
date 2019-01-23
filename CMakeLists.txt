@@ -93,6 +93,8 @@ add_library(centauri
 	centauri/textfile.h
 	centauri/ui/button.cpp
 	centauri/ui/button.h
+	centauri/scenemanager.cpp
+	centauri/scenemanager.h
 )
 
 file(
@@ -165,6 +167,8 @@ if(MAKE_PINGUIN_WARFARE)
 		projects/pinguin_warfare/tile.h
 		projects/pinguin_warfare/pinguin.cpp
 		projects/pinguin_warfare/pinguin.h
+		projects/pinguin_warfare/menuscene.cpp
+		projects/pinguin_warfare/menuscene.h
 	)
 	
 	target_link_libraries(pinguin_warfare
