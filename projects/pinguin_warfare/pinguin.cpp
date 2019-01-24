@@ -1,13 +1,13 @@
 #include "pinguin.h"
 
-Pinguin::Pinguin(int xPos, int yPos, int zPos) : GameObject() {
+Pinguin::Pinguin(int xPos, int yPos, int zPos) {
 	// Add the pinguin sprite
 	AddSprite("assets/pinguin.png");
 	// Setup the variables
 	moveDirection = Vector2(0, 0);
 	targetPos = Point2(0, 0);
 	moveSpeed = 150;
-	position = Vector3(xPos * 64, yPos * 64, zPos);
+	position = Point3(xPos * 64, yPos * 64, zPos);
 	x = xPos;
 	y = yPos;
 	lives = 5;

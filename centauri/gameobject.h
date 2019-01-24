@@ -23,6 +23,9 @@ public:
 
 	virtual void Update();
 
+	// Set Object state
+	void SetActive(bool active) { isActive = active; };
+
 	// Children
 	void AddChild(GameObject* child);
 	void RemoveChild(GameObject* child);
@@ -55,6 +58,9 @@ public:
 	Point3 position;
 	Point3 rotation;
 	Point3 scale;
+
+	// Objects active state
+	bool isActive;
 
 private:
 	// Parent and child

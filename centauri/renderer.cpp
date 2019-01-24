@@ -110,6 +110,9 @@ void Renderer::RenderScene(Scene* scene) {
 }
 
 void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camera* camera) {
+	// Stop rendering if the gameobject is inactive
+	if (!entity->isActive) return;
+
 	// Translate Point3 to glm::vec3
 	glm::vec3 position = glm::vec3(entity->position.x, entity->position.y, entity->position.z);
 	glm::vec3 rotation = glm::vec3(entity->rotation.x, entity->rotation.y, entity->rotation.z);

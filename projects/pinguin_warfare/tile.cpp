@@ -1,8 +1,8 @@
 #include "tile.h"
 
-Tile::Tile(int x, int y, int type) : GameObject() {
+Tile::Tile(int x, int y, int type) {
 	// Setup the variables
-	position = Vector3(x * 64, y * 64, 0);
+	position = Point3(x * 64, y * 64, 0);
 	this->x = x;
 	this->y = y;
 	// Setup the spritesheet

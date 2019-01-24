@@ -169,6 +169,10 @@ if(MAKE_PINGUIN_WARFARE)
 		projects/pinguin_warfare/pinguin.h
 		projects/pinguin_warfare/menuscene.cpp
 		projects/pinguin_warfare/menuscene.h
+		projects/pinguin_warfare/pausemenu.cpp
+		projects/pinguin_warfare/pausemenu.h
+		projects/pinguin_warfare/snowball.cpp
+		projects/pinguin_warfare/snowball.h
 	)
 	
 	target_link_libraries(pinguin_warfare

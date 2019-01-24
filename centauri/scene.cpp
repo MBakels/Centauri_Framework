@@ -17,6 +17,7 @@ void Scene::UpdateScene() {
 }
 
 void Scene::UpdateGameObject(GameObject* gameObject) {
+	if (!gameObject->isActive) return;
 	gameObject->Update(); // Update self
 
 	// Update children

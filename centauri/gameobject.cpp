@@ -5,6 +5,8 @@ GameObject::GameObject() {
 	rotation = Point3(0.0f, 0.0f, 0.0f);
 	scale = Point3(1.0f, 1.0f, 1.0f);
 
+	isActive = true;
+
 	_parent = NULL;
 	_sprite = NULL;
 	_text = NULL;

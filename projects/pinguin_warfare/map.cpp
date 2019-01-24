@@ -1,6 +1,6 @@
 #include "map.h"
 
-Map::Map(std::string filepath) : Scene() {
+Map::Map(std::string filepath) {
 	// Seed the random number generator
 	srand(time(NULL));
 	// Setup temp variables
@@ -48,9 +48,6 @@ Map::Map(std::string filepath) : Scene() {
 		std::cout << "ERROR::File not found: " << filepath << std::endl;
 	}
 
-	// Set position of the scene
-	position = Vector3(SWIDTH / 2 - width * 32 + 32, SHEIGHT / 2 - height * 32 + 32, 0);
-
 	int tileIndex = 0; // Temp int tileIndex
 	// Create grid of tiles
 	for (int x = 0; x < width; x++) {
@@ -64,6 +61,13 @@ Map::Map(std::string filepath) : Scene() {
 		// Push tempVec into tiles
 		this->tiles.push_back(tempVec);
 	}
+
+	// Set camera starting position
+	GetCamera()->position = Point3(player->position.x - SWIDTH / 2, player->position.y - SHEIGHT / 2, 100);
+
+	// Create the pause menu
+	pauseMenu = new PauseMenu();
+	AddChild(pauseMenu);
 }
 
 Map::~Map() {
@@ -93,18 +97,18 @@ Map::~Map() {
 }
 
 void Map::Update() {
-	// Toggle pause menu
+	// Toggle pause menu if the escape key has been pressed
 	if (GetInput()->GetKeyDown(KeyCode::GraveAccent)) {
-		if (Time::timeScale == 1) {
-			Time::timeScale = 0;
-		} else {
-			Time::timeScale = 1;
-		}
+		pauseMenu->Toggle();
 	}
-	// (Temp) Close game
-	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
-		GetInput()->ExitApplication();
+	// Check the state of the pause menu
+	if (pauseMenu->isActive) {
+		// Update the pause menu if the pause menu is active
+		pauseMenu->Update(GetCamera()->position);
+		// Return to stop updating the rest of the scene
+		return;
 	}
+
 	// Check for mouse input and check if the player is not moving
 	if (GetInput()->GetMouseDown(0) && !player->IsMoving()) {
 		// Get the direction of the mouse click
@@ -112,18 +116,24 @@ void Map::Update() {
 		// Get the max reachable tile in the direction from above
 		Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(player->x, player->y), direction);
 		// Check if tilePos returned a valid point, if point is valid move the player to position
-		if (tilePos != Vector2(-1, -1)) player->MoveTo(tilePos, direction);
+		if (tilePos != Point2(-1, -1)) player->MoveTo(tilePos, direction);
 	}
+
 	// Update enemy AI
 	EnemyAI();
+
+	// (Temp) Close game
+	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
+		GetInput()->ExitApplication();
+	}
 }
 
 Vector2 Map::GetDirection() {
-	// Get mouse position
-	double mouseX = GetInput()->GetMouseX();
-	double mouseY = GetInput()->GetMouseY();
+	// Get mouse position and add camera position
+	double mouseX = GetInput()->GetMouseX() + GetCamera()->position.x;
+	double mouseY = GetInput()->GetMouseY() + GetCamera()->position.y;
 	// Get player position and add scene position
-	Vector2 playerPos = player->position + position;
+	Vector2 playerPos = player->position;
 
 	// Calculate angle in degrees
 	float angle = atan2(mouseX - playerPos.x, playerPos.y - mouseY);

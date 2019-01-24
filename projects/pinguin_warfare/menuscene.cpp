@@ -26,7 +26,7 @@ MenuScene::~MenuScene() {
 }
 
 void MenuScene::Update() {
-	// Chack button input
+	// Check button input
 	if (startButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
 		SceneMaganger::LoadScene(1);
 	}

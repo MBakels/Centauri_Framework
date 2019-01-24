@@ -5,6 +5,7 @@
 #include "tile.h"
 #include "pinguin.h"
 #include "textfile.h"
+#include "pausemenu.h"
 
 class Map : public Scene {
 public:
@@ -28,6 +29,9 @@ private:
 
 	// The player
 	Pinguin* player;
+
+	//The pause menu
+	PauseMenu* pauseMenu;
 
 	// Get the direction of a mouse click
 	Vector2 GetDirection();
