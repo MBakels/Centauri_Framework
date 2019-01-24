@@ -16,6 +16,7 @@ MenuScene::MenuScene() {
 }
 
 MenuScene::~MenuScene() {
+	// Removing created objects
 	RemoveChild(startButton);
 	delete startButton;
 	RemoveChild(mapBuilderButton);
@@ -25,9 +26,6 @@ MenuScene::~MenuScene() {
 }
 
 void MenuScene::Update() {
-	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
-		GetInput()->ExitApplication();
-	}
 	// Chack button input
 	if (startButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
 		SceneMaganger::LoadScene(1);

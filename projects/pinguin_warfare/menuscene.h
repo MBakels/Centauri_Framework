@@ -6,9 +6,12 @@
 
 class MenuScene : public Scene {
 public:
+	// Constructor of the MenuScene class
 	MenuScene();
+	// Destructor of the MenuScene class
 	virtual ~MenuScene();
 
+	// Updates the menu scene
 	void Update();
 
 private:
