@@ -19,6 +19,9 @@ public:
 	// Returns true if the pinguin is moving
 	bool IsMoving() { return (moveDirection != Vector2(0, 0)) ? true : false; };
 
+	// Returns true if the pinguin is alive
+	bool IsAlive() { return (lives > 0) ? true : false; };
+
 	// Removes a live
 	void RemoveLive() { lives--; };
 

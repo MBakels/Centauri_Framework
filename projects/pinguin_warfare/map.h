@@ -51,6 +51,8 @@ private:
 	// Updates the enemys AI
 	void EnemyAI();
 
+	void SnowBallCollisionCheck();
+
 };
 
 #endif

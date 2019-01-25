@@ -29,14 +29,14 @@ Map::Map(std::string filepath) {
 			if (lineoftext[0] == 'p') {
 				int xPos, yPos;
 				sscanf(lineoftext.c_str(), "p %d %d", &xPos, &yPos);
-				player = new Pinguin(xPos, yPos, 3);
+				player = new Pinguin(xPos, yPos, 4);
 				AddChild(player);
 			}
 			// Enemy
 			if (lineoftext[0] == 'e') {
 				int xPos, yPos;
 				sscanf(lineoftext.c_str(), "e %d %d", &xPos, &yPos);
-				Pinguin* enemy = new Pinguin(xPos, yPos, 2);
+				Pinguin* enemy = new Pinguin(xPos, yPos, 3);
 				enemys.push_back(enemy);
 				AddChild(enemy);
 			}
@@ -94,6 +94,14 @@ Map::~Map() {
 		delete (*enemysIt);
 	}
 	enemys.clear();
+
+	// Remove snowballs
+	std::vector<SnowBall*>::iterator snowBallsIt;
+	for (snowBallsIt = snowBalls.begin(); snowBallsIt != snowBalls.end(); snowBallsIt++) {
+		RemoveChild((*snowBallsIt));
+		delete (*snowBallsIt);
+	}
+	snowBalls.clear();
 }
 
 void Map::Update() {
@@ -126,13 +134,29 @@ void Map::Update() {
 	// Player snowball throwing
 	// Check for right mouse press
 	if (GetInput()->GetMouseDown(1)) {
-		float angle = atan2(GetInput()->GetMouseY(), GetInput()->GetMouseX());
-		//Point3 rotation = Point3(0, 0, (PI * 1.5) + angle);
-		std::cout << angle << std::endl;
+		// Get mouse position in world space
+		Vector2 mousePosWorld = Vector2(GetInput()->GetMouseX() + GetCamera()->position.x - SWIDTH / 2, GetInput()->GetMouseY() + GetCamera()->position.y - SHEIGHT / 2);
+		// Get the direction by subtracting player pos from mouse world pos
+		Vector2 direction = mousePosWorld - Vector2(player->position.x, player->position.y);
+		// Normalize the direction vector
+		direction.normalize();
+
+		// Create a snowball, add it to the snowballs vector
+		snowBalls.push_back(new SnowBall(player->position, direction, true));
+		// Add snowball to scene
+		AddChild(snowBalls.back());
 	}
 
 	// Update enemy AI
-	EnemyAI();
+	//EnemyAI();
+
+	// Check for snowball collisions
+	SnowBallCollisionCheck();
+
+	// Check win condition, if all enemy pinguins are dead you win
+	if (enemys.empty()) {
+		std::cout << "Winner!" << std::endl;
+	}
 
 	// (Temp) Close game
 	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
@@ -225,14 +249,63 @@ void Map::EnemyAI() {
 	for each (Pinguin* enemy in enemys) {
 		// Check if an enemy is moving
 		if (!enemy->IsMoving()) {
-			// Get all potential direction enemy can move in
+			// Get all potential directions the enemy can move in
 			std::vector<Vector2> directions = GetPotentialMoveDirections(Point2(enemy->x, enemy->y));
 			// Pick a random direction from list
 			Vector2 randomDirection = directions[rand() % directions.size()];
 			// Get the max reachable tile in the direction from above
 			Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(enemy->x, enemy->y), randomDirection);
-			// Move the enemy in to the position
+			// Move the enemy to the position
 			enemy->MoveTo(tilePos, randomDirection);
 		}
+	}
+}
+
+void Map::SnowBallCollisionCheck() {
+	// Check for collisions between the player and a snowball
+	std::vector<SnowBall*>::iterator snowBallsIt = snowBalls.begin();
+	while (snowBallsIt != snowBalls.end()) {
+		float distance = Point::Distance((*snowBallsIt)->position, player->position);
+		// Check if the snowball is not thrown by the player(player cant hit himself),
+		// and check if the distance is greater than the combined sprite sizes.
+		// A small amount is subtracted from the player size so that the snowball can get a bit closer
+		if (!(*snowBallsIt)->ThrownByPlayer() && distance <= (*snowBallsIt)->GetSprite()->size.x + player->GetSprite()->size.x - 30) {
+			player->RemoveLive();
+			RemoveChild((*snowBallsIt));
+			delete (*snowBallsIt);
+			snowBallsIt = snowBalls.erase(snowBallsIt);
+		} else {
+			snowBallsIt++;
+		}
+	}
+
+	// Check for collisions between the enemys and a snowball
+	std::vector<Pinguin*>::iterator enemysIt = enemys.begin();
+	while (enemysIt != enemys.end()) {
+		std::vector<SnowBall*>::iterator snowBallsIt = snowBalls.begin();
+		while(snowBallsIt != snowBalls.end()) {
+			float distance = Point::Distance((*snowBallsIt)->position, (*enemysIt)->position);
+			// Check if the snowball is thrown by the player(only the player can hit the enemys),
+			// and check if the distance is greater than the combined sprite sizes.
+			// A small amount is subtracted from the enemy size so that the snowball can get a bit closer
+			if ((*snowBallsIt)->ThrownByPlayer() && distance <= (*snowBallsIt)->GetSprite()->size.x + (*enemysIt)->GetSprite()->size.x - 30) {
+				(*enemysIt)->RemoveLive();
+				RemoveChild((*snowBallsIt));
+				delete (*snowBallsIt);
+				snowBallsIt = snowBalls.erase(snowBallsIt);
+			} else {
+				snowBallsIt++;
+			}
+		}
+
+		// Check if the enemy is alive, if not remove it
+		if (!(*enemysIt)->IsAlive()) {
+			RemoveChild((*enemysIt));
+			delete (*enemysIt);
+			enemysIt = enemys.erase(enemysIt);
+		} else {
+			enemysIt++;
+		}
+
 	}
 }
