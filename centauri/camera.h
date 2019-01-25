@@ -26,6 +26,8 @@ private:
 	glm::mat4 _viewMatrix;
 	glm::mat4 _projectionMatrix;
 
+	Point3 _offset;
+
 	glm::vec3 _up;
 	glm::vec3 _right;
 	glm::vec3 _direction;

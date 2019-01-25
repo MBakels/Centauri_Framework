@@ -2,7 +2,7 @@
 
 Pinguin::Pinguin(int xPos, int yPos, int zPos) {
 	// Add the pinguin sprite
-	AddSprite("assets/pinguin.png");
+	AddSprite("assets/Pinguin.png");
 	// Setup the variables
 	moveDirection = Vector2(0, 0);
 	targetPos = Point2(0, 0);

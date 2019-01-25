@@ -6,6 +6,7 @@
 #include "pinguin.h"
 #include "textfile.h"
 #include "pausemenu.h"
+#include "snowball.h"
 
 class Map : public Scene {
 public:
@@ -24,8 +25,10 @@ private:
 
 	// A 2D vector for the tiles
 	std::vector< std::vector<Tile*> > tiles;
-	// A list with the enemys
+	// A vector with the enemys
 	std::vector<Pinguin*> enemys;
+	// A vector with snowballs
+	std::vector<SnowBall*> snowBalls;
 
 	// The player
 	Pinguin* player;

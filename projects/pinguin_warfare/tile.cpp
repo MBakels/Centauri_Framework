@@ -6,7 +6,7 @@ Tile::Tile(int x, int y, int type) {
 	this->x = x;
 	this->y = y;
 	// Setup the spritesheet
-	AddSpriteSheet("assets/tileset.png", 2, 2);
+	AddSpriteSheet("assets/Tileset.png", 2, 2);
 
 	// Check the type of this tile, set the frame of the spritesheet to match the type and set the TileBehaviour
 	switch (type) {
@@ -26,6 +26,6 @@ Tile::Tile(int x, int y, int type) {
 }
 
 Tile::~Tile() {
-	
+
 }
 

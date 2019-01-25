@@ -63,7 +63,7 @@ Map::Map(std::string filepath) {
 	}
 
 	// Set camera starting position
-	GetCamera()->position = Point3(player->position.x - SWIDTH / 2, player->position.y - SHEIGHT / 2, 100);
+	GetCamera()->position = Point3(player->position.x, player->position.y, 100);
 
 	// Create the pause menu
 	pauseMenu = new PauseMenu();
@@ -109,7 +109,11 @@ void Map::Update() {
 		return;
 	}
 
-	// Check for mouse input and check if the player is not moving
+	// Camera follows the player
+	GetCamera()->position = Vector3(player->position.x, player->position.y, 100);
+
+	// Player movement
+	// Check for left mouse press and check if the player is not moving
 	if (GetInput()->GetMouseDown(0) && !player->IsMoving()) {
 		// Get the direction of the mouse click
 		Vector2 direction = GetDirection();
@@ -117,6 +121,14 @@ void Map::Update() {
 		Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(player->x, player->y), direction);
 		// Check if tilePos returned a valid point, if point is valid move the player to position
 		if (tilePos != Point2(-1, -1)) player->MoveTo(tilePos, direction);
+	}
+
+	// Player snowball throwing
+	// Check for right mouse press
+	if (GetInput()->GetMouseDown(1)) {
+		float angle = atan2(GetInput()->GetMouseY(), GetInput()->GetMouseX());
+		//Point3 rotation = Point3(0, 0, (PI * 1.5) + angle);
+		std::cout << angle << std::endl;
 	}
 
 	// Update enemy AI
@@ -129,42 +141,36 @@ void Map::Update() {
 }
 
 Vector2 Map::GetDirection() {
-	// Get mouse position and add camera position
-	double mouseX = GetInput()->GetMouseX() + GetCamera()->position.x;
-	double mouseY = GetInput()->GetMouseY() + GetCamera()->position.y;
-	// Get player position and add scene position
-	Vector2 playerPos = player->position;
-
 	// Calculate angle in degrees
-	float angle = atan2(mouseX - playerPos.x, playerPos.y - mouseY);
+	float angle = atan2(GetInput()->GetMouseY() - SHEIGHT / 2, GetInput()->GetMouseX() - SWIDTH / 2);
 	if (angle < 0.0) angle += TWO_PI;
 	angle *= 180 / PI;
 
 	// Check angle and return direction
 	if (angle > 22.5f && angle <= 67.5f) {
-		// NorthEast
-		return Vector2(1, -1);
-	} else if (angle >= 67.5f && angle <= 112.5f) {
-		// East
-		return Vector2(1, 0);
-	} else if (angle >= 112.5f && angle <= 157.5f) {
 		// SouthEast
 		return Vector2(1, 1);
-	} else if (angle >= 157.5f && angle <= 202.5f) {
+	} else if (angle >= 67.5f && angle <= 112.5f) {
 		// South
 		return Vector2(0, 1);
-	} else if (angle >= 202.5f && angle <= 247.5f) {
+	} else if (angle >= 112.5f && angle <= 157.5f) {
 		// SouthWest
 		return Vector2(-1, 1);
-	} else if (angle >= 247.5f && angle <= 292.5f) {
+	} else if (angle >= 157.5f && angle <= 202.5f) {
 		// West
 		return Vector2(-1, 0);
-	} else if (angle >= 292.5f && angle <= 337.5f) {
+	} else if (angle >= 202.5f && angle <= 247.5f) {
 		// NorthWest
 		return Vector2(-1, -1);
-	} else {
+	} else if (angle >= 247.5f && angle <= 292.5f) {
 		// North
 		return Vector2(0, -1);
+	} else if (angle >= 292.5f && angle <= 337.5f) {
+		// NorthEast
+		return Vector2(1, -1);
+	} else {
+		// East
+		return Vector2(1, 0);
 	}
 }
 

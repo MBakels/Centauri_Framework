@@ -4,13 +4,12 @@
 #include "menuscene.h"
 
 int main() {
-
+	// Core instance
 	Core core;
 
+	// Create scenes and add them to SceneMaganger
 	SceneMaganger::AddScene(new MenuScene());
 	SceneMaganger::AddScene(new Map("maps/test.m"));
-
-	//SceneMaganger::LoadScene(1);
 
 	while (core.IsRunning()) {
 		core.Run();

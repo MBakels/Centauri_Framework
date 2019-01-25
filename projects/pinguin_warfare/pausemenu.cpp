@@ -29,8 +29,8 @@ PauseMenu::~PauseMenu() {
 
 void PauseMenu::Update(Point2 cameraPos) {
 	// Set position to camera position
-	position.x = cameraPos.x + SWIDTH / 2;
-	position.y = cameraPos.y + SHEIGHT / 2;
+	position.x = cameraPos.x;
+	position.y = cameraPos.y;
 
 	// Check button input
 	if (resumeButton->CheckPressed(Point2(GetInput()->GetMouseX() - SWIDTH / 2, GetInput()->GetMouseY() - SHEIGHT / 2))) {

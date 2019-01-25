@@ -11,7 +11,7 @@ public:
 	virtual ~Pinguin();
 
 	// Updates the pinguin gameobject
-	virtual void Update();
+	void Update();
 
 	// Sets the position to move to
 	void MoveTo(Point2 tilePos, Vector2 direction);

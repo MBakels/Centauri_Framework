@@ -17,6 +17,13 @@ Camera::~Camera() {
 }
 
 void Camera::Orthogonal() {
+	// Offset to compensate for the camare origin not being in the center
+	_offset = Point3(SWIDTH / 2, SHEIGHT / 2, 0);
+
+	// Add offset to position
+	position += _offset;
+
+	// Create the projectionMatrix
 	_projectionMatrix = glm::ortho(0.0f, (float)SWIDTH, (float)SHEIGHT, 0.0f, 0.0f, 200.0f);
 }
 
@@ -32,7 +39,8 @@ void Camera::UpdateCamera() {
 	_up = glm::cross(_right, _direction);
 
 	glm::vec3 pos = glm::vec3(position.x, position.y, position.z);
+	glm::vec3 offset = glm::vec3(_offset.x, _offset.y, _offset.z);
 
 	// View matrix
-	_viewMatrix = glm::lookAt(pos, pos + _direction, _up);
+	_viewMatrix = glm::lookAt(pos - offset, pos - offset + _direction, _up);
 }
