@@ -132,8 +132,10 @@ void Map::Update() {
 	}
 
 	// Player snowball throwing
-	// Check for right mouse press
-	if (GetInput()->GetMouseDown(1)) {
+	// Check for right mouse press and check if the player can throw a snowball
+	if (GetInput()->GetMouseDown(1) && player->CanThrow()) {
+		// Let the player know a snowball has been thrown
+		player->SnowBallThrown();
 		// Get mouse position in world space
 		Vector2 mousePosWorld = Vector2(GetInput()->GetMouseX() + GetCamera()->position.x - SWIDTH / 2, GetInput()->GetMouseY() + GetCamera()->position.y - SHEIGHT / 2);
 		// Get the direction by subtracting player pos from mouse world pos
