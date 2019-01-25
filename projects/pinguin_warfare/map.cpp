@@ -148,10 +148,15 @@ void Map::Update() {
 	}
 
 	// Update enemy AI
-	//EnemyAI();
+	EnemyAI();
 
 	// Check for snowball collisions
 	SnowBallCollisionCheck();
+
+	// Check if the player is alive
+	if (!player->IsAlive()) {
+		std::cout << "Dead!" << std::endl;
+	}
 
 	// Check win condition, if all enemy pinguins are dead you win
 	if (enemys.empty()) {
@@ -247,6 +252,7 @@ std::vector<Vector2> Map::GetPotentialMoveDirections(Point2 tilePos) {
 void Map::EnemyAI() {
 	// Loop through all enemys
 	for each (Pinguin* enemy in enemys) {
+		// Enemy movement
 		// Check if an enemy is moving
 		if (!enemy->IsMoving()) {
 			// Get all potential directions the enemy can move in
@@ -256,7 +262,22 @@ void Map::EnemyAI() {
 			// Get the max reachable tile in the direction from above
 			Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(enemy->x, enemy->y), randomDirection);
 			// Move the enemy to the position
-			enemy->MoveTo(tilePos, randomDirection);
+			//enemy->MoveTo(tilePos, randomDirection);
+		}
+
+		// Enemy snowball throwing
+		// Check if enemy can throw a snowball
+		if (enemy->CanThrow()) {
+			// Let the enemy know a snowball has been thrown
+			enemy->SnowBallThrown();
+			// Get the direction by subtracting enemy pos from player pos
+			Vector2 direction = Vector2(player->position.x, player->position.y) - Vector2(enemy->position.x, enemy->position.y);
+			// Normalize the direction vector
+			direction.normalize();
+			// Create a snowball, add it to the snowballs vector
+			snowBalls.push_back(new SnowBall(enemy->position, direction, false));
+			// Add snowball to scene
+			AddChild(snowBalls.back());
 		}
 	}
 }

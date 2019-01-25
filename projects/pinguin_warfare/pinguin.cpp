@@ -11,6 +11,8 @@ Pinguin::Pinguin(int xPos, int yPos, int zPos) {
 	x = xPos;
 	y = yPos;
 	lives = 5;
+	throwTimer = 0;
+	timeBetweenThrows = 1;
 }
 
 Pinguin::~Pinguin() {
@@ -32,6 +34,9 @@ void Pinguin::Update() {
 			TargetPosReached();
 		}
 	}
+
+	// Update throw timer
+	if (throwTimer <= timeBetweenThrows) { throwTimer += Time::DeltaTime(); };
 }
 
 void Pinguin::MoveTo(Point2 tilePos, Vector2 direction) {
