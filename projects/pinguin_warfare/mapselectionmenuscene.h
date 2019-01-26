@@ -15,8 +15,8 @@ public:
 	void Update();
 
 private:
-	// Menu button
-	Button * menuButton;
+	// Buttons to game maps
+	std::vector<Button*> mapButtons;
 
 };
 

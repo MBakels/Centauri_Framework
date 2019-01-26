@@ -25,10 +25,17 @@ MainMenuScene::~MainMenuScene() {
 	delete quitButton;
 }
 
+void MainMenuScene::SceneLoaded() {
+	// Check if a map scene is loaded, and remove it
+	if (SceneMaganger::ScenesCount() > 4) {
+		SceneMaganger::RemoveScene(4);
+	}
+}
+
 void MainMenuScene::Update() {
 	// Check button input
 	if (startButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
-		SceneMaganger::LoadScene(4);
+		SceneMaganger::LoadScene(1);
 	}
 	if (mapBuilderButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
 		std::cout << "Map builder" << std::endl;

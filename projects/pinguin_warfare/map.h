@@ -20,20 +20,23 @@ struct MapData {
 class Map : public Scene {
 public:
 	// Constructor of the Map class
-	Map(std::string filepath);
+	Map(std::string mapName);
 	// Destructor of the Map class
 	virtual ~Map();
 
 	// Updates the Map Scene
 	void Update();
 
-	// If the scene is loaded this gets called, it sets up or resets the scene
-	void SceneLoaded();
+	// Load a map and puts its data in the maps vector
+	static void LoadMap(std::string filepath);
 
+	// Holds all map data
+	static std::map<std::string, MapData*> maps;
+
+private:
 	// Map data in struct
 	MapData* data;
 
-private:
 	// A 2D vector for the tiles
 	std::vector< std::vector<Tile*> > tiles;
 	// A vector with the enemys
@@ -62,6 +65,7 @@ private:
 	// Updates the enemys AI
 	void EnemyAI();
 
+	// Check for collisions with snowballs
 	void SnowBallCollisionCheck();
 
 };

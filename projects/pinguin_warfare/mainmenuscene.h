@@ -11,6 +11,9 @@ public:
 	// Destructor of the MainMenuScene class
 	virtual ~MainMenuScene();
 
+	// Gets called after SceneManager loads the scene
+	void SceneLoaded();
+
 	// Updates the menu scene
 	void Update();
 

@@ -21,6 +21,11 @@ void SceneMaganger::AddScene(Scene* scene) {
 	_scenes.push_back(scene);
 }
 
+void SceneMaganger::RemoveScene(int sceneIndex) {
+	delete _scenes[sceneIndex];
+	_scenes.erase(_scenes.begin() + sceneIndex);
+}
+
 void SceneMaganger::LoadScene(int sceneIndex) {
 	_currentScene = _scenes[sceneIndex];
 	_currentSceneIndex = sceneIndex;

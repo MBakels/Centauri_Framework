@@ -11,18 +11,18 @@ int main() {
 	// Core instance
 	Core core;
 
+	// Get the maps from a folder
+	std::string path = "maps"; // folder path
+	for (auto & map : std::filesystem::directory_iterator(path)) {
+		// Load map
+		Map::LoadMap(map.path().string());
+	}
+
 	// Create menu scenes and add them to SceneMaganger
 	SceneMaganger::AddScene(new MainMenuScene());
 	SceneMaganger::AddScene(new MapSelectionMenuScene());
 	SceneMaganger::AddScene(new WinMenuScene());
 	SceneMaganger::AddScene(new DeathMenuScene());
-
-	// Get the maps from a folder
-	std::string path = "maps"; // folder path
-	for (auto & map : std::filesystem::directory_iterator(path)) {
-		// Create scene from path
-		SceneMaganger::AddScene(new Map(map.path().string()));
-	}
 
 	// Loading the first scene (menu scene)
 	SceneMaganger::LoadScene(0);

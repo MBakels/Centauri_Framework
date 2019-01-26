@@ -3,73 +3,17 @@
 #include "map.h"
 #include "scenemanager.h"
 
-Map::Map(std::string filepath) {
+std::map<std::string, MapData*> Map::maps;
+
+Map::Map(std::string mapName) {
 	// Seed the random number generator
 	srand(time(NULL));
 
 	// Setup the variables
 	player = NULL;
 
-	// Create the map data structure
-	data = new MapData();
-	// file name
-	char fname[_MAX_FNAME];
-	// Geting the map name
-	errno_t err = _splitpath_s(filepath.c_str(), NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0);
-	// Assign the file name as the map name
-	data->mapName = fname;
-	// Log the error if we get one
-	if (err != 0) {
-		std::cout << "Error splitting the path. Error code: " << err << std::endl;
-	}
-
-	// Setup textfile
-	TextFile textfile;
-
-	// Try to open the file
-	if (textfile.Open(filepath.c_str())) {
-		// Start reading the file
-		textfile.StartReading();
-		// Keep reading until we reach the end of the file
-		while (!textfile.EndOfFile()) {
-			// Read a line
-			std::string lineoftext = textfile.ReadLine();
-			// Map size
-			if (lineoftext[0] == 's') {
-				int width, height;
-				sscanf(lineoftext.c_str(), "s %d %d", &width, &height);
-				data->mapSize = Point2(width, height);
-			}
-			// Tiles
-			if (lineoftext[0] == 't') {
-				for (int i = 2; i < lineoftext.length(); ++i) {
-					data->tiles.push_back(lineoftext[i] - 48);
-				}
-			}
-			// Player
-			if (lineoftext[0] == 'p') {
-				int xPos, yPos;
-				sscanf(lineoftext.c_str(), "p %d %d", &xPos, &yPos);
-				data->playerPosition = Point2(xPos, yPos);
-				//player = new Pinguin(xPos, yPos, 4);
-				//AddChild(player);
-			}
-			// Enemy
-			if (lineoftext[0] == 'e') {
-				int xPos, yPos;
-				sscanf(lineoftext.c_str(), "e %d %d", &xPos, &yPos);
-				data->enemyPositions.push_back(Point2(xPos, yPos));
-				//Pinguin* enemy = new Pinguin(xPos, yPos, 3);
-				//enemys.push_back(enemy);
-				//AddChild(enemy);
-			}
-		}
-		// Close the file
-		textfile.Close();
-	} else {
-		// Print error if the file is not found
-		std::cout << "ERROR::File not found: " << filepath << std::endl;
-	}
+	// Get data for this map
+	data = maps[mapName];
 
 	int tileIndex = 0; // Temp int tileIndex
 	// Create grid of tiles
@@ -85,6 +29,20 @@ Map::Map(std::string filepath) {
 		this->tiles.push_back(tempVec);
 	}
 
+	// Create the player
+	player = new Pinguin(data->playerPosition.x, data->playerPosition.y, 4);
+	AddChild(player);
+
+	// Set camera starting position
+	GetCamera()->position = Point3(player->position.x, player->position.y, 100);
+
+	// Create the enemys
+	for each (Point2 enemyPos in data->enemyPositions) {
+		Pinguin* enemy = new Pinguin(enemyPos.x, enemyPos.y, 3);
+		enemys.push_back(enemy);
+		AddChild(enemy);
+	}
+
 	// Create the pause menu
 	pauseMenu = new PauseMenu();
 	AddChild(pauseMenu);
@@ -94,6 +52,10 @@ Map::~Map() {
 	// Remove player
 	RemoveChild(player);
 	delete player;
+
+	// Remove pause menu
+	RemoveChild(pauseMenu);
+	delete pauseMenu;
 
 	// Remove tiles
 	std::vector<std::vector<Tile*>>::iterator tilesRowIt;
@@ -124,39 +86,66 @@ Map::~Map() {
 	snowBalls.clear();
 }
 
-void Map::SceneLoaded() {
-	// The player and enemys are removed and recreated to reset them
-	// Remove old player
-	RemoveChild(player);
-	delete player;
-	// Create new player
-	player = new Pinguin(data->playerPosition.x, data->playerPosition.y, 4);
-	AddChild(player);
+void Map::LoadMap(std::string filepath) {
+	// Create data struct
+	MapData* mapData = new MapData();
 
-	// Set camera starting position
-	GetCamera()->position = Point3(player->position.x, player->position.y, 100);
-
-	// Remove all currently existing enemys
-	std::vector<Pinguin*>::iterator enemysIt;
-	for (enemysIt = enemys.begin(); enemysIt != enemys.end(); enemysIt++) {
-		RemoveChild((*enemysIt));
-		delete (*enemysIt);
-	}
-	enemys.clear();
-	// Create new ones
-	for each (Point2 enemyPos in data->enemyPositions) {
-		Pinguin* enemy = new Pinguin(enemyPos.x, enemyPos.y, 3);
-		enemys.push_back(enemy);
-		AddChild(enemy);
+	// file name
+	char fname[_MAX_FNAME];
+	// Geting the map name
+	errno_t err = _splitpath_s(filepath.c_str(), NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0);
+	// Assign the file name as the map name
+	mapData->mapName = fname;
+	// Log the error if we get one
+	if (err != 0) {
+		std::cout << "Error splitting the path. Error code: " << err << std::endl;
 	}
 
-	// Remove all snowballs
-	std::vector<SnowBall*>::iterator snowBallsIt;
-	for (snowBallsIt = snowBalls.begin(); snowBallsIt != snowBalls.end(); snowBallsIt++) {
-		RemoveChild((*snowBallsIt));
-		delete (*snowBallsIt);
+	// Setup textfile
+	TextFile textfile;
+
+	// Try to open the file
+	if (textfile.Open(filepath.c_str())) {
+		// Start reading the file
+		textfile.StartReading();
+		// Keep reading until we reach the end of the file
+		while (!textfile.EndOfFile()) {
+			// Read a line
+			std::string lineoftext = textfile.ReadLine();
+			// Map size
+			if (lineoftext[0] == 's') {
+				int width, height;
+				sscanf(lineoftext.c_str(), "s %d %d", &width, &height);
+				mapData->mapSize = Point2(width, height);
+			}
+			// Tiles
+			if (lineoftext[0] == 't') {
+				for (int i = 2; i < lineoftext.length(); ++i) {
+					mapData->tiles.push_back(lineoftext[i] - 48);
+				}
+			}
+			// Player
+			if (lineoftext[0] == 'p') {
+				int xPos, yPos;
+				sscanf(lineoftext.c_str(), "p %d %d", &xPos, &yPos);
+				mapData->playerPosition = Point2(xPos, yPos);
+			}
+			// Enemy
+			if (lineoftext[0] == 'e') {
+				int xPos, yPos;
+				sscanf(lineoftext.c_str(), "e %d %d", &xPos, &yPos);
+				mapData->enemyPositions.push_back(Point2(xPos, yPos));
+			}
+		}
+		// Close the file
+		textfile.Close();
+	} else {
+		// Print error if the file is not found
+		std::cout << "ERROR::File not found: " << filepath << std::endl;
 	}
-	snowBalls.clear();
+
+	// Add data to vector
+	Map::maps[mapData->mapName] = mapData;
 }
 
 void Map::Update() {
