@@ -1,5 +1,5 @@
 # CMake entry point
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.10)
 project (Centauri_Framework)
 
 # delete CMakeCache.txt from the build directory when you edit these options
@@ -23,9 +23,8 @@ find_package(OpenGL REQUIRED)
 
 add_subdirectory (external)
 
-if(UNIX)
-	set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O2")
-endif(UNIX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(WIN32)
 	# Create a group for Visual Studio
