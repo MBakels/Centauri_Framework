@@ -1,21 +1,21 @@
-#include "menuscene.h"
+#include "mainmenuscene.h"
 #include "scenemanager.h"
 
-MenuScene::MenuScene() {
+MainMenuScene::MainMenuScene() {
 	// Start game button
-	startButton = new Button(Point2(SWIDTH / 2, 200, 10), "assets/StartGameButton.png");
+	startButton = new Button(Point2(SWIDTH / 2, SHEIGHT / 2 - 200, 10), "assets/StartGameButton.png");
 	AddChild(startButton);
 
 	// Enter map builder button
-	mapBuilderButton = new Button(Point2(SWIDTH / 2, 400, 10), "assets/MapMakerButton.png");
+	mapBuilderButton = new Button(Point2(SWIDTH / 2, SHEIGHT / 2, 10), "assets/MapMakerButton.png");
 	AddChild(mapBuilderButton);
 
 	// Quit game button
-	quitButton = new Button(Point2(SWIDTH / 2, 600, 10), "assets/QuitGameButton.png");
+	quitButton = new Button(Point2(SWIDTH / 2, SHEIGHT / 2 + 200, 10), "assets/QuitGameButton.png");
 	AddChild(quitButton);
 }
 
-MenuScene::~MenuScene() {
+MainMenuScene::~MainMenuScene() {
 	// Removing created objects
 	RemoveChild(startButton);
 	delete startButton;
@@ -25,10 +25,10 @@ MenuScene::~MenuScene() {
 	delete quitButton;
 }
 
-void MenuScene::Update() {
+void MainMenuScene::Update() {
 	// Check button input
 	if (startButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
-		SceneMaganger::LoadScene(1);
+		SceneMaganger::LoadScene(4);
 	}
 	if (mapBuilderButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
 		std::cout << "Map builder" << std::endl;

@@ -23,9 +23,9 @@ bool Button::CheckPressed(Point2 mousePos) {
 	return false;
 }
 
-void Button::AddButtonText(std::string text, int x, int y, std::string fontPath) {
+void Button::AddButtonText(std::string text, int x, int y, int fontSize, std::string fontPath) {
 	buttonText = new GameObject();
-	buttonText->AddText(text, fontPath);
-	buttonText->position = Vector3(x, y, position.z + 1);
+	buttonText->AddText(text, fontPath, fontSize);
+	buttonText->position = position + Vector3(x, y, 1);
 	AddChild(buttonText);
 }

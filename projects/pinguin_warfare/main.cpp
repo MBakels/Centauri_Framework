@@ -2,14 +2,20 @@
 
 #include "core.h"
 #include "map.h"
-#include "menuscene.h"
+#include "mainmenuscene.h"
+#include "mapselectionmenuscene.h"
+#include "deathmenuscene.h"
+#include "winmenuscene.h"
 
 int main() {
 	// Core instance
 	Core core;
 
-	// Create scenes and add them to SceneMaganger
-	SceneMaganger::AddScene(new MenuScene());
+	// Create menu scenes and add them to SceneMaganger
+	SceneMaganger::AddScene(new MainMenuScene());
+	SceneMaganger::AddScene(new MapSelectionMenuScene());
+	SceneMaganger::AddScene(new WinMenuScene());
+	SceneMaganger::AddScene(new DeathMenuScene());
 
 	// Get the maps from a folder
 	std::string path = "maps"; // folder path
@@ -21,6 +27,7 @@ int main() {
 	// Loading the first scene (menu scene)
 	SceneMaganger::LoadScene(0);
 
+	// Run the game while the core state is running
 	while (core.IsRunning()) {
 		core.Run();
 	}

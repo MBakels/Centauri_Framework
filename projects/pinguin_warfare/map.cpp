@@ -1,5 +1,7 @@
-#include "map.h"
 #include <stdlib.h>
+
+#include "map.h"
+#include "scenemanager.h"
 
 Map::Map(std::string filepath) {
 	// Seed the random number generator
@@ -159,7 +161,7 @@ void Map::SceneLoaded() {
 
 void Map::Update() {
 	// Toggle pause menu if the escape key has been pressed
-	if (GetInput()->GetKeyDown(KeyCode::GraveAccent)) {
+	if (GetInput()->GetKeyDown(KeyCode::EscapeKey)) {
 		pauseMenu->Toggle();
 	}
 	// Check the state of the pause menu
@@ -210,17 +212,14 @@ void Map::Update() {
 
 	// Check if the player is alive
 	if (!player->IsAlive()) {
-		std::cout << "Dead!" << std::endl;
+		// Load lose menu
+		SceneMaganger::LoadScene(3);
 	}
 
 	// Check win condition, if all enemy pinguins are dead you win
 	if (enemys.empty()) {
-		std::cout << "Winner!" << std::endl;
-	}
-
-	// (Temp) Close game
-	if (GetInput()->GetKey(KeyCode::EscapeKey)) {
-		GetInput()->ExitApplication();
+		// Load win menu
+		SceneMaganger::LoadScene(2);
 	}
 }
 

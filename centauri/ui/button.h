@@ -11,7 +11,7 @@ public:
 
 	bool CheckPressed(Point2 mousePos);
 
-	void AddButtonText(std::string text, int x = 0, int y = 0, std::string fontPath = "fonts/acari-sans/AcariSans-Regular.ttf");
+	void AddButtonText(std::string text, int x = 0, int y = 0, int fontSize = 24, std::string fontPath = "fonts/acari-sans/AcariSans-Regular.ttf");
 
 private:
 	GameObject* buttonText;

@@ -166,12 +166,18 @@ if(MAKE_PINGUIN_WARFARE)
 		projects/pinguin_warfare/tile.h
 		projects/pinguin_warfare/pinguin.cpp
 		projects/pinguin_warfare/pinguin.h
-		projects/pinguin_warfare/menuscene.cpp
-		projects/pinguin_warfare/menuscene.h
+		projects/pinguin_warfare/mainmenuscene.cpp
+		projects/pinguin_warfare/mainmenuscene.h
 		projects/pinguin_warfare/pausemenu.cpp
 		projects/pinguin_warfare/pausemenu.h
 		projects/pinguin_warfare/snowball.cpp
 		projects/pinguin_warfare/snowball.h
+		projects/pinguin_warfare/mapselectionmenuscene.cpp
+		projects/pinguin_warfare/mapselectionmenuscene.h
+		projects/pinguin_warfare/winmenuscene.cpp
+		projects/pinguin_warfare/winmenuscene.h
+		projects/pinguin_warfare/deathmenuscene.cpp
+		projects/pinguin_warfare/deathmenuscene.h
 	)
 	
 	target_link_libraries(pinguin_warfare
