@@ -11,6 +11,9 @@ int main() {
 	SceneMaganger::AddScene(new MenuScene());
 	SceneMaganger::AddScene(new Map("maps/test.m"));
 
+	// Loading the first scene (menu scene)
+	SceneMaganger::LoadScene(0);
+
 	while (core.IsRunning()) {
 		core.Run();
 	}

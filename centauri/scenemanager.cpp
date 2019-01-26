@@ -19,13 +19,10 @@ SceneMaganger::~SceneMaganger() {
 
 void SceneMaganger::AddScene(Scene* scene) {
 	_scenes.push_back(scene);
-	if (_currentScene == NULL) {
-		_currentScene = scene;
-		_currentSceneIndex = 0;
-	}
 }
 
 void SceneMaganger::LoadScene(int sceneIndex) {
 	_currentScene = _scenes[sceneIndex];
 	_currentSceneIndex = sceneIndex;
+	_currentScene->SceneLoaded();
 }

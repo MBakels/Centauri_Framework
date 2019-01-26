@@ -8,6 +8,15 @@
 #include "pausemenu.h"
 #include "snowball.h"
 
+// A struct to hold all map data
+struct MapData {
+	std::string mapName; // Name of the map
+	Point2 mapSize; // Size of the map
+	std::vector<int> tiles; // A vector that contains all tiles types
+	Point2 playerPosition; // The player position
+	std::vector<Point2> enemyPositions; // A vector with all the enemy positions
+};
+
 class Map : public Scene {
 public:
 	// Constructor of the Map class
@@ -18,11 +27,13 @@ public:
 	// Updates the Map Scene
 	void Update();
 
-private:
-	// Size of the map in number of tiles
-	int width;
-	int height;
+	// If the scene is loaded this gets called, it sets up or resets the scene
+	void SceneLoaded();
 
+	// Map data in struct
+	MapData* data;
+
+private:
 	// A 2D vector for the tiles
 	std::vector< std::vector<Tile*> > tiles;
 	// A vector with the enemys

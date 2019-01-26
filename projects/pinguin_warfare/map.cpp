@@ -1,10 +1,27 @@
 #include "map.h"
+#include <stdlib.h>
 
 Map::Map(std::string filepath) {
 	// Seed the random number generator
 	srand(time(NULL));
-	// Setup temp variables
-	std::vector<int> tiles;
+
+	// Setup the variables
+	player = NULL;
+
+	// Create the map data structure
+	data = new MapData();
+	// file name
+	char fname[_MAX_FNAME];
+	// Geting the map name
+	errno_t err = _splitpath_s(filepath.c_str(), NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0);
+	// Assign the file name as the map name
+	data->mapName = fname;
+	// Log the error if we get one
+	if (err != 0) {
+		std::cout << "Error splitting the path. Error code: " << err << std::endl;
+	}
+
+	// Setup textfile
 	TextFile textfile;
 
 	// Try to open the file
@@ -17,28 +34,32 @@ Map::Map(std::string filepath) {
 			std::string lineoftext = textfile.ReadLine();
 			// Map size
 			if (lineoftext[0] == 's') {
+				int width, height;
 				sscanf(lineoftext.c_str(), "s %d %d", &width, &height);
+				data->mapSize = Point2(width, height);
 			}
 			// Tiles
 			if (lineoftext[0] == 't') {
 				for (int i = 2; i < lineoftext.length(); ++i) {
-					tiles.push_back(lineoftext[i] - 48);
+					data->tiles.push_back(lineoftext[i] - 48);
 				}
 			}
 			// Player
 			if (lineoftext[0] == 'p') {
 				int xPos, yPos;
 				sscanf(lineoftext.c_str(), "p %d %d", &xPos, &yPos);
-				player = new Pinguin(xPos, yPos, 4);
-				AddChild(player);
+				data->playerPosition = Point2(xPos, yPos);
+				//player = new Pinguin(xPos, yPos, 4);
+				//AddChild(player);
 			}
 			// Enemy
 			if (lineoftext[0] == 'e') {
 				int xPos, yPos;
 				sscanf(lineoftext.c_str(), "e %d %d", &xPos, &yPos);
-				Pinguin* enemy = new Pinguin(xPos, yPos, 3);
-				enemys.push_back(enemy);
-				AddChild(enemy);
+				data->enemyPositions.push_back(Point2(xPos, yPos));
+				//Pinguin* enemy = new Pinguin(xPos, yPos, 3);
+				//enemys.push_back(enemy);
+				//AddChild(enemy);
 			}
 		}
 		// Close the file
@@ -50,20 +71,17 @@ Map::Map(std::string filepath) {
 
 	int tileIndex = 0; // Temp int tileIndex
 	// Create grid of tiles
-	for (int x = 0; x < width; x++) {
+	for (int x = 0; x < data->mapSize.x; x++) {
 		std::vector<Tile*> tempVec;
-		for (int y = 0; y < height; y++) {
+		for (int y = 0; y < data->mapSize.y; y++) {
 			// Create tile and add tile to tempVec
-			tempVec.push_back(new Tile(x, y, tiles[tileIndex]));
+			tempVec.push_back(new Tile(x, y, data->tiles[tileIndex]));
 			AddChild(tempVec.back());
 			tileIndex++;
 		}
 		// Push tempVec into tiles
 		this->tiles.push_back(tempVec);
 	}
-
-	// Set camera starting position
-	GetCamera()->position = Point3(player->position.x, player->position.y, 100);
 
 	// Create the pause menu
 	pauseMenu = new PauseMenu();
@@ -96,6 +114,41 @@ Map::~Map() {
 	enemys.clear();
 
 	// Remove snowballs
+	std::vector<SnowBall*>::iterator snowBallsIt;
+	for (snowBallsIt = snowBalls.begin(); snowBallsIt != snowBalls.end(); snowBallsIt++) {
+		RemoveChild((*snowBallsIt));
+		delete (*snowBallsIt);
+	}
+	snowBalls.clear();
+}
+
+void Map::SceneLoaded() {
+	// The player and enemys are removed and recreated to reset them
+	// Remove old player
+	RemoveChild(player);
+	delete player;
+	// Create new player
+	player = new Pinguin(data->playerPosition.x, data->playerPosition.y, 4);
+	AddChild(player);
+
+	// Set camera starting position
+	GetCamera()->position = Point3(player->position.x, player->position.y, 100);
+
+	// Remove all currently existing enemys
+	std::vector<Pinguin*>::iterator enemysIt;
+	for (enemysIt = enemys.begin(); enemysIt != enemys.end(); enemysIt++) {
+		RemoveChild((*enemysIt));
+		delete (*enemysIt);
+	}
+	enemys.clear();
+	// Create new ones
+	for each (Point2 enemyPos in data->enemyPositions) {
+		Pinguin* enemy = new Pinguin(enemyPos.x, enemyPos.y, 3);
+		enemys.push_back(enemy);
+		AddChild(enemy);
+	}
+
+	// Remove all snowballs
 	std::vector<SnowBall*>::iterator snowBallsIt;
 	for (snowBallsIt = snowBalls.begin(); snowBallsIt != snowBalls.end(); snowBallsIt++) {
 		RemoveChild((*snowBallsIt));
@@ -226,7 +279,7 @@ Point2 Map::GetTilePositionOfMaxReachableTileInDirection(Point2 startPos, Vector
 
 bool Map::IsTileInBounds(Point2 tilePos) {
 	// Check if tile is in map grid bounds
-	if (tilePos.x >= width || tilePos.x < 0 || tilePos.y >= height || tilePos.y < 0) {
+	if (tilePos.x >= data->mapSize.x || tilePos.x < 0 || tilePos.y >= data->mapSize.y || tilePos.y < 0) {
 		return false;
 	}
 	return true;
@@ -264,7 +317,7 @@ void Map::EnemyAI() {
 			// Get the max reachable tile in the direction from above
 			Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(enemy->x, enemy->y), randomDirection);
 			// Move the enemy to the position
-			//enemy->MoveTo(tilePos, randomDirection);
+			enemy->MoveTo(tilePos, randomDirection);
 		}
 
 		// Enemy snowball throwing
@@ -306,7 +359,7 @@ void Map::SnowBallCollisionCheck() {
 	std::vector<Pinguin*>::iterator enemysIt = enemys.begin();
 	while (enemysIt != enemys.end()) {
 		std::vector<SnowBall*>::iterator snowBallsIt = snowBalls.begin();
-		while(snowBallsIt != snowBalls.end()) {
+		while (snowBallsIt != snowBalls.end()) {
 			float distance = Point::Distance((*snowBallsIt)->position, (*enemysIt)->position);
 			// Check if the snowball is thrown by the player(only the player can hit the enemys),
 			// and check if the distance is greater than the combined sprite sizes.

@@ -37,6 +37,7 @@ void PauseMenu::Update(Point2 cameraPos) {
 		Toggle();
 	}
 	if (menuButton->CheckPressed(Point2(GetInput()->GetMouseX() - SWIDTH / 2, GetInput()->GetMouseY() - SHEIGHT / 2))) {
+		Toggle(); // Before going to the main menu reset the pause menu
 		SceneMaganger::LoadScene(0);
 	}
 }

@@ -8,6 +8,9 @@ public:
 	Scene();
 	virtual ~Scene();
 
+	// Gets called after SceneManager loads the scene
+	virtual void SceneLoaded() {};
+
 	Camera* GetCamera() { return _camera; };
 
 	void UpdateScene();
