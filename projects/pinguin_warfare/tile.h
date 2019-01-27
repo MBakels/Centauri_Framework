@@ -22,6 +22,10 @@ public:
 	// Behaviour of this tile
 	TileBehaviour tileBehaviour;
 
+private:
+	// The top layer ot the stalagmite tile
+	GameObject* topLayer;
+
 };
 
 #endif

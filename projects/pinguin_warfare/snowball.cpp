@@ -5,7 +5,7 @@ SnowBall::SnowBall(Vector2 startPos,Vector2 direction, bool thrownByPlayer) {
 	AddSprite("assets/SnowBall.png");
 	// Setup the variables
 	position = startPos;
-	position.z = 1;
+	position.z = 2;
 	moveDirection = direction;
 	moveSpeed = 250;
 	this->thrownByPlayer = thrownByPlayer;

@@ -254,11 +254,15 @@ Point2 Map::GetTilePositionOfMaxReachableTileInDirection(Point2 startPos, Vector
 		if (!IsTileInBounds(startPos)) return Vector2(-1, -1);
 		// Get the tile
 		Tile* tile = tiles[startPos.x][startPos.y];
+		// Check if the position directly in front is sollid
+		if (tile->tileBehaviour == TileBehaviour::Solid) {
+			return Vector2(-1, -1); // Return fallback as we cant move through a solid tile
+		}
 		// Check if the tileBehaviour is SlowDown and if true return tile position in grid
 		if (tile->tileBehaviour == TileBehaviour::SlowDown) {
 			return Point2(tile->x, tile->y);
 		}
-		// Check if the tileBehaviour of the next tile is Solid and if true return its position in grid
+		// Check if the tileBehaviour of the next tile is Solid and if true return current position in grid
 		if (tiles[startPos.x + direction.x][startPos.y + direction.y]->tileBehaviour == TileBehaviour::Solid) {
 			return Point2(tile->x, tile->y);
 		}
