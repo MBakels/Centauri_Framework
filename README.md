@@ -14,7 +14,7 @@ Under windows run this in the PowerShell to generate the project files, the proj
   cmake -Wno-dev ..
 ```
 
-The framework is tested in windows 10 using visual studio 2017. If you are using something else i can't guarantee it will work.
+The framework is tested in windows 10 using visual studio 2017. If you are using something else I can't guarantee it will work.
 
 ## Libraries
 
@@ -25,7 +25,13 @@ The framework is tested in windows 10 using visual studio 2017. If you are using
 - stb_image: <https://github.com/nothings/stb/>
 
 ## Other files
+
 - acari-sans font [License](centauri/fonts/acari-sans/OFL.TXT)
+
+## Sources
+
+Most of what I learnt I learnt on [learnopengl.com](https://learnopengl.com/).
+I also used my teachers framework as reference while developing mine, you can find his here <https://github.com/rktrlng/rt2d>.
 
 ## License & copyright
 
