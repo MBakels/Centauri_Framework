@@ -20,5 +20,5 @@ Just make sure that "MAKE_PINGUIN_WARFARE" is turned on in the CMakeLists.txt fi
 I rescaled the image to 128x128 pixels to fit the size I needed.
 - Pinguin sprite Origin: [Clipartmag.com](http://clipartmag.com/baby-penguin-clipart#baby-penguin-clipart-29.png) - [License](https://creativecommons.org/licenses/by-nc/4.0/)<br/>
 I rescaled the image to 43x64 pixels to fit the size I needed.
-- Ice Stalagmite Origin: [Diviantart.com](https://www.deviantart.com/phyromatical/art/DoT-Day19-Mixed-Cave-Tileset-652113677) - Credits[Diviantart.com/phyromatical](https://www.deviantart.com/phyromatical) and [Diviantart.com/zetavares852](https://www.deviantart.com/zetavares852)<br/>
+- Ice Stalagmite Origin: [Diviantart.com](https://www.deviantart.com/phyromatical/art/DoT-Day19-Mixed-Cave-Tileset-652113677) - Credits: [Diviantart.com/phyromatical](https://www.deviantart.com/phyromatical) and [Diviantart.com/zetavares852](https://www.deviantart.com/zetavares852)<br/>
 I cut the sprite out of the spritesheet and upscaled it.
