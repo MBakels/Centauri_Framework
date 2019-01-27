@@ -1,6 +1,6 @@
 #include "pinguin.h"
 
-Pinguin::Pinguin(int xPos, int yPos, int zPos) {
+Pinguin::Pinguin(int xPos, int yPos, int zPos, float timeBetweenThrows) {
 	// Add the pinguin sprite
 	AddSprite("assets/Pinguin.png");
 	// Setup the variables
@@ -12,7 +12,7 @@ Pinguin::Pinguin(int xPos, int yPos, int zPos) {
 	y = yPos;
 	lives = 5;
 	throwTimer = 0;
-	timeBetweenThrows = 1;
+	this->timeBetweenThrows = timeBetweenThrows;
 }
 
 Pinguin::~Pinguin() {

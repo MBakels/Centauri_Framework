@@ -6,7 +6,7 @@
 class Pinguin : public GameObject {
 public:
 	// Constructor of the Pinguin class
-	Pinguin(int xPos, int yPos, int zPos);
+	Pinguin(int xPos, int yPos, int zPos, float timeBetweenThrows);
 	// Destructor of the Pinguin class
 	virtual ~Pinguin();
 

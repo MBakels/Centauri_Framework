@@ -30,7 +30,7 @@ Map::Map(std::string mapName) {
 	}
 
 	// Create the player
-	player = new Pinguin(data->playerPosition.x, data->playerPosition.y, 4);
+	player = new Pinguin(data->playerPosition.x, data->playerPosition.y, 4, 1);
 	AddChild(player);
 
 	// Set camera starting position
@@ -38,7 +38,7 @@ Map::Map(std::string mapName) {
 
 	// Create the enemys
 	for each (Point2 enemyPos in data->enemyPositions) {
-		Pinguin* enemy = new Pinguin(enemyPos.x, enemyPos.y, 3);
+		Pinguin* enemy = new Pinguin(enemyPos.x, enemyPos.y, 3, 2);
 		enemys.push_back(enemy);
 		AddChild(enemy);
 	}
