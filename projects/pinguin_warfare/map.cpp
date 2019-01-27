@@ -21,8 +21,11 @@ Map::Map(std::string mapName) {
 		std::vector<Tile*> tempVec;
 		for (int y = 0; y < data->mapSize.y; y++) {
 			// Create tile and add tile to tempVec
-			tempVec.push_back(new Tile(x, y, data->tiles[tileIndex]));
-			AddChild(tempVec.back());
+			Tile* tile = new Tile(x, y, data->tiles[tileIndex]);
+			AddChild(tile);
+			tempVec.push_back(tile);
+			// If the tile is of the solid type add it to the solids list
+			if (tile->tileBehaviour == TileBehaviour::Solid) solids.push_back(tile);
 			tileIndex++;
 		}
 		// Push tempVec into tiles
@@ -68,6 +71,9 @@ Map::~Map() {
 		tilesRowIt->clear();
 	}
 	tiles.clear();
+
+	// Clearing the solids vector, the values of the pointers are removed above
+	solids.clear();
 
 	// Remove enemys
 	std::vector<Pinguin*>::iterator enemysIt;
@@ -309,7 +315,7 @@ void Map::EnemyAI() {
 			// Get the max reachable tile in the direction from above
 			Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(enemy->x, enemy->y), randomDirection);
 			// Move the enemy to the position
-			enemy->MoveTo(tilePos, randomDirection);
+			if (tilePos != Point2(-1, -1)) enemy->MoveTo(tilePos, randomDirection);
 		}
 
 		// Enemy snowball throwing
@@ -330,14 +336,31 @@ void Map::EnemyAI() {
 }
 
 void Map::SnowBallCollisionCheck() {
+	// Check for collisions between a snowball and a solid tile
+	std::vector<Tile*>::iterator solidTilesIt = solids.begin();
+	while (solidTilesIt != solids.end()) {
+		std::vector<SnowBall*>::iterator snowBallsIt = snowBalls.begin();
+		while (snowBallsIt != snowBalls.end()) {
+			float distance = Point::Distance((*snowBallsIt)->position, (*solidTilesIt)->position);
+			// Check if the distance is greater than the combined sprite sizes divided by 2
+			if (distance <= (*snowBallsIt)->GetSprite()->size.x / 2 + (*solidTilesIt)->GetSprite()->size.x / 2) {
+				RemoveChild((*snowBallsIt));
+				delete (*snowBallsIt);
+				snowBallsIt = snowBalls.erase(snowBallsIt);
+			} else {
+				snowBallsIt++;
+			}
+		}
+		solidTilesIt++;
+	}
+
 	// Check for collisions between the player and a snowball
 	std::vector<SnowBall*>::iterator snowBallsIt = snowBalls.begin();
 	while (snowBallsIt != snowBalls.end()) {
 		float distance = Point::Distance((*snowBallsIt)->position, player->position);
 		// Check if the snowball is not thrown by the player(player cant hit himself),
-		// and check if the distance is greater than the combined sprite sizes.
-		// A small amount is subtracted from the player size so that the snowball can get a bit closer
-		if (!(*snowBallsIt)->ThrownByPlayer() && distance <= (*snowBallsIt)->GetSprite()->size.x + player->GetSprite()->size.x - 30) {
+		// and check if the distance is greater than the combined sprite sizes divided by 2
+		if (!(*snowBallsIt)->ThrownByPlayer() && distance <= (*snowBallsIt)->GetSprite()->size.x / 2 + player->GetSprite()->size.x / 2) {
 			player->RemoveLive();
 			RemoveChild((*snowBallsIt));
 			delete (*snowBallsIt);
@@ -354,9 +377,8 @@ void Map::SnowBallCollisionCheck() {
 		while (snowBallsIt != snowBalls.end()) {
 			float distance = Point::Distance((*snowBallsIt)->position, (*enemysIt)->position);
 			// Check if the snowball is thrown by the player(only the player can hit the enemys),
-			// and check if the distance is greater than the combined sprite sizes.
-			// A small amount is subtracted from the enemy size so that the snowball can get a bit closer
-			if ((*snowBallsIt)->ThrownByPlayer() && distance <= (*snowBallsIt)->GetSprite()->size.x + (*enemysIt)->GetSprite()->size.x - 30) {
+			// and check if the distance is greater than the combined sprite sizes divided by 2
+			if ((*snowBallsIt)->ThrownByPlayer() && distance <= (*snowBallsIt)->GetSprite()->size.x / 2 + (*enemysIt)->GetSprite()->size.x / 2) {
 				(*enemysIt)->RemoveLive();
 				RemoveChild((*snowBallsIt));
 				delete (*snowBallsIt);

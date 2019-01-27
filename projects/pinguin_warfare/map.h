@@ -44,6 +44,9 @@ private:
 	// A vector with snowballs
 	std::vector<SnowBall*> snowBalls;
 
+	// A vector with all solid tiles
+	std::vector<Tile*> solids;
+
 	// The player
 	Pinguin* player;
 
