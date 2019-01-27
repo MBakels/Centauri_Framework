@@ -293,8 +293,11 @@ std::vector<Vector2> Map::GetPotentialMoveDirections(Point2 tilePos) {
 			if (x == 0 && y == 0) continue;
 			// Check if the tile is in bounds on the map grid
 			if (IsTileInBounds(Point2(tilePos.x + x, tilePos.y + y))) {
-				// Add the direction to the potentialDirections vector
-				potentialDirections.push_back(Vector2(x, y));
+				// Also check if the tile is not solid
+				if (tiles[tilePos.x + x][tilePos.y + y]->tileBehaviour != TileBehaviour::Solid) {
+					// Add the direction to the potentialDirections vector
+					potentialDirections.push_back(Vector2(x, y));
+				}
 			}
 		}
 	}
@@ -315,7 +318,7 @@ void Map::EnemyAI() {
 			// Get the max reachable tile in the direction from above
 			Point2 tilePos = GetTilePositionOfMaxReachableTileInDirection(Point2(enemy->x, enemy->y), randomDirection);
 			// Move the enemy to the position
-			if (tilePos != Point2(-1, -1)) enemy->MoveTo(tilePos, randomDirection);
+			enemy->MoveTo(tilePos, randomDirection);
 		}
 
 		// Enemy snowball throwing
