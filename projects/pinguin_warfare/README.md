@@ -9,7 +9,7 @@ and you throw a snowball by pressing the right mouse button.
 
 ## Compiling
 
-Compiling is described on the Centauri page [Here](../../).
+Compiling is described on the Centauri page [Here](https://github.com/MBakels/Centauri_Framework).
 Just make sure that "MAKE_PINGUIN_WARFARE" is turned on in the CMakeLists.txt file(It is by default).
 
 ## Art
