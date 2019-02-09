@@ -5,31 +5,21 @@
 #include "scene03.h"
 
 int main() {
-
+	// Core instance
 	Core core;
 
-	std::vector<MasterScene*> scenes;
-	scenes.push_back(new Scene01());
-	scenes.push_back(new Scene02());
-	scenes.push_back(new Scene03());
-	int s = scenes.size();
+	// Create demo scenes and add them to SceneMaganger
+	SceneMaganger::AddScene(new Scene01());
+	SceneMaganger::AddScene(new Scene02());
+	SceneMaganger::AddScene(new Scene03());
 
-	MasterScene* scene = scenes[0];
-	int scenecounter = 0;
+	// Loading the first scene (menu scene)
+	SceneMaganger::LoadScene(0);
+
+	// Run the game while the core state is running
 	while (core.IsRunning()) {
-		scenecounter = scene->activescene;
-		if (scenecounter > s - 1) { scenecounter = 0; scene->activescene = 0; }
-		if (scenecounter < 0) { scenecounter = s - 1; scene->activescene = s - 1; }
-		scene = scenes[scenecounter];
-		core.Run(scene);
-		//core.ShowFrameRate(5);
+		core.Run();
 	}
-
-	for (int i = 0; i < s; i++) {
-		delete scenes[i];
-		scenes[i] = NULL;
-	}
-	scenes.clear();
 
 	return 0;
 }

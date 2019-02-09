@@ -2,14 +2,14 @@
 #define CONFIG_H
 
 // screenwidth, screenheight
-#define SWIDTH 1920 // The screen width
-#define SHEIGHT 1080 // The screen height
+#define SWIDTH 1200 // The screen width
+#define SHEIGHT 800 // The screen height
 
-#define FULLSCREEN 2 // Fullscreen or not(0=not, 1=fullscreen, 2=windowed fullscreen)
+#define FULLSCREEN 0 // Fullscreen or not(0=not, 1=fullscreen, 2=windowed fullscreen)
 
 #define RESIZABLE 0 // Resizable or not
 
-#define WINDOWNAME "Pinguin Warfare Demo Game" // The window name
+#define WINDOWNAME "Centauri framework" // The window name
 
 #define VSYNC 1 // VSYNC on (1) or off (0)
 

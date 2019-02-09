@@ -10,7 +10,9 @@ public:
 
 	virtual void Update();
 
+private:
 	static int activescene;
+	static int numberOfScenes;
 };
 
 #endif

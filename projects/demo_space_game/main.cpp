@@ -6,13 +6,16 @@ int main() {
 
 	Core core;
 
-	GameScene* gameScene = new GameScene();
+	// Create game scene and add it to SceneMaganger
+	SceneMaganger::AddScene(new GameScene());
 
+	// Loading the first scene (menu scene)
+	SceneMaganger::LoadScene(0);
+
+	// Run the game while the core state is running
 	while (core.IsRunning()) {
-		core.Run(gameScene);
-		//core.ShowFrameRate(5);
+		core.Run();
 	}
-	delete gameScene;
 
 	return 0;
 }
