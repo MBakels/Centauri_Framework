@@ -143,7 +143,7 @@ int Renderer::Init() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 	glBindVertexArray(0);
 
-	//glLineWidth(5);
+	// Draw in wireframe mode
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	return 0;
@@ -152,6 +152,7 @@ int Renderer::Init() {
 void Renderer::RenderScene(Scene* scene) {
 	// First pass
 	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear screen
 	glEnable(GL_DEPTH_TEST);
 
@@ -172,6 +173,7 @@ void Renderer::RenderScene(Scene* scene) {
 
 	// Second pass
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default framebuffer
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	Shader* framebufferShader = _resourcemanager.GetShader(DEFAULTFRAMEBUFFERVERTEXSHADER, DEFAULTFRAMEBUFFERFRAGMENTSHADER);
 	framebufferShader->Use();
