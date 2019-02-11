@@ -41,14 +41,17 @@ public:
 	GLFWwindow* GetWindow() { return _window; };
 
 private:
-	GLuint _SpriteVAO;
-	GLuint _TextVAO, _TextVBO;
+	GLuint _framebuffer;
+	GLuint _renderbuffer;
+	GLuint _texColorBuffer;
+	GLuint _framebufferVAO, _framebufferVBO;
+
+	GLuint _spriteVAO;
+	GLuint _textVAO, _textVBO;
 
 	ResourceManager _resourcemanager;
 
 	GLFWwindow* _window;
-
-	Shader* _defaultShader;
 
 	glm::mat4 _projectionMatrix;
 	glm::mat4 _viewMatrix;

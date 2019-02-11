@@ -8,6 +8,7 @@ Scene01::Scene01() : MasterScene() {
 	woodObj->AddSprite("assets/container.tga");
 	woodObj->position = Vector3(450, 220, 0);
 	woodObj->scale = Vector3(0.7f, 0.7f, 1);
+	woodObj->rotation = Vector3(0, 0, 45);
 
 	pencilsObj = new GameObject();
 	pencilsObj->AddSprite("assets/pencils.tga");

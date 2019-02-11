@@ -3,13 +3,15 @@
 
 Renderer::Renderer() {
 	_window = NULL;
-	//_defaultShader = NULL;
-
 	Init();
 }
 
 Renderer::~Renderer() {
-	glDeleteVertexArrays(1, &_SpriteVAO);
+	glDeleteVertexArrays(1, &_spriteVAO);
+	glDeleteVertexArrays(1, &_textVAO);
+	glDeleteBuffers(1, &_textVBO);
+	glDeleteFramebuffers(1, &_framebuffer);
+	glDeleteRenderbuffers(1, &_renderbuffer);
 	glfwTerminate(); // glfw: terminate, clearing all previously allocated GLFW resources.
 }
 
@@ -70,13 +72,13 @@ int Renderer::Init() {
 	glEnable(GL_BLEND);
 
 	// Sprite VAO
-	glGenVertexArrays(1, &_SpriteVAO);
+	glGenVertexArrays(1, &_spriteVAO);
 
 	// Text VAO and VBO
-	glGenVertexArrays(1, &_TextVAO);
-	glGenBuffers(1, &_TextVBO);
-	glBindVertexArray(_TextVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _TextVBO);
+	glGenVertexArrays(1, &_textVAO);
+	glGenBuffers(1, &_textVBO);
+	glBindVertexArray(_textVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _textVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -86,11 +88,73 @@ int Renderer::Init() {
 	// setting unpack alignment
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+	// Creating a framebuffer (this is the framebuffer we draw to, the default framebuffer is used for rendering)
+	glGenFramebuffers(1, &_framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+
+	// Generate texture for framebuffer
+	glGenTextures(1, &_texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, _texColorBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SWIDTH, SHEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Attach the texture to currently bound framebuffer object
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texColorBuffer, 0);
+
+	// Creating a renderbuffer object for the depth and stencil attachment(renderbuffer objects are more optimized but you cant sample them)
+	glGenRenderbuffers(1, &_renderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SWIDTH, SHEIGHT);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	// Attach the rbo to the framebuffer
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderbuffer);
+
+	// Check if the framebuffer is complete
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	}
+	// Unbind the framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+	float quadVertices[] = {
+		// positions   // texCoords
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+
+	// Screen quad VAO for framebuffer
+	glGenVertexArrays(1, &_framebufferVAO);
+	glGenBuffers(1, &_framebufferVBO);
+	glBindVertexArray(_framebufferVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _framebufferVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glBindVertexArray(0);
+
+	//glLineWidth(5);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	return 0;
 }
 
 void Renderer::RenderScene(Scene* scene) {
+	// First pass
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear screen
+	glEnable(GL_DEPTH_TEST);
+
 	_viewMatrix = scene->GetCamera()->ViewMatrix(); // Get viewMatrix from camera
 	_projectionMatrix = scene->GetCamera()->ProjectionMatrix(); // Get projectionMatrix from camera
 
@@ -99,12 +163,22 @@ void Renderer::RenderScene(Scene* scene) {
 	// Render the scene
 	this->RenderGameObject(modelMatrix, scene, scene->GetCamera());
 
-	//Render transparent sprites in reverse order
+	// Render transparent sprites in reverse order
 	for (std::multimap<float, TransparentRenderable>::reverse_iterator it = transparentRenderableSpriteList.rbegin(); it != transparentRenderableSpriteList.rend(); ++it) {
 		TransparentRenderable tr = it->second;
 		this->RenderSprite(tr.modelMatrix, tr.sprite, tr.texture);
 	}
 	transparentRenderableSpriteList.clear();
+
+	// Second pass
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default framebuffer
+	glClear(GL_COLOR_BUFFER_BIT);
+	Shader* framebufferShader = _resourcemanager.GetShader(DEFAULTFRAMEBUFFERVERTEXSHADER, DEFAULTFRAMEBUFFERFRAGMENTSHADER);
+	framebufferShader->Use();
+	glBindVertexArray(_framebufferVAO);
+	glDisable(GL_DEPTH_TEST);
+	glBindTexture(GL_TEXTURE_2D, _texColorBuffer);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glfwSwapBuffers(_window); // Swap buffers
 }
@@ -174,7 +248,7 @@ void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* text
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 
-	glBindVertexArray(_SpriteVAO);
+	glBindVertexArray(_spriteVAO);
 	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES, blendcolor);
 	glBindVertexArray(0);
 }
@@ -185,7 +259,7 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 	shader->SetVec3("textColor", (float)text->color.r / 255.0f, (float)text->color.g / 255.0f, (float)text->color.b / 255.0f);
 	shader->SetMat4("projection", _projectionMatrix);
 	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(_TextVAO);
+	glBindVertexArray(_textVAO);
 
 	// Number of enter characters passed in text
 	int enterCounter = 0;
@@ -224,7 +298,7 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 		// Render glyph texture over quad
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 		// Update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, _TextVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, _textVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		// Render quad
@@ -244,7 +318,7 @@ void Renderer::RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape) 
 
 	RGBAColor color = basicShape->color;
 
-	glBindVertexArray(_SpriteVAO);
+	glBindVertexArray(_spriteVAO);
 	RenderMesh(modelMatrix, shader, mesh, GL_TRIANGLES, color);
 	glBindVertexArray(0);
 }
