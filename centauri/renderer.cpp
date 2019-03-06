@@ -11,7 +11,12 @@ Renderer::~Renderer() {
 	glDeleteVertexArrays(1, &_textVAO);
 	glDeleteBuffers(1, &_textVBO);
 	glDeleteFramebuffers(1, &_framebuffer);
-	glDeleteRenderbuffers(1, &_renderbuffer);
+	glDeleteRenderbuffers(1, &_multisampledRenderBuffer);
+	glDeleteFramebuffers(1, &_intermediateFBO);
+	glDeleteVertexArrays(1, &_framebufferVAO);
+	glDeleteBuffers(1, &_framebufferVBO);
+	glDeleteTextures(1, &_textureColorBufferMultiSampled);
+	glDeleteTextures(1, &_screenTexture);
 	glfwTerminate(); // glfw: terminate, clearing all previously allocated GLFW resources.
 }
 
@@ -88,30 +93,39 @@ int Renderer::Init() {
 	// setting unpack alignment
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	// Creating a framebuffer (this is the framebuffer we draw to, the default framebuffer is used for rendering)
+	// Creating framebuffers
+	// MSAA framebuffer (first fbo)
 	glGenFramebuffers(1, &_framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+	// Generate multisampled  texture for framebuffer
+	glGenTextures(1, &_textureColorBufferMultiSampled);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, _textureColorBufferMultiSampled);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MSAA, GL_RGB, SWIDTH, SHEIGHT, GL_TRUE);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, _textureColorBufferMultiSampled, 0);
+	// Generate multisampled renderbuffer object
+	glGenRenderbuffers(1, &_multisampledRenderBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, _multisampledRenderBuffer);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, MSAA, GL_DEPTH24_STENCIL8, SWIDTH, SHEIGHT);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _multisampledRenderBuffer);
+	// Check if the framebuffer is complete
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	}
+	// Unbind the framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	// Generate texture for framebuffer
-	glGenTextures(1, &_texColorBuffer);
-	glBindTexture(GL_TEXTURE_2D, _texColorBuffer);
+	// Post-processing framebuffer (second fbo)
+	glGenFramebuffers(1, &_intermediateFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, _intermediateFBO);
+	// Create a texture
+	glGenTextures(1, &_screenTexture);
+	glBindTexture(GL_TEXTURE_2D, _screenTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SWIDTH, SHEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	// Attach the texture to currently bound framebuffer object
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texColorBuffer, 0);
-
-	// Creating a renderbuffer object for the depth and stencil attachment(renderbuffer objects are more optimized but you cant sample them)
-	glGenRenderbuffers(1, &_renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SWIDTH, SHEIGHT);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	// Attach the rbo to the framebuffer
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderbuffer);
-
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _screenTexture, 0);
 	// Check if the framebuffer is complete
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
@@ -171,15 +185,21 @@ void Renderer::RenderScene(Scene* scene) {
 	}
 	transparentRenderableSpriteList.clear();
 
-	// Second pass
+	// Blit multisampled buffers to normal colorbuffer of intermediate FBO
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, _framebuffer);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _intermediateFBO);
+	glBlitFramebuffer(0, 0, SWIDTH, SHEIGHT, 0, 0, SWIDTH, SHEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+	// Render screen texture
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default framebuffer
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	Shader* framebufferShader = _resourcemanager.GetShader(DEFAULTFRAMEBUFFERVERTEXSHADER, DEFAULTFRAMEBUFFERFRAGMENTSHADER);
+	//Shader* framebufferShader = _resourcemanager.GetShader(DEFAULTFRAMEBUFFERVERTEXSHADER, DEFAULTFRAMEBUFFERFRAGMENTSHADER);
+	Shader* framebufferShader = _resourcemanager.GetShader(scene->GetCamera()->PostProcessingVertexshader(), scene->GetCamera()->PostProcessingFragmentshader());
 	framebufferShader->Use();
 	glBindVertexArray(_framebufferVAO);
 	glDisable(GL_DEPTH_TEST);
-	glBindTexture(GL_TEXTURE_2D, _texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, _screenTexture);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glfwSwapBuffers(_window); // Swap buffers

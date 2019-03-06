@@ -10,6 +10,9 @@ Camera::Camera() {
 	_right = glm::vec3(1, 0, 0);
 
 	Orthogonal();
+
+	_postProcessingVertexshader = DEFAULTFRAMEBUFFERVERTEXSHADER;
+	_postProcessingFragmentshader = DEFAULTFRAMEBUFFERFRAGMENTSHADER;
 }
 
 Camera::~Camera() {

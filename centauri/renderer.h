@@ -41,10 +41,15 @@ public:
 	GLFWwindow* GetWindow() { return _window; };
 
 private:
+	// Frist fbo
 	GLuint _framebuffer;
-	GLuint _renderbuffer;
-	GLuint _texColorBuffer;
+	GLuint _multisampledRenderBuffer;
+	GLuint _textureColorBufferMultiSampled;
 	GLuint _framebufferVAO, _framebufferVBO;
+
+	// Second fbo
+	GLuint _intermediateFBO;
+	GLuint _screenTexture;
 
 	GLuint _spriteVAO;
 	GLuint _textVAO, _textVBO;

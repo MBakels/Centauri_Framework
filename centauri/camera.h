@@ -19,6 +19,12 @@ public:
 
 	void Camera::Orthogonal();
 
+	std::string PostProcessingVertexshader() { return _postProcessingVertexshader; };
+	std::string PostProcessingFragmentshader() { return _postProcessingFragmentshader; };
+
+	void PostProcessingVertexshader(std::string vertexshader) { _postProcessingVertexshader = vertexshader; };
+	void PostProcessingFragmentshader(std::string fragmentshader) { _postProcessingFragmentshader = fragmentshader; };
+
 	Point3 position;
 	Point3 rotation;
 
@@ -31,6 +37,9 @@ private:
 	glm::vec3 _up;
 	glm::vec3 _right;
 	glm::vec3 _direction;
+
+	std::string _postProcessingVertexshader; // Post processing vertexshader
+	std::string _postProcessingFragmentshader; // Post processing fragmentshader
 };
 
 #endif
