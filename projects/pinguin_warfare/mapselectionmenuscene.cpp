@@ -8,9 +8,9 @@ MapSelectionMenuScene::MapSelectionMenuScene() {
 	// Add a button for each MapData element in maps
 	for each(std::pair<std::string, MapData*> map in Map::maps) {
 		// Create and add button
-		Button* mapButton = new Button(Point2(xPos, yPos, -1), "assets/WhiteSquare.png", BLACK);
+		Button* mapButton = new Button(Point2(xPos, yPos, 0), "assets/WhiteSquare.png", BLACK);
 		mapButton->GetSprite()->size = Point2(300, 100);
-		mapButton->AddButtonText(map.first, -150, 15, 62);
+		mapButton->AddButtonText(map.first, -150, -45, 62);
 		AddChild(mapButton);
 		// Add button to buttons vector
 		mapButtons.push_back(mapButton);

@@ -2,6 +2,9 @@
 #include "scenemanager.h"
 
 PauseMenu::PauseMenu() {
+	// Set z position of pause menu
+	position.z = 10;
+
 	// Menu background sprite
 	AddSprite("assets/WhiteSquare.png");
 	GetSprite()->color = RGBAColor(0, 0, 0, 130);

@@ -5,7 +5,7 @@ DeathMenuScene::DeathMenuScene() {
 	// Back to menu button
 	menuButton = new Button(Point2(SWIDTH / 2, SHEIGHT / 2 + 100, -1), "assets/WhiteSquare.png", BLACK);
 	menuButton->GetSprite()->size = Point2(300, 100);
-	menuButton->AddButtonText("Menu", -75, 23, 62);
+	menuButton->AddButtonText("Menu", -75, -40, 62);
 	AddChild(menuButton);
 
 	// Text message
