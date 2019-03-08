@@ -12,7 +12,7 @@ Scene03::Scene03() : MasterScene() {
 	AddChild(animatedFace);
 
 	sceneText = new GameObject();
-	sceneText->position = Vector3(10, 30, 1);
+	sceneText->position = Vector3(5, 5, 50);
 	sceneText->AddText("Demo scene 03 | Animated sprite demo\nSwitch scenes with the [ ] keys", "fonts/acari-sans/AcariSans-Regular.ttf");
 	AddChild(sceneText);
 }

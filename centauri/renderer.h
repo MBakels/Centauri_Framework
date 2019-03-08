@@ -67,7 +67,7 @@ private:
 
 	void RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* texture);
 
-	void RenderText(Text* text, GLfloat x, GLfloat y);
+	void RenderText(glm::mat4 modelMatrix, Text* text);
 
 	void RenderBasicShape(glm::mat4 modelMatrix, BasicShapes* basicShape);
 

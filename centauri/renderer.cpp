@@ -194,7 +194,6 @@ void Renderer::RenderScene(Scene* scene) {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Back to default framebuffer
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	//Shader* framebufferShader = _resourcemanager.GetShader(DEFAULTFRAMEBUFFERVERTEXSHADER, DEFAULTFRAMEBUFFERFRAGMENTSHADER);
 	Shader* framebufferShader = _resourcemanager.GetShader(scene->GetCamera()->PostProcessingVertexshader(), scene->GetCamera()->PostProcessingFragmentshader());
 	framebufferShader->Use();
 	glBindVertexArray(_framebufferVAO);
@@ -238,7 +237,7 @@ void Renderer::RenderGameObject(glm::mat4 modelMatrix, GameObject* entity, Camer
 	// Check for Text
 	Text* text = entity->GetText();
 	if (text != NULL) {
-		this->RenderText(text, position.x, position.y);
+		this->RenderText(modelMatrix, text);
 	}
 
 	// Check for BasicShapes
@@ -275,18 +274,22 @@ void Renderer::RenderSprite(glm::mat4 modelMatrix, Sprite* sprite, Texture* text
 	glBindVertexArray(0);
 }
 
-void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
+void Renderer::RenderText(glm::mat4 modelMatrix, Text* text) {
+	// Get the shader from the resourcemanager
 	Shader* shader = _resourcemanager.GetShader(text->Vertexshader().c_str(), text->Fragmentshader().c_str());
-	shader->Use();
+	shader->Use(); // Use shader
+	glm::mat4 MVP = _projectionMatrix * _viewMatrix * modelMatrix; // Create MVP matrix
+	// Send data to shader
+	shader->SetMat4("MVP", MVP);
 	shader->SetVec3("textColor", (float)text->color.r / 255.0f, (float)text->color.g / 255.0f, (float)text->color.b / 255.0f);
-	shader->SetMat4("projection", _projectionMatrix);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(_textVAO);
 
 	// Number of enter characters passed in text
 	int enterCounter = 0;
 	// Start point of new line of text
-	int startPoint = x;
+	int charOffset = 0;
 
 	Font* font = _resourcemanager.GetFont(text->fontPath, text->fontSize);
 	// Iterate through all characters
@@ -295,14 +298,14 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 		//If enter char, start new line
 		if (*c == '\n') {
 			enterCounter++;
-			x = startPoint;
+			charOffset = 0;
 			continue;
 		}
 		//Get character from font
 		Character ch = font->Characters[*c];
 		//Set position
-		GLfloat xpos = x + ch.Bearing.x;
-		GLfloat ypos = y - ch.Bearing.y + enterCounter * text->fontSize;
+		GLfloat xpos = charOffset + ch.Bearing.x;
+		GLfloat ypos = enterCounter * text->fontSize - ch.Bearing.y + text->fontSize;
 		//Get witch and height
 		GLfloat w = ch.Size.x;
 		GLfloat h = ch.Size.y;
@@ -326,7 +329,7 @@ void Renderer::RenderText(Text* text, GLfloat x, GLfloat y) {
 		// Render quad
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
+		charOffset += (ch.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
