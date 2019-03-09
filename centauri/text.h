@@ -9,6 +9,18 @@
 
 #include "shader.h"
 
+enum VerticalAlignment {
+	TopAlignment,
+	CenterAlignmentVertical,
+	BottomAlignment
+};
+
+enum HorizontalAlignment {
+	LeftAlignment,
+	CenterAlignmentHorizontal,
+	RightAlignment
+};
+
 class Text {
 public:
 	Text(std::string text, std::string fontPath, int fontSize, RGBAColor textColor);
@@ -24,6 +36,8 @@ public:
 	RGBAColor color;
 	std::string fontPath;
 	int fontSize;
+	VerticalAlignment verticalAlignment;
+	HorizontalAlignment horizontalAlignment;
 
 private:
 	std::string _vertexshader;

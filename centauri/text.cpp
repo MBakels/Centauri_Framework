@@ -6,6 +6,9 @@ Text::Text(std::string text, std::string fontPath, int fontSize, RGBAColor textC
 	this->fontSize = fontSize;
 	color = textColor;
 
+	verticalAlignment = VerticalAlignment::BottomAlignment;
+	horizontalAlignment = HorizontalAlignment::LeftAlignment;
+
 	_vertexshader = DEFAULTTEXTVERTEXSHADER;
 	_fragmentshader = DEFAULTTEXTFRAGMENTSHADER;
 }

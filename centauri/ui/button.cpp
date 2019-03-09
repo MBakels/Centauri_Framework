@@ -27,5 +27,7 @@ void Button::AddButtonText(std::string text, int x, int y, int fontSize, std::st
 	buttonText = new GameObject();
 	buttonText->AddText(text, fontPath, fontSize);
 	buttonText->position = Vector3(x, y, 2);
+	buttonText->GetText()->verticalAlignment = VerticalAlignment::CenterAlignmentVertical;
+	buttonText->GetText()->horizontalAlignment = HorizontalAlignment::CenterAlignmentHorizontal;
 	AddChild(buttonText);
 }

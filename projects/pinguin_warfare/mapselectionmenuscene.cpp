@@ -10,7 +10,7 @@ MapSelectionMenuScene::MapSelectionMenuScene() {
 		// Create and add button
 		Button* mapButton = new Button(Point2(xPos, yPos, 0), "assets/WhiteSquare.png", BLACK);
 		mapButton->GetSprite()->size = Point2(300, 100);
-		mapButton->AddButtonText(map.first, -150, -45, 62);
+		mapButton->AddButtonText(map.first, 0, 0, 62);
 		AddChild(mapButton);
 		// Add button to buttons vector
 		mapButtons.push_back(mapButton);

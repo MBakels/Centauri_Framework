@@ -10,7 +10,7 @@
 
 #define WINDOWNAME "Centauri framework" // The window name
 
-#define VSYNC 1 // VSYNC on (1) or off (0)
+#define VSYNC 0 // VSYNC on (1) or off (0)
 
 #define MSAA 4 // MSAA (Anti Aliasing) (0=off or use 4 or 8 for Anti Aliasing, higher is possible but it costs more performance)
 

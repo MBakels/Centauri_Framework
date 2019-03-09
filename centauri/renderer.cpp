@@ -286,14 +286,37 @@ void Renderer::RenderText(glm::mat4 modelMatrix, Text* text) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(_textVAO);
 
+	// Number of enter characters in the text
+	int enters = 0;
+	// The longest line of text
+	int longestLine = 0;
+	// Temp variable of current line length
+	int currentLineLenght = 0;
+
+	Font* font = _resourcemanager.GetFont(text->fontPath, text->fontSize);
+	// Iterate through all characters to get basic text data
+	std::string::const_iterator c;
+	for (c = text->text.begin(); c != text->text.end(); c++) {
+		//If enter char, check new line
+		if (*c == '\n') {
+			enters++;
+			currentLineLenght -= font->Characters[*std::prev(c)].Bearing.x;
+			if (longestLine < currentLineLenght) longestLine = currentLineLenght;
+			currentLineLenght = 0;
+			continue;
+		}
+		Character ch = font->Characters[*c];
+		currentLineLenght += (ch.Advance >> 6) + ch.Bearing.x;
+		// Set longestLine to currentLineLenght if it has not been set at the end of the text
+		if (longestLine == 0 && (c != text->text.end()) && (c + 1 == text->text.end())) longestLine = currentLineLenght;
+	}
+
 	// Number of enter characters passed in text
 	int enterCounter = 0;
 	// Start point of new line of text
 	int charOffset = 0;
-
-	Font* font = _resourcemanager.GetFont(text->fontPath, text->fontSize);
+	
 	// Iterate through all characters
-	std::string::const_iterator c;
 	for (c = text->text.begin(); c != text->text.end(); c++) {
 		//If enter char, start new line
 		if (*c == '\n') {
@@ -303,10 +326,32 @@ void Renderer::RenderText(glm::mat4 modelMatrix, Text* text) {
 		}
 		//Get character from font
 		Character ch = font->Characters[*c];
-		//Set position
-		GLfloat xpos = charOffset + ch.Bearing.x;
-		GLfloat ypos = enterCounter * text->fontSize - ch.Bearing.y + text->fontSize;
-		//Get witch and height
+		//Set position based on alignment
+		GLfloat xpos;
+		switch (text->horizontalAlignment) {
+			case HorizontalAlignment::LeftAlignment:
+				xpos = charOffset + ch.Bearing.x;
+				break;
+			case HorizontalAlignment::CenterAlignmentHorizontal:
+				xpos = charOffset + ch.Bearing.x - longestLine / 2;
+				break;
+			case HorizontalAlignment::RightAlignment:
+				xpos = charOffset + ch.Bearing.x - longestLine;
+				break;
+		}
+		GLfloat ypos;
+		switch (text->verticalAlignment) {
+			case VerticalAlignment::TopAlignment:
+				ypos = enterCounter * text->fontSize - ch.Bearing.y - text->fontSize * enters;
+				break;
+			case VerticalAlignment::CenterAlignmentVertical:
+				ypos = enterCounter * text->fontSize - ch.Bearing.y - text->fontSize * enters / 2 + text->fontSize / 4;
+				break;
+			case VerticalAlignment::BottomAlignment:
+				ypos = enterCounter * text->fontSize - ch.Bearing.y + text->fontSize - text->fontSize / 4;
+				break;
+		}
+		//Get width and height
 		GLfloat w = ch.Size.x;
 		GLfloat h = ch.Size.y;
 		// Update VBO for each character
