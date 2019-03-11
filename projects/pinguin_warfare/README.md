@@ -17,7 +17,7 @@ Just make sure that "MAKE_PINGUIN_WARFARE" is turned on in the CMakeLists.txt fi
 
 ## Art
 - Snow and Ice tiles Origin: [Diviantart.com](https://www.deviantart.com/polygonixgames/art/Tileset-four-basic-outdoor-tiles-662263802) - [License](https://creativecommons.org/licenses/by-sa/3.0/)<br/>
-I rescaled the image to 128x128 pixels to fit the size I needed.
+I separated the snow and ice sprites from the spritesheet and rescaled the images to 64x64 pixels to fit the size I needed.
 - Pinguin sprite Origin: [Clipartmag.com](http://clipartmag.com/baby-penguin-clipart#baby-penguin-clipart-29.png) - [License](https://creativecommons.org/licenses/by-nc/4.0/)<br/>
 I rescaled the image to 43x64 pixels to fit the size I needed.
 - Ice Stalagmite Origin: [Diviantart.com](https://www.deviantart.com/phyromatical/art/DoT-Day19-Mixed-Cave-Tileset-652113677) - Credits: [Diviantart.com/phyromatical](https://www.deviantart.com/phyromatical) and [Diviantart.com/zetavares852](https://www.deviantart.com/zetavares852)<br/>
