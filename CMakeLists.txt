@@ -178,6 +178,8 @@ if(MAKE_PINGUIN_WARFARE)
 		projects/pinguin_warfare/winmenuscene.h
 		projects/pinguin_warfare/deathmenuscene.cpp
 		projects/pinguin_warfare/deathmenuscene.h
+		projects/pinguin_warfare/mapmaker.cpp
+		projects/pinguin_warfare/mapmaker.h
 	)
 	
 	target_link_libraries(pinguin_warfare

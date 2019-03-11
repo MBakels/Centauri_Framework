@@ -18,7 +18,7 @@ private:
 	// Menu button
 	Button * menuButton;
 
-	// Text massage
+	// Text message
 	GameObject* text;
 
 };
