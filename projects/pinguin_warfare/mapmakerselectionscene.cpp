@@ -61,6 +61,12 @@ MapMakerSelectionScene::MapMakerSelectionScene() {
 	mapSizeYText->position = Point3(10, -20, 2);
 	newMapMenu->AddChild(mapSizeYText);
 
+	createMapButton = new Button(Point3(0, 60, 2), "assets/WhiteSquare.png", WHITE);
+	createMapButton->GetSprite()->size = Point2(300, 50);
+	createMapButton->AddButtonText("Create map", 0, 0, 48);
+	createMapButton->buttonText->GetText()->color = BLACK;
+	newMapMenu->AddChild(createMapButton);
+
 }
 
 MapMakerSelectionScene::~MapMakerSelectionScene() {

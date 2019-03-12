@@ -27,6 +27,7 @@ private:
 	InputField* mapSizeYInput;
 	GameObject* mapSizeXText;
 	GameObject* mapSizeYText;
+	Button* createMapButton;
 
 };
 
