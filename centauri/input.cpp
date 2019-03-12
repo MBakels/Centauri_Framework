@@ -2,6 +2,7 @@
 
 Input::Input() {
 	_window = NULL;
+	_inputString = "";
 
 	for (unsigned int i = 0; i<GLFW_KEY_LAST; i++) {
 		_keys[i] = false;
@@ -21,6 +22,7 @@ Input::~Input() {
 
 void Input::UpdateInput(GLFWwindow* w) {
 	_window = w;
+	_inputString = "";
 
 	glfwPollEvents();
 
@@ -81,6 +83,7 @@ void Input::HandleKey(unsigned int key) {
 			// keys[key] is still true;
 			_keysDown[key] = false;
 		}
+		_inputString += key;
 	}
 	if (glfwGetKey(_window, key) == GLFW_RELEASE) {
 		if (_keys[key] == true) { // still pressed

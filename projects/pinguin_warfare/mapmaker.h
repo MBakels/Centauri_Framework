@@ -4,7 +4,6 @@
 #include "scene.h"
 #include "map.h"
 #include "tile.h"
-#include "textfile.h"
 
 class MapMaker : public Scene {
 public:
@@ -26,9 +25,9 @@ private:
 	// A 2D vector for the tiles
 	std::vector< std::vector<Tile*> > tiles;
 	// A vector with the enemy positions
-	std::vector<Vector2> enemyPositions;
+	//std::vector<Vector2> enemyPositions;
 	// Player position
-	Vector2 playerPosition;
+	//Vector2 playerPosition;
 };
 
 #endif

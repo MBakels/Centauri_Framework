@@ -6,6 +6,7 @@
 #include "mapselectionmenuscene.h"
 #include "deathmenuscene.h"
 #include "winmenuscene.h"
+#include "mapmakerselectionscene.h"
 
 int main() {
 	// Core instance
@@ -23,6 +24,7 @@ int main() {
 	SceneMaganger::AddScene(new MapSelectionMenuScene());
 	SceneMaganger::AddScene(new WinMenuScene());
 	SceneMaganger::AddScene(new DeathMenuScene());
+	SceneMaganger::AddScene(new MapMakerSelectionScene());
 
 	// Loading the first scene (menu scene)
 	SceneMaganger::LoadScene(0);

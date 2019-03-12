@@ -1,4 +1,5 @@
 #include "mapmaker.h"
+#include "textfile.h"
 
 MapMaker::MapMaker(std::string mapName, Point2 mapSize) {
 	// Check if a map with the given name exists
@@ -7,9 +8,13 @@ MapMaker::MapMaker(std::string mapName, Point2 mapSize) {
 		// Get data for the given map
 		data = mapsIt->second;
 	} else {
+		// Create new MapData
 		data = new MapData();
 		data->mapName = mapName;
 		data->mapSize = mapSize;
+		for (int i = 0; i < mapSize.x * mapSize.y; i++) {
+			data->tiles.push_back(1);
+		}
 	}
 
 	int tileIndex = 0; // Temp int tileIndex
@@ -26,7 +31,7 @@ MapMaker::MapMaker(std::string mapName, Point2 mapSize) {
 		// Push tempVec into tiles
 		this->tiles.push_back(tempVec);
 	}
-	
+
 }
 
 MapMaker::~MapMaker() {

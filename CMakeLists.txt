@@ -94,6 +94,8 @@ add_library(centauri
 	centauri/ui/button.h
 	centauri/scenemanager.cpp
 	centauri/scenemanager.h
+	centauri/ui/inputfield.cpp
+	centauri/ui/inputfield.h
 )
 
 file(
@@ -104,7 +106,12 @@ file(
 file(
 	COPY centauri/fonts
 	DESTINATION ${CMAKE_BINARY_DIR}
-	)
+)
+
+file(
+	COPY centauri/assets
+	DESTINATION ${CMAKE_BINARY_DIR}
+)
 
 # Demo
 if(MAKE_DEMO)
@@ -180,6 +187,8 @@ if(MAKE_PINGUIN_WARFARE)
 		projects/pinguin_warfare/deathmenuscene.h
 		projects/pinguin_warfare/mapmaker.cpp
 		projects/pinguin_warfare/mapmaker.h
+		projects/pinguin_warfare/mapmakerselectionscene.cpp
+		projects/pinguin_warfare/mapmakerselectionscene.h
 	)
 	
 	target_link_libraries(pinguin_warfare

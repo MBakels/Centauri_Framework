@@ -20,7 +20,7 @@ public:
 private:
 	// Menu buttons
 	Button* startButton;
-	//Button* mapBuilderButton;
+	Button* mapMakerButton;
 	Button* quitButton;
 
 };

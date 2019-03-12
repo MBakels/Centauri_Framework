@@ -5,7 +5,7 @@
 
 class Button : public GameObject {
 public:
-	Button(Point2 position, std::string spritePath, RGBAColor color = WHITE);
+	Button(Point3 position, std::string spritePath, RGBAColor color = WHITE);
 
 	virtual ~Button();
 

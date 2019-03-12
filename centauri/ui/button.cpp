@@ -1,6 +1,6 @@
 #include "ui/button.h"
 
-Button::Button(Point2 position, std::string spritePath, RGBAColor color) : GameObject() {
+Button::Button(Point3 position, std::string spritePath, RGBAColor color) : GameObject() {
 	this->position = position;
 	AddSprite(spritePath);
 	GetSprite()->color = color;

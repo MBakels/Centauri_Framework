@@ -167,6 +167,9 @@ public:
 		glfwSetWindowShouldClose(_window, true);
 	}
 
+	// Returns a string with all key input from the current frame
+	std::string GetInputString() const { return _inputString; }
+
 private:
 	GLFWwindow* _window;
 
@@ -185,6 +188,9 @@ private:
 	// Window size
 	int _windowWidth;
 	int _windowHeight;
+
+	// Keyboard input enterd this frame
+	std::string _inputString;
 
 	void HandleKey(unsigned int key);
 	void HandleMouse(unsigned int key);
