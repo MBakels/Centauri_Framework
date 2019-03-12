@@ -33,18 +33,16 @@ MapMakerSelectionScene::MapMakerSelectionScene() {
 	newMapMenu = new GameObject();
 	newMapMenu->AddSprite("assets/WhiteSquare.png");
 	newMapMenu->GetSprite()->color = BLACK;
-	newMapMenu->GetSprite()->size = Point3(500, 180, 1);
+	newMapMenu->GetSprite()->size = Point3(320, 190, 1);
 	newMapMenu->position = Point2(SWIDTH / 2, SHEIGHT / 2);
 	newMapMenu->SetActive(false);
 	AddChild(newMapMenu);
 
 	// Create and add all menu components to newMapMenu
-	mapNameInput = new InputField(Point2(300, 50), "Name");
-	mapNameInput->position = Point3(0, -60, 2);
+	mapNameInput = new InputField(Point3(0, -60, 2), Point2(300, 50), "Name");
 	newMapMenu->AddChild(mapNameInput);
 
-	mapSizeXInput = new InputField(Point2(100, 50), "10");
-	mapSizeXInput->position = Point3(-50, 0, 2);
+	mapSizeXInput = new InputField(Point3(-50, 0, 2), Point2(100, 50), "10");
 	newMapMenu->AddChild(mapSizeXInput);
 
 	mapSizeXText = new GameObject();
@@ -52,8 +50,7 @@ MapMakerSelectionScene::MapMakerSelectionScene() {
 	mapSizeXText->position = Point3(-140, -20, 2);
 	newMapMenu->AddChild(mapSizeXText);
 
-	mapSizeYInput = new InputField(Point2(100, 50), "10");
-	mapSizeYInput->position = Point3(100, 0, 2);
+	mapSizeYInput = new InputField(Point3(100, 0, 2), Point2(100, 50), "10");
 	newMapMenu->AddChild(mapSizeYInput);
 
 	mapSizeYText = new GameObject();
@@ -73,6 +70,22 @@ MapMakerSelectionScene::~MapMakerSelectionScene() {
 	// Removing the new map button
 	RemoveChild(newMapButton);
 	delete newMapButton;
+
+	// Removing new map menu items
+	RemoveChild(newMapMenu);
+	delete newMapMenu;
+	RemoveChild(mapNameInput);
+	delete mapNameInput;
+	RemoveChild(mapSizeXInput);
+	delete mapSizeXInput;
+	RemoveChild(mapSizeYInput);
+	delete mapSizeYInput;
+	RemoveChild(mapSizeXText);
+	delete mapSizeXText;
+	RemoveChild(mapSizeYText);
+	delete mapSizeYText;
+	RemoveChild(createMapButton);
+	delete createMapButton;
 
 	// Remove all map buttons
 	std::vector<Button*>::iterator buttonsIt;
@@ -105,7 +118,13 @@ void MapMakerSelectionScene::Update() {
 			float mousePosY = GetInput()->GetMouseY();
 			if (!(mousePosX <= newMapMenu->position.x + halfSize.x && mousePosX > newMapMenu->position.x - halfSize.x && mousePosY <= newMapMenu->position.y + halfSize.y && mousePosY > newMapMenu->position.y - halfSize.y)) {
 				newMapMenu->SetActive(false);
+				return;
 			}
+		}
+		// Check if the create new map button is pressed
+		if (createMapButton->CheckPressed(Point2(GetInput()->GetMouseX(), GetInput()->GetMouseY()))) {
+			// Check input fields
+			std::cout << "Creating new map " << std::endl;
 		}
 	}
 }
