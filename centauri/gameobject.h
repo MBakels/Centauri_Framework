@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "transform.h"
 #include "sprite.h"
 #include "text.h"
 #include "basicshapes.h"

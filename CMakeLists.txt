@@ -96,6 +96,8 @@ add_library(centauri
 	centauri/scenemanager.h
 	centauri/ui/inputfield.cpp
 	centauri/ui/inputfield.h
+	centauri/transform.cpp
+	centauri/transform.h
 )
 
 file(
