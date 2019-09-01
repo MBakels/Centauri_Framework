@@ -6,7 +6,7 @@
 class InputField : public GameObject {
 public:
 	// Constructor of the InputField class
-	InputField(Point2 size, std::string initialText);
+	InputField(Point3 position, Point2 size, std::string initialText);
 	// Destructor of the InputField class
 	virtual ~InputField();
 
@@ -17,9 +17,11 @@ public:
 	std::string text;
 
 private:
-	// Text to display
+	// Object to hold the text to display
 	GameObject* textObject;
 
+	// Is this object currently selected?
+	bool selected;
 };
 
 #endif
